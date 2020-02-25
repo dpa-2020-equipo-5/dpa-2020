@@ -16,7 +16,7 @@ Los datos de DOHMH Childcare Center Inspections se actualizan diaramente. Esto n
 
 Dado que usaremos un servidor Ubuntu, podemos hacer uso de [Cron](https://en.wikipedia.org/wiki/Cron), el <em>job scheduler</em> por excelencia de sistemas UNIX. 
 
-La rutina que programos en Cron ejecutará un script de Python que realice lo 
+La rutina que programemos en Cron ejecutará un script de Python que realice lo siguiente:
 1. Extrear los nuevos datos del endpoint del API.
 2. Convertir las filas a `INSERTs` de SQL
 3. Ejecutar los `INSERTS` en nuestro esquema de Postgres

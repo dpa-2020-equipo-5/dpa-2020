@@ -47,3 +47,14 @@ python3 main.py
 TODO: Definir el tipo de transformaciones que tendremos que hacer a los datos antes de cargarlos al esquema de Postgre. 
 
 Tenemoso planeado que nuestra base de datos de Postgres tenga por lo menos dos esquemas, tal que uno de estos sean los datos crudos tal y como los entrega el API.
+
+
+## ETL Orquestado por Luigi
+El ETL está [este otro repositorio](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl) para tratarlo como una unidad <em>deployable</em> indepndiente.
+
+
+## Implicaciones éticas
+- El ranking podría no ser justo pues calificaría mal a planteles que quizá no tienen los recursos económicos para solucionar en corto tiempo los problemas sanitarios. Aquí se estaría discriminando dependiendo al nivel socioeconómico de los planteles o su lozalicación etc.
+- Podría fungir como una fuente de segregación pues los padres con mayores recursos mandarían a sus hijos a los mejores centros etc.
+- Faltar al principio de desarrollo sostenible, el cual significa que el desarrollo y uso de Sistemas de Inteligencia Artificial debe llevarse a cabo para garantizar una fuerte sostenibilidad ambiental del planeta, por lo tanto, el ser una base de datos de frecuencia diaria, el almacenamiento de la misma afecta el ambiente, es decir, se gasta energía.
+- Podría generarse un exceso de demanda en los planteles que estén mejor rankeados y viceversa para los peor rankeados haciendo que se tengan que instituir criterios de selección de los estudiantes que pueden ser costosos y consumir tiempo. 

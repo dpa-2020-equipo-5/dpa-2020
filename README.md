@@ -50,7 +50,7 @@ Tenemoso planeado que nuestra base de datos de Postgres tenga por lo menos dos e
 
 
 ## ETL Orquestado por Luigi
-El ETL está [este otro repositorio](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl) para tratarlo como una unidad <em>deployable</em> indepndiente.
+El ETL está en [este otro repositorio](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl) para tratarlo como una unidad <em>deployable</em> independiente.
 
 
 ## Implicaciones éticas

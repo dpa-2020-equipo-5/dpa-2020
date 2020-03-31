@@ -52,8 +52,10 @@ PYTHONPATH='.' luigi --module nyc_ccci_etl.luigi_tasks.load_task LoadTask --year
 TODO: Orquestar con CRON
 
 ## Linaje de datos
-![linaje 1](/docs/data_lineage.png)
+![linaje 1](docs/data_lineage.png)
 
+### Tablas de metadatos
+![metadata](docs/metadata_tables.jpeg)
 
 ## Transformaciones
 

@@ -74,18 +74,31 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 
 * Tabla 1 (Raw): Es la base de datos como se extrajo de la API.
 * Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas.
-  * Tabla 3 (Centros-estática): Contiene toda la información 
-- Table 3 (
-![linaje 1](docs/data_lineage.png)
+  * Tabla 3 (Centros-estática): Contiene toda la información estática sobre los 2,807 centro registrados. Es decir, desde cener_name' hasta avg_critical_violation_rate'.
+  * Tabla 4 (Inspecciones-dinámicas): Contiene toda las inspecciones 
+   * Tabla 5 (Centros-inspecciones): 
+![linaje 1](docs/data_lineage.png) **ACTUALIZAR TABLA**
 
 ## Feature engineering 
 
+El feture engineering de la Tabla 4 (Inpecciones-dinámicas) consistió en los siguientes pasos:
+
+* Conservar únicamente las varibales que aportaban información sobre las inspecciones (con la excepeción de borough): daycareid',inspection_date',inspection_summary', violation_categor y borough'
+* Separar la variable de inspecion_summary en 3: reason, result1 y result2.
+* Tirar todas las observaciones que representaran inspecciones que no fueran de primera vez (revisiones subsecuentes y especiales). Es decir, que en la variable de reason dijera "initial annual inspection". 
+* Tirar las observaciones de los días no hábiles: sábado y domingo. Esto porque hay muy pocas y no son inspecciones rutinarias.
+* Rellenar con NA las celdas vacías de violation_category'.
+* Ordenar la base por childcare_id' y por inspecion_date'. (Checar si se pueden ordenar por año o hay que crear, año, mes día).
+* Categorizar la variavle borough'.
+* Cración de varibles:
+ * violacion: Dummy =1 si huvo violación.
+ * public_hazard: Dummy =1 si hubo violación y es un problema de salud pública.
+ * ultima_inspección: Días que han pasado desde la última inspección anual.
+ * total_inspec_public_hazard: =
+
+El feture engineering de la Tabla 5 (Inpecciones-dinámicas) consistió en los siguientes pasos:
+
 ### Tablas de metadatos
 ![metadata](docs/metadata_tables.jpeg)
-
-## Transformaciones
-
----
-
 
 ## Implicaciones éticas

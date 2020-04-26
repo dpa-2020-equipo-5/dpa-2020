@@ -96,8 +96,9 @@ El feature engineering que se le aplicó a la Tabla 3 (Inpecciones-dinámicas) c
 El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) consistió en los siguientes pasos:
 
 * Conservar únicamente las variables que aportaban información sobre las inspecciones de la Tabla 2 (con la excepeción de borough): `daycareid`, `inspection_date`, `inspection_summary`, `violation_category` y `borough`.
-* Separar la variable de `inspecion_summary` en 3 variables: `reason`, `result1` y `result2`.
+* Separar la variable de `inspecion_summary` en 3 variables: `reason`, `result1` y `result2`. 
 * Tirar todas las observaciones que representaran inspecciones que no fueran de primera vez (revisiones subsecuentes y especiales). Es decir, que en la variable de reason dijera "initial annual inspection". 
+* Borrar la vairble `reason` pues todas son iguales. Por ahora, borrar `result1` y `result2`, si vemos que se necesitan para predecir, hay que hacerlas categóricas y meterlas al modelo.
 * Tirar las observaciones de los días no hábiles: sábado y domingo. Esto porque hay muy pocas y no son inspecciones rutinarias.
 * Rellenar con NA las celdas vacías de violation_category'.
 * Ordenar la base por `childcare_id` y por `inspecion_date`. (Checar si se pueden ordenar por año o hay que crear, año, mes día).

@@ -101,8 +101,11 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
 * Borrar la vairble `reason` pues todas son iguales. Por ahora, borrar `result1` y `result2`, si vemos que se necesitan para predecir, hay que hacerlas categóricas y meterlas al modelo.
 * Tirar las observaciones de los días no hábiles: sábado y domingo. Esto porque hay muy pocas y no son inspecciones rutinarias.
 * Rellenar con NA las celdas vacías de violation_category'.
-* Ordenar la base por `childcare_id` y por `inspecion_date`. (Checar si se pueden ordenar por año o hay que crear, año, mes día).
+* Ordenar la base por `childcare_id` y por `year`, `month` y `day` en orden descendiente.
 * Cración de variables:
+  * `year`: Año de la inspección.
+  * `month`: Mes de la inspección.
+  * `day`: Día de la inspección.
   * `violacion`: Dummy =1 si huvo violación.
   * `public_hazard`: Dummy =1 si hubo violación y es un problema de salud pública.
   * `ultima_inspección`: Días que han pasado desde la última inspección anual.

@@ -2,7 +2,7 @@
 
 # NYC Open Data: DOHMH Childcare Center Inspections
 
-En la ciudad de Nueva York se realizan inspecciones diarias en días hábiles a los 2,807 centro de cuidado infantil que hay en la ciudad. Del total de inspecciones realizadas, a partir de mayo del año 2016 y hasta el día de hoy, aproximadamente el 60% tiene algún tipo de violación. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública. Por lo tanto, es de vital importancia identificar cuáles centros son más propensos a cometer una violación de salud pública para llegar a inspeccionarlos en el menor tiempo posible. 
+En la ciudad de Nueva York se realizan inspecciones diarias en días hábiles a los 2,807 centros de cuidado infantil que hay en la ciudad. Del total de inspecciones realizadas, a partir del 26 mayo del año 2016 y hasta el día de hoy, aproximadamente el 60% tiene algún tipo de violación. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública. Por lo tanto, es de vital importancia identificar cuáles centros son más propensos a cometer una violación de salud pública para llegar a inspeccionarlos en el menor tiempo posible. 
 
 Si se tuviera suficientes inspectores para visitar todos los centros diariamente, este problea no existiría pero, dado que solamente hay un número limitado de inspectores, se diseñará e implementará un modelo predictivo que permita identificar a los centro de cuidados infantiles con mayor probabilidad de cometer una violación del tipo "peligro par ala salud pública".
 
@@ -73,49 +73,78 @@ TODO: Orquestar con CRON
 El proceso de limpieza de datos y creación de varibles es el siguiente:
 
 * Tabla 1 (Raw): Es la base de datos como se extrajo de la API.
-* Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas.
+* Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas. El script correspondiente se llama clean.py
 * Tabla 3 (Centros-estática): Contiene toda la información estática sobre los 2,807 centros registrados. Es decir, desde `center_name` hasta `avg_critical_violation_rate`.
-* Tabla 4 (Inspecciones-dinámicas): Contiene todas las inspecciones realizadas 
-* Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se va a ocupar en el modelo final.
+    * Tabla 3.1 (Centros-estática-processed): Es el output de la tabla 3 después de correr el script centros_estática_proc.py
+* Tabla 4 (Inspecciones-dinámicas): Contiene todas las inspecciones realizadas desde el 26 de mayo del 2016 al día de hoy.
+    * Tabla 4.1 (Inspecciones-dinámicas-processed): Es el output de la tabla 4 después de correr el script inspecciones-dinámicas_proc.py
+* Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se va a ocupar en el modelo final. El script correspondiente se llama modelado.py
     
 ![linaje 1](docs/data_lineage.png) **ACTUALIZAR TABLA**
 
 ## Feature engineering 
 
-El feature engineering de la Tabla 4 (Inpecciones-dinámicas) consistió en los siguientes pasos:
+#### Tabla 3.1: 
 
-* Conservar únicamente las varibales que aportaban información sobre las inspecciones (con la excepeción de borough): `daycareid`, `inspection_date`, `inspection_summary`, `violation_category` y `borough`.
-* Separar la variable de `inspecion_summary` en 3: `reason`, `result1` y `result2`.
+El feature engineering que se le aplicó a la Tabla 3 (Inpecciones-dinámicas) consistió en los siguientes pasos:
+
+* Conservar únicamente las variables estáticas que se utilizaron en el modelo: `daycareid`, `borough`,`maximum_capacity`, `program_type`, `facility_type`, `violation_rate_percent`, `total_educational_workers`, `public_health_hazard_violation_rate`, `critical_violation_rate`.
+* Categorizar las variables:  `borough`,`program_type` y `facility_type`.
+
+#### Tabla 4.1: 
+
+El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) consistió en los siguientes pasos:
+
+* Conservar únicamente las variables que aportaban información sobre las inspecciones de la Tabla 2 (con la excepeción de borough): `daycareid`, `inspection_date`, `inspection_summary`, `violation_category` y `borough`.
+* Separar la variable de `inspecion_summary` en 3 variables: `reason`, `result1` y `result2`.
 * Tirar todas las observaciones que representaran inspecciones que no fueran de primera vez (revisiones subsecuentes y especiales). Es decir, que en la variable de reason dijera "initial annual inspection". 
 * Tirar las observaciones de los días no hábiles: sábado y domingo. Esto porque hay muy pocas y no son inspecciones rutinarias.
 * Rellenar con NA las celdas vacías de violation_category'.
 * Ordenar la base por `childcare_id` y por `inspecion_date`. (Checar si se pueden ordenar por año o hay que crear, año, mes día).
-* Categorizar la variable `borough`.
-* Cración de varibles:
+* Cración de variables:
   * `violacion`: Dummy =1 si huvo violación.
   * `public_hazard`: Dummy =1 si hubo violación y es un problema de salud pública.
   * `ultima_inspección`: Días que han pasado desde la última inspección anual.
-  * `violaciones_anteriores_salud_publica`: Número de violaciones de salud pública históricas anteriores (2016-2019). 
-  * `violaciones_anteriores_criticas`: Número de violaciones críticas históricas anteriores (2016-2019). 
-  * `violaciones_presentes_salud_publica`: Número de violaciones de salud pública en el presente año.
-  * `violaciones_presentes_criticas`: Número de violaciones críticas en el presente año.
-  * `prom_violaciones_histórico_borough`: Promedio de violaciones históricas por distrito.
-  * `prom_violaciones_presentes_borough`: Promedio de violaciones presentes por distrito.
-  * `
-
-El feature engineering de la Tabla 5 (Centros-inspecciones-modelado) consistió en los siguientes pasos:
-
-
-
-## Tablas de metadatos
-![metadata](docs/metadata_tables.jpeg)
-
+  * `violaciones_hist_salud_publica`: Número de violaciones de salud pública históricas (2016-2019) por centro. 
+  * `violaciones_2019_salud_publica`: Número de violaciones de salud pública en el 2019 por centro.
+  * `violaciones_hist_criticas`: Número de violaciones críticas históricas anteriores (2016-2019) por centro.
+  * `violaciones_2019_criticas`: Número de violaciones críticas en el 2019 por centro.
+  * `ratio_violaciones_hist`: Número de inspecciones en total de primera vez que resultaron en violación crítica o de salud 
+                              pública/ número de inspecciones de primera vez por centro.
+  * `ratio_violaciones_2019`: Número de inspecciones en total de primera vez que resultaron en violación crítica o de salud 
+                              pública en el 2019/ número de inspecciones de primera vez por centro.
+  * `prom_violaciones_hist_borough`: Promedio de violaciones históricas por distrito.
+  * `prom_violaciones_2019_borough`: Promedio de violaciones en el 2019 por distrito.
+  * `arriba_promedio_hist`: Dummy=1 si el centro tiene un número mayor de violaciones que el promedio histórico por 
+                                distrito.
+  * `arriba_promedio_2019`: Dummy=1 si el centro tiene un número mayor de violaciones que el promedio por distrito en el 2019.
+  * `ratio_violaciones_hist_sp`: Número de violaciones de salud pública históricas (2016-2019) de primera vez/ 
+                                      número de violaciones de todo tipo históricas (2016-2019).
+  * `ratio_violaciones_2019_sp`: Número de violaciones de salud pública en el 2019 de primera vez/ número de violaciones de 
+                                 todo tipo en el 2019 (2016-2019).
+  * `ratio_violaciones_hist_criticas`: Número de violaciones críticas históricas (2016-2019) de primera vez/ 
+                                      número de violaciones de todo tipo históricas (2016-2019).
+  * `ratio_violaciones_2019_criticas`: Número de violaciones críticas en el 2019 de primera vez/ número de violaciones de 
+                                       todo tipo en el 2019 (2016-2019).
 ## Modelado
 
 La varible binaria dependiente es `public_hazard` pues queremos predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
 
+Se utilizó la Tabla 5 que junta las variables de la Tabla 3.1 y 4.1.
+
+Para el entrenamiento se usaron todos los datos del 2016-2019 y para validación los datos correspondientes a lo que va del añ
+o 2020.
+
 Se corrieorn dos modelos:
 
- - Temporal cross-validation.
+ - Randon forest.
  - XGboost
+ 
+## Tablas de metadatos
+
+Los metadatos generados en cada paso son:
+
+![metadata](docs/metadata_tables.jpeg)
+
+
 ## Implicaciones éticas

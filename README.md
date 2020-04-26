@@ -2,14 +2,32 @@
 
 # NYC Open Data: DOHMH Childcare Center Inspections
 
+En la ciudad de Nueva York se realizan inspecciones diarias en días hábiles a los 2,807 centro de cuidado infantil que hay en la ciudad. Del total de inspecciones realizadas, a partir de mayo del año 2016 y hasta el día de hoy, aproximadamente el 60% tiene algún tipo de violación. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública. Por lo tanto, es de vital importancia identificar cuáles centros son más propensos a cometer una violación de salud pública para llegar a inspeccionarlos en el menor tiempo posible. 
+
+Si se tuviera suficientes inspectores para visitar todos los centros diariamente, este problea no existiría pero, dado que solamente hay un número limitado de inspectores, se diseñará e implementará un modelo predictivo que permita identificar a los centro de cuidados infantiles con mayor probabilidad de cometer una violación del tipo "peligro par ala salud pública".
+
+El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza). 
+
+## Objetivo
+
+El objetivo del proyecto es realizar un modelo predictivo que permita identificar a los centro de cuidados infantiles con mayor probabilidad de cometer una violación del tipo "peligro par ala salud pública".
+
 ## Datos
-Afortunadamente el set de datos que utilizaremos se expone a través de un API REST en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza). 
 
-Este API nos puede entregar los datos en formato `csv`, `xml` y `json`.
+El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir del 26 de mayo del 2016 y hasta el día de hoy. La base de datos se actualiza de manera diaria y contiene información sobre 24 varibales y hasta el 28 de abril del 2020 52,000 observaciones con duplicados y 40,000 sin duplicados.
 
-> Elegimos formato `json` para evitar conflictos con comas, comillas dobles, o cualquier otro error de <em>parseo</em> que pudiera surgir si utilizáramos `csv`. (`xml` no estaba en la jugada).
+Las variables pueden clasificarse en los siguientes rubros:
 
-En este punto del proyecto nos es difícil saber qué transformaciónes haremos a los datos. Sin embargo, sabemos bien cómo será la **extracción** y **carga** (<em>extract</em> y <em>loading</em>) de los datos.
+
+No obstante, de la base original, nosotros solamente utilizamos las siguientes variables. Las demás variables utilizadas en nuestro modelo fueron creadas y su descripción puede encontrar en:
+
+## Extracción y carga de los datos
+
+El set de datos que utilizamos se encuentra en un API REST en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza), que permite descargar los datos en formato `csv`, `xml` y `json`.
+
+> Se decidió utilizar el formato `json` para evitar conflictos con comas, comillas dobles, o cualquier otro error de <em>parseo</em> que pudiera surgir si utilizáramos `csv`. (`xml` no estaba en la jugada).
+
+La **extracción** y **carga** (<em>extract</em> y <em>loading</em>) de los datos se detalla a continuación.
 
 ### Cron con Luigi
 Los datos de DOHMH Childcare Center Inspections se actualizan diaramente. Esto nos permite automatizar fácilemente el proceso de extracción, transformación y carga de datos. 
@@ -24,7 +42,6 @@ La rutina que programemos en Cron ejecutará un script de Python que realice lo 
 Nuestro `crontab` lucirá de la siguiente manera:
 
 **Nota: Los nombres de archivos y directorios no son finales.**
-
 
 **Contenido de nuestroo `crontab`**
 ~~~
@@ -52,7 +69,16 @@ PYTHONPATH='.' luigi --module nyc_ccci_etl.luigi_tasks.load_task LoadTask --year
 TODO: Orquestar con CRON
 
 ## Linaje de datos
+
+El proceso de limpieza de datos y creación de varibles es el siguiente:
+
+* Tabla 1 (Raw): Es la base de datos como se extrajo de la API.
+* Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas.
+  * Tabla 3 (Centros-estática): Contiene toda la información 
+- Table 3 (
 ![linaje 1](docs/data_lineage.png)
+
+## Feature engineering 
 
 ### Tablas de metadatos
 ![metadata](docs/metadata_tables.jpeg)
@@ -63,7 +89,3 @@ TODO: Orquestar con CRON
 
 
 ## Implicaciones éticas
-- El ranking podría no ser justo pues calificaría mal a planteles que quizá no tienen los recursos económicos para solucionar en corto tiempo los problemas sanitarios. Aquí se estaría discriminando dependiendo al nivel socioeconómico de los planteles o su lozalicación etc.
-- Podría fungir como una fuente de segregación pues los padres con mayores recursos mandarían a sus hijos a los mejores centros etc.
-- Faltar al principio de desarrollo sostenible, el cual significa que el desarrollo y uso de Sistemas de Inteligencia Artificial debe llevarse a cabo para garantizar una fuerte sostenibilidad ambiental del planeta, por lo tanto, el ser una base de datos de frecuencia diaria, el almacenamiento de la misma afecta el ambiente, es decir, se gasta energía.
-- Podría generarse un exceso de demanda en los planteles que estén mejor rankeados y viceversa para los peor rankeados haciendo que se tengan que instituir criterios de selección de los estudiantes que pueden ser costosos y consumir tiempo. 

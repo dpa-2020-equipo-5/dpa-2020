@@ -74,15 +74,15 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 
 * Tabla 1 (Raw): Es la base de datos como se extrajo de la API.
 * Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas.
-  * Tabla 3 (Centros-estática): Contiene toda la información estática sobre los 2,807 centros registrados. Es decir, desde `cener_name` hasta `avg_critical_violation_rate`.
-  * Tabla 4 (Inspecciones-dinámicas): Contiene toda las inspecciones 
-    * Tabla 5 (Centros-inspecciones): 
+* Tabla 3 (Centros-estática): Contiene toda la información estática sobre los 2,807 centros registrados. Es decir, desde `center_name` hasta `avg_critical_violation_rate`.
+* Tabla 4 (Inspecciones-dinámicas): Contiene todas las inspecciones realizadas 
+* Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se va a ocupar en el modelo final.
     
 ![linaje 1](docs/data_lineage.png) **ACTUALIZAR TABLA**
 
 ## Feature engineering 
 
-El feture engineering de la Tabla 4 (Inpecciones-dinámicas) consistió en los siguientes pasos:
+El feature engineering de la Tabla 4 (Inpecciones-dinámicas) consistió en los siguientes pasos:
 
 * Conservar únicamente las varibales que aportaban información sobre las inspecciones (con la excepeción de borough): `daycareid`, `inspection_date`, `inspection_summary`, `violation_category` y `borough`.
 * Separar la variable de `inspecion_summary` en 3: `reason`, `result1` y `result2`.
@@ -95,11 +95,27 @@ El feture engineering de la Tabla 4 (Inpecciones-dinámicas) consistió en los s
   * `violacion`: Dummy =1 si huvo violación.
   * `public_hazard`: Dummy =1 si hubo violación y es un problema de salud pública.
   * `ultima_inspección`: Días que han pasado desde la última inspección anual.
-  * `total_inspec_public_hazard`: =
+  * `violaciones_anteriores_salud_publica`: Número de violaciones de salud pública históricas anteriores (2016-2019). 
+  * `violaciones_anteriores_criticas`: Número de violaciones críticas históricas anteriores (2016-2019). 
+  * `violaciones_presentes_salud_publica`: Número de violaciones de salud pública en el presente año.
+  * `violaciones_presentes_criticas`: Número de violaciones críticas en el presente año.
+  * `prom_violaciones_histórico_borough`: Promedio de violaciones históricas por distrito.
+  * `prom_violaciones_presentes_borough`: Promedio de violaciones presentes por distrito.
+  * `
 
-El feture engineering de la Tabla 5 (Inpecciones-dinámicas) consistió en los siguientes pasos:
+El feature engineering de la Tabla 5 (Centros-inspecciones-modelado) consistió en los siguientes pasos:
 
-### Tablas de metadatos
+
+
+## Tablas de metadatos
 ![metadata](docs/metadata_tables.jpeg)
 
+## Modelado
+
+La varible binaria dependiente es `public_hazard` pues queremos predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
+
+Se corrieorn dos modelos:
+
+ - Temporal cross-validation.
+ - XGboost
 ## Implicaciones éticas

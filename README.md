@@ -2,7 +2,7 @@
 
 # NYC Open Data: DOHMH Childcare Center Inspections
 
-En la ciudad de Nueva York se realizan inspecciones diarias en días hábiles a los 2,807 centros de cuidado infantil que hay en la ciudad. Del total de inspecciones realizadas, a partir del 26 mayo del año 2016 y hasta el día de hoy, aproximadamente el 60% tiene algún tipo de violación. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública. Por lo tanto, es de vital importancia identificar cuáles centros son más propensos a cometer una violación de salud pública para llegar a inspeccionarlos en el menor tiempo posible. 
+En la ciudad de Nueva York se realizan inspecciones diarias en días hábiles a los 2,807 centros de cuidado infantil que hay en la ciudad. Del total de inspecciones realizadas, a partir del abril del año 2017 y hasta el día de hoy, aproximadamente el 60% tiene algún tipo de violación. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública. Por lo tanto, es de vital importancia identificar cuáles centros son más propensos a cometer una violación de salud pública para llegar a inspeccionarlos en el menor tiempo posible. 
 
 Si se tuviera suficientes inspectores para visitar todos los centros diariamente, este problea no existiría pero, dado que solamente hay un número limitado de inspectores, se diseñará e implementará un modelo predictivo que permita identificar a los centro de cuidados infantiles con mayor probabilidad de cometer una violación del tipo "peligro par ala salud pública".
 
@@ -14,7 +14,7 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 
 ## Datos
 
-El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir del 26 de mayo del 2016 y hasta el día de hoy. La base de datos se actualiza de manera diaria y contiene información sobre 24 varibales y hasta el 28 de abril del 2020 52,000 observaciones con duplicados y 40,000 sin duplicados.
+El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy. La base de datos se actualiza de manera diaria y contiene información sobre 24 variables y hasta el 28 de abril del 2020 52,000 observaciones con duplicados y 40,000 sin duplicados.
 
 Las variables pueden clasificarse en los siguientes rubros:
 
@@ -109,9 +109,9 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
   * `violacion`: Dummy =1 si huvo violación.
   * `public_hazard`: Dummy =1 si hubo violación y es un problema de salud pública.
   * `ultima_inspección`: Días que han pasado desde la última inspección anual.
-  * `violaciones_hist_salud_publica`: Número de violaciones de salud pública históricas (2016-2019) por centro. 
+  * `violaciones_hist_salud_publica`: Número de violaciones de salud pública históricas (2017-2019) por centro. 
   * `violaciones_2019_salud_publica`: Número de violaciones de salud pública en el 2019 por centro.
-  * `violaciones_hist_criticas`: Número de violaciones críticas históricas anteriores (2016-2019) por centro.
+  * `violaciones_hist_criticas`: Número de violaciones críticas históricas anteriores (2017-2019) por centro.
   * `violaciones_2019_criticas`: Número de violaciones críticas en el 2019 por centro.
   * `ratio_violaciones_hist`: Número de inspecciones en total de primera vez que resultaron en violación crítica o de salud 
                               pública/ número de inspecciones de primera vez por centro.
@@ -119,24 +119,21 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
                               pública en el 2019/ número de inspecciones de primera vez por centro.
   * `prom_violaciones_hist_borough`: Promedio de violaciones históricas por distrito.
   * `prom_violaciones_2019_borough`: Promedio de violaciones en el 2019 por distrito.
-  * `arriba_promedio_hist`: Dummy=1 si el centro tiene un número mayor de violaciones que el promedio histórico por 
-                                distrito.
-  * `arriba_promedio_2019`: Dummy=1 si el centro tiene un número mayor de violaciones que el promedio por distrito en el 2019.
-  * `ratio_violaciones_hist_sp`: Número de violaciones de salud pública históricas (2016-2019) de primera vez/ 
-                                      número de violaciones de todo tipo históricas (2016-2019).
-  * `ratio_violaciones_2019_sp`: Número de violaciones de salud pública en el 2019 de primera vez/ número de violaciones de 
-                                 todo tipo en el 2019 (2016-2019).
-  * `ratio_violaciones_hist_criticas`: Número de violaciones críticas históricas (2016-2019) de primera vez/ 
-                                      número de violaciones de todo tipo históricas (2016-2019).
-  * `ratio_violaciones_2019_criticas`: Número de violaciones críticas en el 2019 de primera vez/ número de violaciones de 
-                                       todo tipo en el 2019 (2016-2019).
+  * `ratio_violaciones_hist_sp`: Número de violaciones de salud pública de primera vez por centro históricas (2017-2019)/ 
+                                      número de violaciones de primera vez de todo tipo por centro históricas (2017-2019) .
+  * `ratio_violaciones_2019_sp`: Número de violaciones de salud pública de primera vez por centro en el 2019 / número de   
+                                 violaciones de primera vez de todo tipo por centro en el 2019 .
+  * `ratio_violaciones_hist_criticas`: Número de violaciones críticas de primera vez por centro históricas (2017-2019)/ 
+                                      número de violaciones de primera vez de todo tipo por centro históricas (2017-2019).
+  * `ratio_violaciones_2019_criticas`: Número de violaciones críticas de primera vez por centro en el 2019/ número de 
+                                       violaciones de primera vez de todo tipo por centro en el 2019.
 ## Modelado
 
 La varible binaria dependiente es `public_hazard` pues queremos predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
 
 Se utilizó la Tabla 5 que junta las variables de la Tabla 3.1 y 4.1.
 
-Para el entrenamiento se usaron todos los datos del 2016-2019 y para validación los datos correspondientes a lo que va del añ
+Para el entrenamiento se usaron todos los datos del 2017-2019 y para validación los datos correspondientes a lo que va del añ
 o 2020.
 
 Se corrieorn dos modelos:

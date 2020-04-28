@@ -96,7 +96,7 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 
 * Tabla 1 (Raw): Es la base de datos como se extrajo de la API.
 * Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas. El script correspondiente se llama clean.py
-* Tabla 3 (Centros-estática): Contiene toda la información estática sobre los 2,807 centros registrados. Es decir, desde `center_name` hasta `avg_critical_violation_rate`.
+* Tabla 3 (Centros-estática): Contiene toda la información estática sobre los 2,989 centros registrados. Es decir, desde `center_name` hasta `avg_critical_violation_rate`.
     * Tabla 3.1 (Centros-estática-processed): Es el output de la tabla 3 después de correr el script centros_estática_proc.py
 * Tabla 4 (Inspecciones-dinámicas): Contiene todas las inspecciones realizadas desde el 26 de mayo del 2016 al día de hoy.
     * Tabla 4.1 (Inspecciones-dinámicas-processed): Es el output de la tabla 4 después de correr el script inspecciones-dinámicas_proc.py
@@ -108,10 +108,13 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 
 #### Tabla 3.1: 
 
-El feature engineering que se le aplicó a la Tabla 3 (Inpecciones-dinámicas) consistió en los siguientes pasos:
+El feature engineering que se le aplicó a la Tabla 3 (Centros-estática) consistió en los siguientes pasos:
 
-* Conservar únicamente las variables estáticas que se utilizaron en el modelo: `daycareid`, `borough`,`maximum_capacity`, `program_type`, `facility_type`, `violation_rate_percent`, `total_educational_workers`, `public_health_hazard_violation_rate`, `critical_violation_rate`.
+* Usar las 28 variables originales de la Tabla2 que fueron seleccionadas para la Tabla3. Es decir, desde `center_name` hasta `avg_critical_violation_rate`. 
 * Categorizar las variables:  `borough`,`program_type` y `facility_type`.
+* Conservar únicamente las variables estáticas que se utilizarán en el modelo: `daycareid`, `maximum_capacity`, `violation_rate_percent`, `total_educational_workers`, `public_health_hazard_violation_rate`, `critical_violation_rate` y las 
+13 dummies creadas que corresponden a la categorización de las variables `borough`,`program_type`, `facility_type`,
+
 
 #### Tabla 4.1: 
 

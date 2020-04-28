@@ -102,7 +102,7 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
     * Tabla 4.1 (Inspecciones-dinámicas-processed): Es el output de la tabla 4 después de correr el script inspecciones-dinámicas_proc.py
 * Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se va a ocupar en el modelo final. El script correspondiente se llama modelado.py
     
-![linaje 1](docs/data_lineage.png) **ACTUALIZAR TABLA**
+![linaje 1](docs/data_lineage_1.png)
 
 ## Feature engineering 
 
@@ -120,10 +120,10 @@ El feature engineering que se le aplicó a la Tabla 3 (Centros-estática) consis
 
 El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) consistió en los siguientes pasos:
 
-* Conservar únicamente las variables que aportaban información sobre las inspecciones de la Tabla 2 (con la excepeción de borough): `daycareid`, `inspection_date`, `inspection_summary`, `violation_category` y `borough`.
-* Separar la variable de `inspecion_summary` en 3 variables: `reason`, `result1` y `result2`. 
+* Conservar únicamente las 6 variables que aportan información sobre las inspecciones de la Tabla 2 (con la excepeción de borough, que se usa para generar nuevas variables, y day_care_id, que se usa par hacer el join): `daycareid`, `inspection_date`, `regulation_summary`, `violation_category`, `health_code_sub_section`, `violation_status`,`inspection_summary_result` y `borough`.
+* Separar la variable de `inspecion_summary_result` en 3 variables: `reason`, `result1` y `result2`. 
 * Tirar todas las observaciones que representaran inspecciones que no fueran de primera vez (revisiones subsecuentes y especiales). Es decir, que en la variable de reason dijera "initial annual inspection". 
-* Borrar la vairble `reason` pues todas son iguales. Por ahora, borrar `result1` y `result2`, si vemos que se necesitan para predecir, hay que hacerlas categóricas y meterlas al modelo.
+* Borrar la variable `reason` pues todas son iguales. Por ahora, borrar `result1` y `result2`, si vemos que se necesitan para predecir, hay que hacerlas categóricas y meterlas al modelo.
 * Tirar las observaciones de los días no hábiles: sábado y domingo. Esto porque hay muy pocas y no son inspecciones rutinarias.
 * Rellenar con NA las celdas vacías de violation_category'.
 * Ordenar la base por `childcare_id` y por `year`, `month` y `day` en orden descendiente.

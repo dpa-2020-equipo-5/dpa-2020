@@ -15,4 +15,4 @@ df_1 = pd.get_dummies(tabla_3[dummies])
 tabla_3 = tabla_3.join(df_1)
 
 #Seleccionando las varibales a usar en el modelo
-tabla_3 = tabla_3.drop(df.columns[[0,1,2,3,5,6,7,8,9,10,15,16,17,18,19,21,23,25,27]], axis=1)
+tabla_3 = tabla_3.drop(df.columns[[0,1,2,3,4,5,6,7,8,9,10,15,16,17,18,19,21,23,25,27]], axis=1)

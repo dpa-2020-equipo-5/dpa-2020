@@ -14,10 +14,9 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 
 ## Datos
 
-El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy. La base de datos se actualiza de manera diaria y contiene información sobre 24 variables y hasta el 28 de abril del 2020 52,000 observaciones con duplicados y 40,000 sin duplicados.
+El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy (28 de abril del 2020). La base de datos se actualiza de manera diaria y contiene 34 vairbales con 52,023 observaciones incluyendo observaciones duplicadas. Si se elimina las observaciones duplicadas, hay 39,371 inspecciones.
 
 Las variables pueden clasificarse en los siguientes rubros:
-
 
 No obstante, de la base original, nosotros solamente utilizamos las siguientes variables. Las demás variables utilizadas en nuestro modelo fueron creadas y su descripción puede encontrar en:
 

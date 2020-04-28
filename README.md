@@ -102,7 +102,7 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
     * Tabla 4.1 (Inspecciones-dinámicas-processed): Es el output de la tabla 4 después de correr el script inspecciones-dinámicas_proc.py
 * Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se va a ocupar en el modelo final. El script correspondiente se llama modelado.py
     
-![linaje 1](docs/data_lineage_1.png)
+![linaje 1](docs/data_lineage.png)
 
 ## Feature engineering 
 

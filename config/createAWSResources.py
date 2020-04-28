@@ -121,11 +121,11 @@ ec2_instances = ec2.create_instances(
     InstanceType = BASTION_TYPE,
     KeyName = KEY_NAME,
     NetworkInterfaces=[{
-    	'SubnetId': public_subnet.id,
-    	'DeviceIndex': 0,
-    	'AssociatePublicIpAddress': True,
-    	'Groups': [public_sec_group.group_id]
-    	}]
+        'SubnetId': public_subnet.id,
+        'DeviceIndex': 0,
+        'AssociatePublicIpAddress': True,
+        'Groups': [public_sec_group.group_id]
+        }]
 )
 
 bastion = ec2_instances[0]
@@ -150,11 +150,11 @@ ec2_instances = ec2.create_instances(
     InstanceType = BASTION_TYPE,
     KeyName = KEY_NAME,
     NetworkInterfaces=[{
-    	'SubnetId': private_subnet.id,
-    	'DeviceIndex': 0,
-    	'AssociatePublicIpAddress': False,
-    	'Groups': [private_sec_group.group_id]
-    	}]
+        'SubnetId': private_subnet.id,
+        'DeviceIndex': 0,
+        'AssociatePublicIpAddress': False,
+        'Groups': [private_sec_group.group_id]
+        }]
 )
 
 private_ec2 = ec2_instances[0]
@@ -172,6 +172,15 @@ private_sec_group.authorize_ingress(
     FromPort=5432,
     ToPort=5432,
     CidrIp=str(private_ec2_ip) + '/32',
+)
+
+# Allowing access from the public EC2 instance (bastion) to the
+# private security group in port 8082 (luigi)
+private_sec_group.authorize_ingress(
+    IpProtocol='tcp',
+    FromPort=8082,
+    ToPort=8082,
+    CidrIp=str(elastic_ip['PublicIp']) + '/32',
 )
 
 print("Private ec2 created ...")

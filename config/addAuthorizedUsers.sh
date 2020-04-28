@@ -67,6 +67,15 @@ ssh -t -t -i key_dohmh_nyc.pem ubuntu@$BASTION_IP "ssh -t -t -i key_dohmh_nyc.pe
 ssh -t -t -i key_dohmh_nyc.pem ubuntu@$BASTION_IP "ssh -t -t -i key_dohmh_nyc.pem ubuntu@$PRIVATE_EC2_IP pip install luigi"
 ssh -t -t -i key_dohmh_nyc.pem ubuntu@$BASTION_IP "ssh -t -t -i key_dohmh_nyc.pem ubuntu@$PRIVATE_EC2_IP git clone https://github.com/dpa-2020-equipo-5/dpa-2020.git /home/ubuntu/dpa-2020/ "
 ssh -t -t -i key_dohmh_nyc.pem ubuntu@$BASTION_IP "ssh -t -t -i key_dohmh_nyc.pem ubuntu@$PRIVATE_EC2_IP git clone https://github.com/dpa-2020-equipo-5/nyc-ccci-etl.git /home/ubuntu/nyc-ccci-etl/ "
+ssh -t -t -i key_dohmh_nyc.pem ubuntu@$BASTION_IP "ssh -t -t -i key_dohmh_nyc.pem ubuntu@$PRIVATE_EC2_IP mkdir luigi_logs"
+ssh -t -t -i key_dohmh_nyc.pem ubuntu@$BASTION_IP "ssh -t -t -i key_dohmh_nyc.pem ubuntu@$PRIVATE_EC2_IP sudo luigid --background --logdir ./luigi_logs"
 
 #psql -h hostname -p portNumber -U userName dbName -W
 #psql -h dohmhnyc.cov4opzncr57.us-east-2.rds.amazonaws.com -p 5432 -U dohmh_nyc db_dohmh_nyc -W
+
+# luigiid -> 8082
+# Local -> Bastion
+#ssh -L8082:127.0.0.1:8082 eddie@3.134.220.88 -N -v
+
+# Bastion -> Luigi
+#sudo ssh -i "/home/ubuntu/key_dohmh_nyc.pem" -L8082:127.0.0.1:8082 ubuntu@10.0.1.190 -N -v

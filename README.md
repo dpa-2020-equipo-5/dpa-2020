@@ -99,7 +99,7 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 * Tabla 3 (Centros-estática): Contiene toda la información estática sobre los 2,989 centros registrados. Es decir, desde `center_name` hasta `avg_critical_violation_rate`.
     * Tabla 3.1 (Centros-estática-processed): Es el output de la tabla 3 después de correr el script centros_estática_proc.py
 * Tabla 4 (Inspecciones-dinámicas): Contiene todas las inspecciones realizadas desde el 26 de mayo del 2016 al día de hoy.
-    * Tabla 4.1 (Inspecciones-dinámicas-processed): Es el output de la tabla 4 después de correr el script inspecciones-dinámicas_proc.py
+    * Tabla 4.1 (Inspecciones-dinámicas-processed): Es el output de la tabla 4 después de correr el script inspecciones_dinámicas_proc.py
 * Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se va a ocupar en el modelo final. El script correspondiente se llama modelado.py
     
 ![linaje 1](docs/data_lineage.png)

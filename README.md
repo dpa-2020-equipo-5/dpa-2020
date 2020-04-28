@@ -21,6 +21,29 @@ Las variables pueden clasificarse en los siguientes rubros:
 
 No obstante, de la base original, nosotros solamente utilizamos las siguientes variables. Las demás variables utilizadas en nuestro modelo fueron creadas y su descripción puede encontrar en:
 
+## Creación de arquitectura en la nube
+
+### Prerrequisitos
+
+[Instalar jq](https://stedolan.github.io/jq/download/)
+
+[Instalar python 3.6+](https://www.python.org/downloads/)
+
+[Instalar AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html)
+
+[Instalar Boto3 library](https://pypi.org/project/boto3/)
+
+[Configurar tus credenciales de AWS](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+
+### Configuración
+
+1) Posiciónate en el directorio /config
+2) Corre el script ./run.sh
+
+El script crea toda la arquitectura necesaria en AWS para realizar las operaciones de ETL y predicción. 
+
+![Infraestructura AWS](docs/aws_infrastructure.png)
+
 ## Extracción y carga de los datos
 
 El set de datos que utilizamos se encuentra en un API REST en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza), que permite descargar los datos en formato `csv`, `xml` y `json`.

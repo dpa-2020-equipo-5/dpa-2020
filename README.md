@@ -113,7 +113,7 @@ El feature engineering que se le aplicó a la Tabla 3 (Centros-estática) consis
 * Usar las 28 variables originales de la Tabla2 que fueron seleccionadas para la Tabla3. Es decir, desde `center_name` hasta `avg_critical_violation_rate`. 
 * Categorizar las variables:  `borough`,`program_type` y `facility_type`.
 * Conservar únicamente las variables estáticas que se utilizarán en el modelo: `daycareid`, `maximum_capacity`, `violation_rate_percent`, `total_educational_workers`, `public_health_hazard_violation_rate`, `critical_violation_rate` y las 
-13 dummies creadas que corresponden a la categorización de las variables `borough`,`program_type`, `facility_type`,
+13 variables creadas que corresponden a la categorización de las variables `borough`,`program_type`, `facility_type`,
 
 
 #### Tabla 4.1: 

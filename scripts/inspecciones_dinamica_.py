@@ -89,6 +89,7 @@ df_8 = tabla_4.loc[tabla_4['inspection_year'] != 2020]
 df_9 = df_8[df_8.violation_category.isin(['critical', 'public_health_hazard']) & df_8['initial_annual_inspection']==1]
 df_10 = df_9.groupby('center_id').initial_annual_inspection.sum().reset_index()
 df_11 = tabla_4.groupby('center_id').initial_annual_inspection.sum().reset_index()
+df_12 = pd.merge(left=df_11,right=df_10, how='left', left_on='center_id', right_on='center_id')
 df_12['ratio_violaciones_hist'] = df_12['initial_annual_inspection_y'] / df_12['initial_annual_inspection_x']
 tabla_4 = pd.merge(left=tabla_4,right=df_12, how='left', left_on='center_id', right_on='center_id')
 tabla_4 = tabla_4.drop(['initial_annual_inspection_x', 'initial_annual_inspection_y'], axis=1) #Eliminamos variables que no necesitamos 

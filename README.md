@@ -131,8 +131,8 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
   * `year`: Año de la inspección.
   * `month`: Mes de la inspección.
   * `day`: Día de la inspección.
-  * `violacion`: Dummy =1 si huvo violación.
-  * `public_hazard`: Dummy =1 si hubo violación y es un problema de salud pública.
+  * `violacion`: =1 si huvo violación.
+  * `public_hazard`: =1 si hubo violación y es un problema de salud pública.
   * `ultima_inspección`: Días que han pasado desde la última inspección anual.
   * `violaciones_hist_salud_publica`: Número de violaciones de salud pública históricas (2017-2019) por centro. 
   * `violaciones_2019_salud_publica`: Número de violaciones de salud pública en el 2019 por centro.

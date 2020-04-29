@@ -9,9 +9,9 @@ tabla_3 = df.iloc[:, 0:28]
 tabla_3 = tabla_3.drop_duplicates()
 tabla_3.shape
 
-#Creando dummies para borough, program_type, facility_type
-dummies = ["borough","program_type", "facility_type"]
-df_1 = pd.get_dummies(tabla_3[dummies])
+#Creando categorías para borough, program_type, facility_type
+categorias = ["borough","program_type", "facility_type"]
+df_1 = pd.get_dummies(tabla_3[categorias])
 tabla_3 = tabla_3.join(df_1)
 
 #Seleccionando las varibales a usar en el modelo

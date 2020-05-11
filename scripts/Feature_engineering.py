@@ -19,9 +19,9 @@ tabla_3 = tabla_3.drop_duplicates()
 
 tabla_3.shape
 
-dummies = ["programtype", "facilitytype", "borough"]
+categorias = ["programtype", "facilitytype", "borough"]
 
-df_1 = pd.get_dummies(tabla_3[dummies])
+df_1 = pd.get_dummies(tabla_3[categorias])
 
 tabla_3 = tabla_3.join(df_1)
 
@@ -58,11 +58,11 @@ tabla_4.reason.value_counts(dropna=False)
 
 tabla_4 = tabla_4.loc[tabla_4['reason'] == 'initial_annual_inspection']
 
-print("\t-> Creamos dummies a las variables result_1 y result_2")
+print("\t-> Creamos categorias para las variables result_1 y result_2")
 
-dummies = ["result_1", "result_2"]
+categorias = ["result_1", "result_2"]
 
-df_4 = pd.get_dummies(tabla_4[dummies])
+df_4 = pd.get_dummies(tabla_4[categorias])
 
 tabla_4 = tabla_4.join(df_4)
 
@@ -106,9 +106,9 @@ tabla_4.sort_values(['inspectiondate'], ascending=[False], inplace=True)
 
 print("\t-> One-hot encoding de la variable violationcategory")
 
-dummies = ["violationcategory"]
+categorias = ["violationcategory"]
 
-df_5 = pd.get_dummies(tabla_4[dummies])
+df_5 = pd.get_dummies(tabla_4[categorias])
 
 tabla_4 = tabla_4.join(df_5)
 

@@ -5,14 +5,6 @@ Created on Sun May 10 23:24:27 2020
 @author: Elizabeth
 """
 
-import pandas as pd
-import matplotlib
-import matplotlib.pyplot as plt
-import seaborn as sns #Control figure 
-import numpy as np
-import os
-from datetime import date
-
 ### TABLA 3
 
 tabla_3 = df.loc[:, ['centername', 'legalname', 'building', 'street', 'borough', 'zipcode', 'phone', 'permitnumber', 
@@ -138,11 +130,13 @@ df_7["today"] = pd.to_datetime(fechas)
 
 df_7['dias_ultima_inspeccion'] = df_7['today'] - df_7['inspectiondate']
 
+df_7['dias_ultima_inspeccion'] = df_7['dias_ultima_inspeccion'].dt.days
+
 tabla_4 = pd.merge(tabla_4, df_7, left_on='center_id', right_on='center_id', how='left')
 
-tabla_4 =  tabla_4.rename(columns = {'inspectiondate_x':'inspectiondate', 'inspectiondate_y':'ultima_inspeccion_anual'})
+tabla_4 =  tabla_4.rename(columns = {'inspectiondate_x':'inspectiondate'})
 
-tabla_4 = tabla_4.drop(['today'], axis = 1)
+tabla_4 = tabla_4.drop(['today', 'inspectiondate_y'], axis = 1)
 
 print("\t-> Creamos la variable violaciones_hist_salud_publica: Número de violaciones de salud pública históricas (2017-2019) por centro")
 

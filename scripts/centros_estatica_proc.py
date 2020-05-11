@@ -2,17 +2,24 @@ import numpy as np
 import pandas as pd
 import os
 
-#Seleccionando las variables estaticas de la tabla limpia
-tabla_3 = df.iloc[:, 0:28]
+tabla_3 = df.loc[:, ['centername', 'legalname', 'building', 'street', 'borough', 'zipcode', 'phone', 'permitnumber', 
+                     'permitexp', 'status', 'agerange', 'maximumcapacity', 'dc_id', 'programtype', 'facilitytype', 
+                     'childcaretype', 'bin', 'url', 'datepermitted', 'actual', 'violationratepercent', 'violationavgratepercent', 
+                     'totaleducationalworkers', 'averagetotaleducationalworkers', 'publichealthhazardviolationrate', 
+                     'averagepublichealthhazardiolationrate', 'criticalviolationrate', 'avgcriticalviolationrate']]
 
-#Tirando los duplicados para que queden los centros únicos y sus características
+tabla_3.info()
+
 tabla_3 = tabla_3.drop_duplicates()
+
 tabla_3.shape
 
-#Creando categorías para borough, program_type, facility_type
-categorias = ["borough","program_type", "facility_type"]
+categorias = ["programtype", "facilitytype", "borough"]
+
 df_1 = pd.get_dummies(tabla_3[categorias])
+
 tabla_3 = tabla_3.join(df_1)
 
-#Seleccionando las varibales a usar en el modelo
-tabla_3 = tabla_3.drop(df.columns[[0,1,2,3,4,5,6,7,8,9,10,15,16,17,18,19,21,23,25,27]], axis=1)
+tabla_3 = tabla_3.drop(['programtype', 'facilitytype', 'borough'], axis = 1)
+
+tabla_3.info()

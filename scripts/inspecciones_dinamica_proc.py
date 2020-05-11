@@ -9,8 +9,6 @@ matplotlib.style.use('ggplot')
 %matplotlib inline
 from sodapy import Socrata
 
-tabla_4 = df.iloc[:, [4,12,28,29,30,31,32,33]]
-
 tabla_4 = df.loc[:, ['dc_id', 'inspectiondate', 'regulationsummary', 'violationcategory', 'healthcodesubsection', 
                      'violationstatus', 'inspectionsummaryresult', 'borough']]
 

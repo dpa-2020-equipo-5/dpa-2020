@@ -1,11 +1,16 @@
 import numpy as np
 import pandas as pd
-import os
+from sodapy import Socrata
 
 #Leyendo los datos
-cwd = os.getcwd()
-df = pd.read_csv('../data/DOHMH_Childcare_Center_Inspections.csv', encoding = "L1")
+MyAppToken = ''
 
+client = Socrata("data.cityofnewyork.us", MyAppToken)
+
+results = client.get("dsg6-ifza", limit = 60000)
+
+df = pd.DataFrame.from_records(results
+                               
 #Definiendo funciones
 
 def clean_string(astr):
@@ -27,7 +32,7 @@ def clean_string(astr):
 
 def clean_columns(df):
     '''
-    Esta función renombra los nombres de las variables al poberles _ en vez de espacio. 
+    Esta función corre la función clean_string pero para los nombres de las columnas. 
     '''
     for series in df:
         df.rename(columns={series:clean_string(series)}, inplace=True)
@@ -59,5 +64,3 @@ for col in df.select_dtypes('object'):
 print("\t-> Eliminando duplicados")
 df = df.drop_duplicates()
 df.shape
-
-#Exportando base limpia

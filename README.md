@@ -137,7 +137,7 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 * Tabla 4 (Inspecciones-dinámicas): Contiene todas las inspecciones realizadas desde el 26 de mayo del 2016 al día de hoy. El script que genera esta tabla es `inspecciones_dinámicas_proc.py`.
 * Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se ocupa en la sección de modelado. El script correspondiente se llama `modelado.py`.
     
-![linaje 1](docs/data_lineage.png)
+![linaje 1](img/data_lineage.png)
 
 
 ### 6.1 Tabla 3: Centros-estática:  

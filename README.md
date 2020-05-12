@@ -67,7 +67,7 @@ La estructura del repositorio es la siguiente:
 
 El script crea toda la arquitectura necesaria en AWS para realizar las operaciones de ETL y predicción. 
 
-![Infraestructura AWS](docs/aws_infrastructure.png)
+![Infraestructura AWS](img/aws_infrastructure.png)
 
 ### 3.2 Extracción y carga de los datos
 
@@ -212,7 +212,7 @@ Se corrieorn dos modelos:
 
 Los metadatos generados en cada paso del pipiline son:
 
-![metadata](docs/metadata_tables.jpeg)
+![metadata](img/metadata_tables.jpeg)
 
 ## 9. Pruebas unitarias
 

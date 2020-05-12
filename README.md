@@ -15,7 +15,7 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 7. [Modelado](#7.-Modelado)
 8. [Metadata y linaje de los datos](#8.-Metadata-y-linaje-de-los-datos)
 9. [Pruebas unitarias](#9.-Pruebas-unitarias)
-10. [Bias y fairness](#10.-Bias-y-fairness)
+10. [Sesgo y equidad](#10.-Sesgo-y-equidad)
 11. [Implicaciones éticas](#11.-Implicaciones-éticas)
 
 ## 1. Introducción
@@ -216,6 +216,36 @@ Los metadatos generados en cada paso del pipiline son:
 
 ## 9. Pruebas unitarias
 
-## 10. Bias y fariness
+## 10. Sesgo y equidad
+
+Es posible que los modelos de machine learning incorporen sesgos e inequidades de manera intencional o por un sobre/sub muestreo en las predicciones de los modelos. Por ello, es importante estudiar métricas de sesgo y equidad para tratar de aminorar las injusticias o, en su defecto, al menos estar consciente de los sesgos que se están creando en los resultados del modelo.
+
+### 10.1 Métricas 
+
+Dado que el objetivo de este trabajo es apoyar a los inspectores a identificar más prontamente a los centros de cuidados infantiles con mayor probabilidad de cometer una violación del tipo "salud pública", la intervención del modelo es asistiva. La implementación de los resultados del modelo ayudará a los inspectores a identificar violaciones y por ende a los niños pues estarán menos tiempo en riesgo. 
+
+De esta forma, el objetivo es minimizar el error de los falsos negativos. Es decir, minimizar el riesgo de que el modelo haya predicho que un centro no iba a realizar una violación de salud pública y realmente si la haya realizado.
+
+Por consiguiente, las dos métricas a optimizar son:
+
+- False Negative Rate Parity.
+- False Omission Rate Parity.
+
+### 10.2 Selección de atributos
+
+Para seleccionar los atributos protegidos se realizaron disstintas gráficas de proporción de frecuencias usando la predicción y algunas variables categóricas que se consdieró que pudieran tener sesgo en la clasificación.
+
+-`borough`: El distrito es importante pues hay distintos niveles socioeconómicos entre éstos y ello puede afectar la calidad y limpieza de los centros infantiles. Además la población por condado también es importante.
+- `programtype`: Esta variable se refiere al tipo de programa del centro y está ampliamente relacionado con la edad de los niños. Esto uede ser problemático pues quizá hay mayores riesgos al atender a bebés que a niños un poco más grandes por ejemplo.
+
+### 10.3 Categorías de referencia
+
+Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia.
+
+- `borough`: Escogimos la categoría de `Brooklyn` pues es el distrito con más centros y más inspecciones. Además, tiene un nivel socioeconómico bajo solamente superando al distrito de Bronx.
+
+- `programtype`:Se escogió la categoría de `preschool` pues es el tipo de programa con más  inspecciones.
+
+### 10.4 Resultados
 
 ## 11. Implicaciones éticas

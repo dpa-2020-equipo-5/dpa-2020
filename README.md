@@ -62,8 +62,8 @@ La estructura del repositorio es la siguiente:
 
 #### 3.1.2 Configuración
 
-1) Posiciónate en el directorio [config](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/config)
-2) Corre el script ./run.sh
+1) Primero hay que ir al directorio [config](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/config)
+2) Segundo, hay que correr el script ./run.sh
 
 El script crea toda la arquitectura necesaria en AWS para realizar las operaciones de ETL y predicción. 
 
@@ -84,7 +84,7 @@ Los datos de DOHMH Childcare Center Inspections se actualizan diaramente. Esto n
 Dado que usaremos un servidor Ubuntu, podemos hacer uso de [Cron](https://en.wikipedia.org/wiki/Cron), el <em>job scheduler</em> por excelencia de sistemas UNIX. 
 
 La rutina que programemos en Cron ejecutará un script de Python que realice lo siguiente:
-1. Extrear los nuevos datos del endpoint del API.
+1. Extraer los nuevos datos del endpoint del API.
 2. Ejecutar los `INSERTS` en nuestro esquema de Postgres
 3. Enviar notificación por correo a nuestro equipo cuando el script haya finalizado.
 
@@ -119,7 +119,7 @@ TODO: Orquestar con CRON
 
 ## 4. Datos
 
-El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy (28 de abril del 2020). La base de datos se actualiza de manera diaria y contiene 34 variables con 52,023 observaciones incluyendo observaciones duplicadas. Si se elimina las observaciones duplicadas, hay 39,371 inspecciones.
+El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy (12 de mayo del 2020). La base de datos se actualiza de manera diaria y contiene 34 variables con 52,023 observaciones incluyendo observaciones duplicadas. Si se elimina las observaciones duplicadas, hay 39,371 inspecciones.
 
 Las variables pueden clasificarse en los siguientes rubros:
 
@@ -132,7 +132,7 @@ No obstante, de la base original, nosotros solamente utilizamos las siguientes v
 El proceso de limpieza de datos y creación de varibles es el siguiente:
 
 * Tabla 1 (Raw): Es la base de datos como se extrajo de la API.
-* Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas. El script correspondiente se llama clean.py
+* Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas. El script correspondiente se llama `clean.py`.
 * Tabla 3 (Centros-estática): Contiene toda la información estática sobre los 2,989 centros registrados. El script que genera esta tabla es `centros_estática_proc.py`.
 * Tabla 4 (Inspecciones-dinámicas): Contiene todas las inspecciones realizadas desde el 26 de mayo del 2016 al día de hoy. El script que genera esta tabla es `inspecciones_dinámicas_proc.py`.
 * Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se ocupa en la sección de modelado. El script correspondiente se llama `modelado.py`.

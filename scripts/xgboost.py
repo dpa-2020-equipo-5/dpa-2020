@@ -7,8 +7,6 @@ Created on Tue May 12 07:27:12 2020
 
 print("\t-> XGBoost:")
 
-print("\t-> XGBoost:")
-
 import xgboost as xgb
 from xgboost import XGBClassifier
 from sklearn import metrics

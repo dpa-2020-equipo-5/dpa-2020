@@ -50,15 +50,15 @@ La estructura del repositorio es la siguiente:
 
 #### 3.1.1 Prerrequisitos
 
-[Instalar jq](https://stedolan.github.io/jq/download/)
+- [Instalar jq](https://stedolan.github.io/jq/download/)
 
-[Instalar python 3.6+](https://www.python.org/downloads/)
+- [Instalar python 3.6+](https://www.python.org/downloads/)
 
-[Instalar AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html)
+- [Instalar AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html)
 
-[Instalar Boto3 library](https://pypi.org/project/boto3/)
+- [Instalar Boto3 library](https://pypi.org/project/boto3/)
 
-[Configurar tus credenciales de AWS](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+- [Configurar tus credenciales de AWS](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 
 #### 3.1.2 Configuración
 
@@ -144,10 +144,10 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 
 El feature engineering que se le aplicó a la Tabla 3 (Centros-estática) consistió en los siguientes pasos:
 
-* Usar las 28 variables originales de la Tabla2 que fueron seleccionadas para la Tabla3. Es decir, desde `center_name` hasta `avg_critical_violation_rate`. 
-* Categorizar las variables:  `borough`,`program_type` y `facility_type`.
-* Conservar únicamente las variables estáticas que se utilizarán en el modelo: `daycareid`, `maximum_capacity`, `violation_rate_percent`, `total_educational_workers`, `public_health_hazard_violation_rate`, `critical_violation_rate` y las 
-13 variables creadas que corresponden a la categorización de las variables `borough`,`program_type`, `facility_type`,
+* Usar las 28 variables originales de la Tabla2 que fueron seleccionadas para la Tabla3. Es decir, desde `centername` hasta `avgcriticalviolationrate`. 
+* Categorizar las variables: `borough`,`programtype` y `facilitytype`.
+* Conservar únicamente las variables estáticas que se utilizarán en el modelo: `dc_id`, `maximumcapacity`, `violationratepercent`, `totaleducationalworkers`, `publichealthhazardviolationrate`, `criticalviolationrate` y las 
+13 variables creadas que corresponden a la categorización de las variables `borough`,`programtype`, `facilitytype`.
 
 
 ### 6.2 Tabla 4: Inspecciones-dinámicas:  

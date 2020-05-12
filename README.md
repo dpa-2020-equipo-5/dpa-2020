@@ -216,11 +216,51 @@ Los metadatos generados en cada paso del pipiline son:
 
 ## 9. Pruebas unitarias
 
-## 10. Sesgo y equidad
+Actualmente nuestro pipeline cuenta con 6 pruebas unitarias (4 en Extraction y 2 en Feature Engineering):
+
+### 9.1. Pruebas de extracción
+
+#### 9.1.1. [Extraction Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/extraction_date_validation.py)
+
+Verifica que la fecha de extracción solicitada sea válida y que no sea futura. El formato de la fecha utilizado es YYYY-mm-dd. Ejemplos de fechas inválidas:
+* 2020-3-35
+* 2019-31-2
+* 2020-10-15 (la fecha 15 de oct 2020 sí existe, pero es futura y por lo tanto se considera inválida)
+
+#### 9.1.2. [Non Empty Extraction Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/non_empty_extraction_validation.py)
+
+Checa que la extracción tenga como resultado por lo menos una inspección.
+
+#### 9.1.3. [Is JSON Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/is_json_validation.py)
+
+Verifica que la exctracción tenga como resultado un objeto JSON válido. Python parsea JSONs como listas de diccionarios.
+
+#### 9.1.4. [Inspection Dates Match Request Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/inspection_dates_match_request_date_validation.py)
+
+Analiza cada fecha de inspeción del resultado de la extración y verifica que todas estas sean iguales a la fecha de la solicitud (fecha con la que ejecuta el orquestador).
+
+### 9.2. Pruebas de Feature Engineering
+
+#### 9.2.1. [Columns One Hot Encoding Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/feature_engineering_validations/columns_one_hot_encoding_validation.py)
+
+Verifica que la transformación haya correctamente creado columnas necesarias con <em>One Hot Encoding</em>
+
+#### 9.2.2. [Transformed Inspections Match Request Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/feature_engineering_validations/transformed_inspections_match_request_date_validation.py)
+
+Dado que nuestro orquestador trabaja con datos de un día a la vez, es necesario que las transformaciones de datos se hagan únicamente sobre los datos del día. Esto a su vez también logrará que la ejecución del pipelean sea significativamente más rápida. Esta prueba unitaria se encarga de verificar que todas las fechas de inspección de las inspecciones transformadas sean iguales a la fecha de la solicitud (fecha con la que ejecuta el orquestador).
+
+## 10. DAG
+
+###### SVG
+![DAG SVG](img/dag_svg.png)
+###### D3
+![DAG D3](img/dag_d3.png)
+
+## 11. Sesgo y equidad
 
 Es posible que los modelos de machine learning incorporen sesgos e inequidades de manera intencional o por un sobre/sub muestreo en las predicciones de los modelos. Por ello, es importante estudiar métricas de sesgo y equidad para tratar de aminorar las injusticias o, en su defecto, al menos estar consciente de los sesgos que se están creando en los resultados del modelo.
 
-### 10.1 Métricas 
+### 11.1 Métricas 
 
 Dado que el objetivo de este trabajo es apoyar a los inspectores a identificar más prontamente a los centros de cuidados infantiles con mayor probabilidad de cometer una violación del tipo "salud pública", la intervención del modelo es asistiva. La implementación de los resultados del modelo ayudará a los inspectores a identificar violaciones y por ende a los niños pues estarán menos tiempo en riesgo. 
 
@@ -231,14 +271,14 @@ Por consiguiente, las dos métricas a optimizar son:
 - False Negative Rate Parity.
 - False Omission Rate Parity.
 
-### 10.2 Selección de atributos
+### 11.2 Selección de atributos
 
 Para seleccionar los atributos protegidos se realizaron disstintas gráficas de proporción de frecuencias usando la predicción y algunas variables categóricas que se consdieró que pudieran tener sesgo en la clasificación.
 
 - `borough`: El distrito es importante pues hay distintos niveles socioeconómicos entre éstos y ello puede afectar la calidad y limpieza de los centros infantiles. Además la población por condado también es importante.
 - `programtype`: Esta variable se refiere al tipo de programa del centro y está ampliamente relacionado con la edad de los niños. Esto uede ser problemático pues quizá hay mayores riesgos al atender a bebés que a niños un poco más grandes por ejemplo.
 
-### 10.3 Categorías de referencia
+### 11.3 Categorías de referencia
 
 Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia.
 
@@ -246,9 +286,9 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 
 - `programtype`:Se escogió la categoría de `preschool` pues es el tipo de programa con más  inspecciones.
 
-### 10.4 Resultados
+### 11.4 Resultados
 
-## 11. Implicaciones éticas
+## 12. Implicaciones éticas
 
 Las implicaciones éticas para cada parte del proceso del ciclo de ciencia de datos son las siguientes:
 

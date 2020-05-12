@@ -30,6 +30,8 @@ El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](ht
 
 La estructura del repositorio es la siguiente:
 
+- Carpeta [config](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/config): 
+
 - Carpeta [img](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/r/img): Contiene las imágenes utilizadas en el reporte final.
 
 - Carpeta [scripts](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts): Contiene los scripts del equipo de Revisión en formato de clases.
@@ -60,7 +62,7 @@ La estructura del repositorio es la siguiente:
 
 #### 3.1.2 Configuración
 
-1) Posiciónate en el directorio /config
+1) Posiciónate en el directorio [config](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/config)
 2) Corre el script ./run.sh
 
 El script crea toda la arquitectura necesaria en AWS para realizar las operaciones de ETL y predicción. 

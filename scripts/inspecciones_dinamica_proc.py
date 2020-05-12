@@ -9,6 +9,8 @@ matplotlib.style.use('ggplot')
 %matplotlib inline
 from sodapy import Socrata
 
+##### TABLA 4
+
 tabla_4 = df.loc[:, ['dc_id', 'inspectiondate', 'regulationsummary', 'violationcategory', 'healthcodesubsection', 
                      'violationstatus', 'inspectionsummaryresult', 'borough']]
 
@@ -36,7 +38,9 @@ tabla_4.reason.value_counts(dropna=False)
 
 tabla_4 = tabla_4.loc[tabla_4['reason'] == 'initial_annual_inspection']
 
-print("\t-> Creamos categorias para las variables result_1 y result_2")
+print("\t-> Creamos categorías a las variables result_1 y result_2")
+
+tabla_4['result_2'] = tabla_4['result_2'].fillna('NR')
 
 categorias = ["result_1", "result_2"]
 
@@ -47,8 +51,6 @@ tabla_4 = tabla_4.join(df_4)
 tabla_4 = tabla_4.drop(['result_1', 'result_2'], axis = 1) #Eliminamos variables que no necesitamos
 
 print("\t-> Creamos variables de año, mes y día a partir de Inspection date")
-
-tabla_4['inspectiondate'] = tabla_4['inspectiondate'].astype('str')
 
 tabla_4['inspectiondate'] = pd.to_datetime(tabla_4.inspectiondate, infer_datetime_format=False)
 
@@ -84,6 +86,8 @@ tabla_4.sort_values(['inspectiondate'], ascending=[False], inplace=True)
 
 print("\t-> One-hot encoding de la variable violationcategory")
 
+tabla_4['violationcategory'] = tabla_4['violationcategory'].fillna('NP')
+
 categorias = ["violationcategory"]
 
 df_5 = pd.get_dummies(tabla_4[categorias])
@@ -104,23 +108,21 @@ day = str(pd.datetime.now().day)
 
 fechas = year + "-" + month + "-" + day
 
-df_7["today"] = pd.to_datetime(fechas)
+df_7["today"] = pd.to_datetime(fechas, format='%Y/%m/%d')
 
 df_7['dias_ultima_inspeccion'] = df_7['today'] - df_7['inspectiondate']
 
 df_7['dias_ultima_inspeccion'] = df_7['dias_ultima_inspeccion'].dt.days
 
-tabla_4 = pd.merge(tabla_4, df_7, left_on='center_id', right_on='center_id', how='left')
+tabla_4 = pd.merge(tabla_4, df_7, on=['center_id', 'inspectiondate'], how='outer')
 
-tabla_4 =  tabla_4.rename(columns = {'inspectiondate_x':'inspectiondate'})
-
-tabla_4 = tabla_4.drop(['today', 'inspectiondate_y'], axis = 1)
+tabla_4 = tabla_4.drop(['today'], axis = 1)
 
 print("\t-> Creamos la variable violaciones_hist_salud_publica: Número de violaciones de salud pública históricas (2017-2019) por centro")
 
 df_8 = pd.DataFrame(df_6.groupby(["center_id"], sort=False)["violationcategory_public_health_hazard"].sum().reset_index())
 
-df_8 =  df_8.rename(columns = {'violationcategory_public_health_hazard':'violaciones_hist_salud_publica'})
+df_8.rename(columns={'violationcategory_public_health_hazard':'violaciones_hist_salud_publica'}, inplace=True)
 
 tabla_4 = pd.merge(tabla_4, df_8, left_on='center_id', right_on='center_id', how='left')
 

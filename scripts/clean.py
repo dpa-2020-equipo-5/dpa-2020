@@ -9,7 +9,7 @@ client = Socrata("data.cityofnewyork.us", MyAppToken)
 
 results = client.get("dsg6-ifza", limit = 60000)
 
-df = pd.DataFrame.from_records(results
+df = pd.DataFrame.from_records(results)
                                
 #Definiendo funciones
 

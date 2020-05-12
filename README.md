@@ -235,7 +235,7 @@ Por consiguiente, las dos métricas a optimizar son:
 
 Para seleccionar los atributos protegidos se realizaron disstintas gráficas de proporción de frecuencias usando la predicción y algunas variables categóricas que se consdieró que pudieran tener sesgo en la clasificación.
 
--`borough`: El distrito es importante pues hay distintos niveles socioeconómicos entre éstos y ello puede afectar la calidad y limpieza de los centros infantiles. Además la población por condado también es importante.
+- `borough`: El distrito es importante pues hay distintos niveles socioeconómicos entre éstos y ello puede afectar la calidad y limpieza de los centros infantiles. Además la población por condado también es importante.
 - `programtype`: Esta variable se refiere al tipo de programa del centro y está ampliamente relacionado con la edad de los niños. Esto uede ser problemático pues quizá hay mayores riesgos al atender a bebés que a niños un poco más grandes por ejemplo.
 
 ### 10.3 Categorías de referencia
@@ -249,3 +249,16 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 ### 10.4 Resultados
 
 ## 11. Implicaciones éticas
+
+Las implicaciones éticas para cada parte del proceso del ciclo de ciencia de datos son las siguientes:
+
+
+| Identificación del problema |                                                                                                                                                                         |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Scoping                     |                                                                                                                                                                                           |
+| Adquisición de datos        |  |
+| Exploración                 | Las variables que se consideran para este análisis están sujetas a un sesgo de selección, dado que implica un costo mayor para quien no viva dentro de la CDMX. Un experimento está limitado por el conocimiento de sus autores. Por esta razón, es fundamental que el equipo reconozca las limitaciones de sus antecedentes y se involucre con expertos externos cuando sea posible.                                                                                                                                                                                            |
+| Formulación analítica       |                                                                                                                                                                                                      |
+| Análisis del modelo         |                                                                                                                                                                                                      |
+| Validación                  |                                                                                                                                                                                                                                                                                                   |
+| Acción                      |                                                                                                                                                            |

@@ -15,8 +15,9 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 7. [Modelado](#7.-Modelado)
 8. [Metadata y linaje de los datos](#8.-Metadata-y-linaje-de-los-datos)
 9. [Pruebas unitarias](#9.-Pruebas-unitarias)
-10. [Sesgo y equidad](#10.-Sesgo-y-equidad)
-11. [Implicaciones éticas](#11.-Implicaciones-éticas)
+10. [DAG](#10.-DAG)
+11. [Sesgo y equidad](#10.-Sesgo-y-equidad)
+12. [Implicaciones éticas](#11.-Implicaciones-éticas)
 
 ## 1. Introducción
 

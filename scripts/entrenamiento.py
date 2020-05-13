@@ -21,15 +21,7 @@ tabla_5.sort_values(['inspectiondate'], ascending=[False], inplace=True)
 
 tabla_5['maximumcapacity'] = tabla_5['maximumcapacity'].astype('int')
 
-tabla_5['violationratepercent'] = tabla_5['violationratepercent'].astype('float')
-
 tabla_5['totaleducationalworkers'] = tabla_5['totaleducationalworkers'].astype('int')
-
-tabla_5['publichealthhazardviolationrate'] = tabla_5['publichealthhazardviolationrate'].astype('float')
-
-tabla_5['criticalviolationrate'] = tabla_5['criticalviolationrate'].astype('float')
-
-tabla_5['avgcriticalviolationrate'] = tabla_5['avgcriticalviolationrate'].astype('float')
 
 tabla_5 = tabla_5.drop(['regulationsummary', 'healthcodesubsection', 'violationstatus', 'borough', 'reason', 'inspectiondate','violationcategory_NP'], axis=1)
 

@@ -189,8 +189,9 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
 
 ### 6.3 Tabla 5: Centros-inspecciones-modelado
 
-* Conservar únicamente las variables estáticas que se utilizarán en el modelo: `dc_id`, `maximumcapacity`, `violationratepercent`, `totaleducationalworkers`, `publichealthhazardviolationrate`, `criticalviolationrate`,`averagepublichealthhazardiolationrate`,`averagetotaleducationalworkers`,`violationavgratepercent`  y las 
-13 variables creadas que corresponden a la categorización de las variables `borough`,`programtype`, `facilitytype`.
+* De la Tabla 3 (Centros-estática) conservar únicamenta 17 variables que se utilizarán en el modelo: `dc_id`, `maximumcapacity`, `totaleducationalworkers`, `averagetotaleducationalworkers`, `programtype_all_age_camp`, `programtype_infant_toddler`,`programtype_preschool`,`programtype_preschool_camp`, `programtype_school_age_camp`,`facilitytype_camp`,`facilitytype_gdc`,`facilitytype_sbcc`,`borough_bronx`,`borough_brooklyn`,`borough_manhattan`,`borough_queens` y `borough_staten_island`.
+* De la Tabla 4 (Inpecciones-dinámicas) conservar únicamente las 29 variables que se utilizarán en el modelo: `result_1_passed_inspection`, `result_1_passed_inspection_with_no_violations`, `result_1_previously_cited_violations_corrected`, `result_1_previously_closed_program_re-opened`, `result_1_reinspection_not_required`, `result_1_reinspection_required`,`result_2_NR`, `result_2_fines_pending`, `result_2_program_closed`, `result_2_violations_corrected_at_time_of_inspection`, `inspection_year`, `inspection_month`, `inspection_day_name`, `violationcategory_critical`, `violationcategory_general`, `violationcategory_public_health_hazard`, `dias_ultima_inspeccion`, `violaciones_hist_salud_publica`, `violaciones_2019_salud_publica`    , `violaciones_hist_criticas`, `violaciones_2019_criticas`, `ratio_violaciones_hist`, `ratio_violaciones_2019`, `prom_violaciones_hist_borough`, `prom_violaciones_2019_borough`, `ratio_violaciones_hist_sp`, `ratio_violaciones_2019_sp`                , `ratio_violaciones_hist_criticas`, `ratio_violaciones_2019_criticas`.
+* Dividir los datos en la muestra de entrenamiento que corresponde a todos los daos desde el 2017 y hasta el 2019 y la meustra de validación que corresponde a los datos del 2020.
 
 ## 7. Modelado
 

@@ -160,20 +160,16 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
 
 * Conservar únicamente 8 variables: 6 variables que aportan información sobre las inspecciones `dc_id`, `inspectiondate`, `regulationsummary`, `violationcategory`, `healthcodesubsection`, `violationstatus`,`inspectionsummaryresult`;`borough`, que se usa para generar nuevas variables, y 'dcare_id, que se usa par hacer el join): 
 * Separar la variable de `inspecionsummaryresult` en 3 variables: `reason`, `result1` y `result2`. 
-* Tirar todas las observaciones que representaran inspecciones que no fueran de primera vez (revisiones subsecuentes y especiales). Es decir, que en la variable de reason dijera "initial annual inspection". 
-* Borrar la variable `reason` pues todas son iguales. 
-* Categorizar las variables `result1` y `result2`.
+* Rellenar con NP las celdas vacías de `violationcategory`.
+* Categorizar las variables `violationcategory`, `reason`, `result1` y `result2`.
+* Tirar todas las observaciones que representaran inspecciones que no fueran de primera vez (revisiones subsecuentes y especiales). Es decir, que en la variable de  `reason` dijera "initial annual inspection".  
 * Tirar las observaciones de los días no hábiles: sábado y domingo. Esto porque hay muy pocas y no son inspecciones rutinarias.
-* Rellenar con NA las celdas vacías de violation_category'.
 * Ordenar la base por `dc_id` y por `year`, `month` y `day` en orden descendiente.
-* Cración de variables:
+* Creación de variables:
   * `inspection_year`: Año de la inspección.
   * `inspection_month`: Mes de la inspección.
   * `inspection_day_name`: Día de la inspección.
-  * `violacion`: = 1 si hubo violación o = 0 si no hubo violación.
-  * `public_hazard`: = 1 si hubo violación y es un problema de salud pública o = 0 si no hubo violación o, si hubo, no es un 
-                        problema de salud pública.
-  * `dias_ultima_inspección`: Días que han pasado desde la última inspección anual.
+  * `dias_ultima_inspeccion`: Días que han pasado desde la última inspección anual.
   * `violaciones_hist_salud_publica`: Número de violaciones de salud pública históricas (2017-2019) por centro. 
   * `violaciones_2019_salud_publica`: Número de violaciones de salud pública en el 2019 por centro.
   * `violaciones_hist_criticas`: Número de violaciones críticas históricas anteriores (2017-2019) por centro.

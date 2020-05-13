@@ -94,7 +94,7 @@ df_5 = pd.get_dummies(tabla_4[categorias])
 
 tabla_4 = tabla_4.join(df_5)
 
-tabla_4 = tabla_4.drop(['violationcategory', 'violationcategory_NP'], axis = 1) #Eliminamos variables que no necesitamos
+tabla_4 = tabla_4.drop(['violationcategory'], axis = 1) #Eliminamos variables que no necesitamos
 
 print("\t-> Se crea la variable: ultima_inspección, que son los días que han pasado desde la última inspección anual")
 

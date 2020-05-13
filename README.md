@@ -142,7 +142,7 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 * Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se ocupa en la sección de modelado. El script correspondiente se llama `entrenamiento.py`.
 
 **NOTA**: El número de observaciones y variables que se muestra en el siguiente diagrama corresponde a la información obtenida una vez que se corre el script correspondiente a cada tabla. 
-![linaje](img/linaje.png)
+![linaje_1](img/linaje_1.png)
 
 
 ### 6.1 Tabla 3: Centros-estática:  

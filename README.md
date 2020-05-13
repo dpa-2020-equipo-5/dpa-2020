@@ -213,7 +213,7 @@ Se corrieorn dos modelos:
 
 Los metadatos generados en cada paso del pipiline son:
 
-![metadata](img/metadata_tables.jpeg)
+![metadata](img/metadata.png)
 
 ## 9. Pruebas unitarias
 

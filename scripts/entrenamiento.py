@@ -5,7 +5,7 @@ Created on Tue May 12 07:30:23 2020
 @author: Elizabeth
 """
 
-print("\t-> Conservar únicamente las variables estáticas que se utilizarán en el modelo (tabla_3): daycareid, maximum_capacity, violation_rate_percent, total_educational_workers, public_health_hazard_violation_rate, critical_violation_rate y las 13 variables creadas que corresponden a la categorización de las variables borough, program_type, facility_type")
+print("\t-> Conservar únicamente las variables estáticas que se utilizarán en el modelo (tabla_3): dc_id, maximumcapacity, totaleducationalworkers, averagetotaleducationalworkers y las 13 variables creadas que corresponden a la categorización de las variables borough, program_type, facility_type")
 
 tabla_3 = tabla_3.drop(['centername', 'legalname', 'building', 'street', 'zipcode', 'phone', 'permitnumber', 'permitexp', 'status',  
                         'agerange', 'childcaretype', 'bin', 'url', 'datepermitted', 'actual','violationratepercent','violationavgratepercent',
@@ -27,7 +27,7 @@ tabla_5['totaleducationalworkers'] = tabla_5['totaleducationalworkers'].astype('
 
 tabla_5['averagetotaleducationalworkers'] = tabla_5['averagetotaleducationalworkers'].astype('float')
 
-tabla_5 = tabla_5.drop(['regulationsummary', 'healthcodesubsection', 'violationstatus', 'borough', 'reason', 'inspectiondate'], axis=1)
+tabla_5 = tabla_5.drop(['regulationsummary', 'healthcodesubsection', 'violationstatus', 'borough', 'reason', 'inspectiondate', 'violationcategory_NP'], axis=1)
 
 tabla_5 = tabla_5.set_index(['center_id'])
 

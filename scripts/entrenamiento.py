@@ -5,7 +5,7 @@ Created on Tue May 12 07:30:23 2020
 @author: Elizabeth
 """
 
-print("\t-> Conservar únicamente las variables estáticas que se utilizarán en el modelo (tabla_3): dc_id, maximumcapacity, totaleducationalworkers, averagetotaleducationalworkers y las 13 variables creadas que corresponden a la categorización de las variables borough, program_type, facility_type")
+print("\t-> Conservar únicamente las variables estáticas que se utilizarán en el modelo (tabla_3): daycareid, maximum_capacity, violation_rate_percent, total_educational_workers, public_health_hazard_violation_rate, critical_violation_rate y las 13 variables creadas que corresponden a la categorización de las variables borough, program_type, facility_type")
 
 tabla_3 = tabla_3.drop(['centername', 'legalname', 'building', 'street', 'zipcode', 'phone', 'permitnumber', 'permitexp', 'status',  
                         'agerange', 'childcaretype', 'bin', 'url', 'datepermitted', 'actual','violationratepercent','violationavgratepercent',
@@ -23,41 +23,21 @@ tabla_5['maximumcapacity'] = tabla_5['maximumcapacity'].astype('int')
 
 tabla_5['totaleducationalworkers'] = tabla_5['totaleducationalworkers'].astype('int')
 
-tabla_5 = tabla_5.drop(['regulationsummary', 'healthcodesubsection', 'violationstatus', 'borough', 'reason', 'inspectiondate','violationcategory_NP'], axis=1)
+tabla_5['totaleducationalworkers'] = tabla_5['totaleducationalworkers'].astype('int')
+
+tabla_5['averagetotaleducationalworkers'] = tabla_5['averagetotaleducationalworkers'].astype('float')
+
+tabla_5 = tabla_5.drop(['regulationsummary', 'healthcodesubsection', 'violationstatus', 'borough', 'reason', 'inspectiondate'], axis=1)
 
 tabla_5 = tabla_5.set_index(['center_id'])
 
 tabla_5 = tabla_5.fillna(0)
 
-print("\t-> Se utiliza _over-sampling_ para balancear la muestra.")
-
-sns.countplot(x='violationcategory_public_health_hazard', data=tabla_5, palette="Set3")
-
-count_class_0, count_class_1 = tabla_5.violationcategory_public_health_hazard.value_counts()
-
-df_class_0 = tabla_5[tabla_5['violationcategory_public_health_hazard'] == 0]
-
-df_class_1 = tabla_5[tabla_5['violationcategory_public_health_hazard'] == 1]
-
-count_class_0
-
-count_class_1
-
-df_class_0_over = df_class_0.sample(count_class_1, replace=True)
-
-df_test_over = pd.concat([df_class_1, df_class_0_over], axis=0)
-
-print("\t-> Random over-sampling:")
-
-print(df_test_over.violationcategory_public_health_hazard.value_counts())
-
-df_test_over.violationcategory_public_health_hazard.value_counts().plot(kind='bar', title='Count (violationcategory_public_health_hazard)')
-
 print("\t-> Para el entrenamiento se usaron todos los datos del 2017-2019 y para validación los datos correspondientes a lo que va del año 2020.")
 
-df_train = df_test_over.loc[df_test_over['inspection_year'] != 2020.0]
+df_train = tabla_5.loc[tabla_5['inspection_year'] != 2020.0]
 
-df_test = df_test_over.loc[df_test_over['inspection_year'] == 2020]
+df_test = tabla_5.loc[tabla_5['inspection_year'] == 2020.0]
 
 Y_train = df_train[['violationcategory_public_health_hazard']]
 

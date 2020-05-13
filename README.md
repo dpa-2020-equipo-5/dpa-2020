@@ -16,8 +16,9 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 8. [Metadata y linaje de los datos](#8.-Metadata-y-linaje-de-los-datos)
 9. [Pruebas unitarias](#9.-Pruebas-unitarias)
 10. [DAG](#10.-DAG)
-11. [Sesgo y equidad](#10.-Sesgo-y-equidad)
-12. [Implicaciones éticas](#11.-Implicaciones-éticas)
+11. [Sesgo y equidad](#11.-Sesgo-y-equidad)
+12. [Implicaciones éticas](#12.-Implicaciones-éticas)
+13. [API](#13.-API)
 
 ## 1. Introducción
 
@@ -31,19 +32,21 @@ El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](ht
 
 La estructura del repositorio es la siguiente:
 
-- Carpeta [config](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/config): 
+- Carpeta [config](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/config): Contiene los scripts necesarios para crear la arquitectura en la n
 
-- Carpeta [img](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/r/img): Contiene las imágenes utilizadas en el reporte final.
+- Carpeta [eda_gda](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/eda_gda): Contiene los scripts e imágenes correspondientes al análisis exploratorio de los datos.
 
-- Carpeta [scripts](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts): Contiene los scripts del equipo de Revisión en formato de clases.
+- Carpeta [img](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/r/img): Contiene las imágenes y diagramas utilizados en este `README.md`.
+
+- Carpeta [scripts](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts): Contiene los scripts necesarios para poder correr los modelos.
 
      1. [clean.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/clean.py): Script que ayuda a realizar la limpieza de los datos.
-     2. [centros_estatica_proc.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/centros_estatica_proc.py): Script 
-     3. [inspecciones_dinamica_proc.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/inspecciones_dinamica_proc.py):  
-     4. [randomforest.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/randomforest.py) :
-     5. [xgboost.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/xgboost.py) :
+     2. [centros_estatica_proc.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/centros_estatica_proc.py): Script que hace el feature engineering de la información correspondiente a los centros de cuidado infantil.
+     3. [inspecciones_dinamica_proc.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/inspecciones_dinamica_proc.py): Script que hace el feature engineering de la información correspondiente a las inspecciones realiadas a los centros de cuidado infantil.  
+     4. [entrenamiento.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/entrenamiento.py): Script que une la información de `centros_estatica_proc.py` y `inspecciones_dinamica_proc.py` y con eso,  realiza la división de los datos en la muestra para entrenamiento y para validación.
+     5. [randomforest.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/randomforest.py) : Script que realiza un modelo de randomforest.
+     6. [xgboost.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/xgboost.py) : Script que realiza un modelo de xgboost.
      
-- Carpeta [tests](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/tests): Contiene los scripts siguientes para correr las pruebas unitarias:
 
 ## 3. Requerimientos de infraestructura
 
@@ -294,7 +297,7 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 Las implicaciones éticas para cada parte del proceso del ciclo de ciencia de datos son las siguientes:
 
 
-| Identificación del problema |                                                                                                                                                                         |
+| Identificación del problema |                                                                                                                                                                  |
 |-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Scoping                     |                                                                                                                                                                                           |
 | Adquisición de datos        |  |
@@ -303,3 +306,5 @@ Las implicaciones éticas para cada parte del proceso del ciclo de ciencia de da
 | Análisis del modelo         |                                                                                                                                                                                                      |
 | Validación                  |                                                                                                                                                                                                                                                                                                   |
 | Acción                      |                                                                                                                                                            |
+
+## 13. API

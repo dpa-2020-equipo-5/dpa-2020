@@ -122,7 +122,7 @@ TODO: Orquestar con CRON
 
 ## 4. Datos
 
-El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy (12 de mayo del 2020). La base de datos se actualiza de manera diaria y contiene 34 variables con 52,023 observaciones incluyendo observaciones duplicadas. Si se elimina las observaciones duplicadas, hay 39,371 inspecciones.
+El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy (12 de mayo del 2020). La base de datos se actualiza de manera diaria y contiene 34 variables con 51,116 observaciones incluyendo observaciones duplicadas. Si se elimina las observaciones duplicadas, hay 38,788 inspecciones.
 
 Las variables pueden clasificarse en los siguientes rubros:
 

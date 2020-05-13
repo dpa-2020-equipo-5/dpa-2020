@@ -139,7 +139,7 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 * Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas. El script correspondiente se llama `clean.py`.
 * Tabla 3 (Centros-estática): Contiene toda la información estática sobre los 2,989 centros registrados. El script que genera esta tabla es `centros_estática_proc.py`.
 * Tabla 4 (Inspecciones-dinámicas): Contiene todas las inspecciones realizadas desde el 26 de mayo del 2016 al día de hoy. El script que genera esta tabla es `inspecciones_dinámicas_proc.py`.
-* Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se ocupa en la sección de modelado. El script correspondiente se llama `modelado.py`.
+* Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se ocupa en la sección de modelado. El script correspondiente se llama `entrenamiento.py`.
     
 ![linaje 1](img/data_lineage.png)
 
@@ -150,8 +150,6 @@ El feature engineering que se le aplicó a la Tabla 3 (Centros-estática) consis
 
 * Usar las 28 variables originales de la Tabla2 que fueron seleccionadas para la Tabla3. Es decir, desde `centername` hasta `avgcriticalviolationrate`. 
 * Categorizar las variables: `borough`,`programtype` y `facilitytype`.
-* Conservar únicamente las variables estáticas que se utilizarán en el modelo: `dc_id`, `maximumcapacity`, `violationratepercent`, `totaleducationalworkers`, `publichealthhazardviolationrate`, `criticalviolationrate` y las 
-13 variables creadas que corresponden a la categorización de las variables `borough`,`programtype`, `facilitytype`.
 
 
 ### 6.2 Tabla 4: Inspecciones-dinámicas:  
@@ -188,6 +186,11 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
                                       número de violaciones de primera vez de todo tipo por centro históricas (2017-2019).
   * `ratio_violaciones_2019_criticas`: Número de violaciones críticas de primera vez por centro en el 2019/ número de 
                                        violaciones de primera vez de todo tipo por centro en el 2019.
+
+### 6.3 Tabla 5: Centros-inspecciones-modelado
+
+* Conservar únicamente las variables estáticas que se utilizarán en el modelo: `dc_id`, `maximumcapacity`, `violationratepercent`, `totaleducationalworkers`, `publichealthhazardviolationrate`, `criticalviolationrate`,`averagepublichealthhazardiolationrate`,`averagetotaleducationalworkers`,`violationavgratepercent`  y las 
+13 variables creadas que corresponden a la categorización de las variables `borough`,`programtype`, `facilitytype`.
 
 ## 7. Modelado
 

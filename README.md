@@ -45,7 +45,6 @@ La estructura del repositorio es la siguiente:
      3. [inspecciones_dinamica_proc.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/inspecciones_dinamica_proc.py): Script que hace el feature engineering de la información correspondiente a las inspecciones realiadas a los centros de cuidado infantil.  
      4. [entrenamiento.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/entrenamiento.py): Script que une la información de `centros_estatica_proc.py` y `inspecciones_dinamica_proc.py` y con eso,  realiza la división de los datos en la muestra para entrenamiento y para validación.
      5. [randomforest.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/randomforest.py) : Script que realiza un modelo de randomforest.
-     6. [xgboost.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/xgboost.py) : Script que realiza un modelo de xgboost.
      
 
 ## 3. Requerimientos de infraestructura
@@ -145,7 +144,7 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 ![linaje_1](img/linaje_1.png)
 
 
-### 6.1 Tabla 3: Centros-estática:  
+### 6.1 Tabla 3: Centros-estática  
 
 El feature engineering que se le aplicó a la Tabla 3 (Centros-estática) consistió en los siguientes pasos:
 
@@ -153,7 +152,7 @@ El feature engineering que se le aplicó a la Tabla 3 (Centros-estática) consis
 * Categorizar las variables: `borough`,`programtype` y `facilitytype`.
 
 
-### 6.2 Tabla 4: Inspecciones-dinámicas:  
+### 6.2 Tabla 4: Inspecciones-dinámicas  
 
 El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) consistió en los siguientes pasos:
 
@@ -192,26 +191,19 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
 
 * De la Tabla 3 (Centros-estática) conservar únicamenta 17 variables que se utilizarán en el modelo: `dc_id`, `maximumcapacity`, `totaleducationalworkers`, `averagetotaleducationalworkers`, `programtype_all_age_camp`, `programtype_infant_toddler`,`programtype_preschool`,`programtype_preschool_camp`, `programtype_school_age_camp`,`facilitytype_camp`,`facilitytype_gdc`,`facilitytype_sbcc`,`borough_bronx`,`borough_brooklyn`,`borough_manhattan`,`borough_queens` y `borough_staten_island`.
 * De la Tabla 4 (Inpecciones-dinámicas) conservar únicamente las 29 variables que se utilizarán en el modelo: `result_1_passed_inspection`, `result_1_passed_inspection_with_no_violations`, `result_1_previously_cited_violations_corrected`, `result_1_previously_closed_program_re-opened`, `result_1_reinspection_not_required`, `result_1_reinspection_required`,`result_2_NR`, `result_2_fines_pending`, `result_2_program_closed`, `result_2_violations_corrected_at_time_of_inspection`, `inspection_year`, `inspection_month`, `inspection_day_name`, `violationcategory_critical`, `violationcategory_general`, `violationcategory_public_health_hazard`, `dias_ultima_inspeccion`, `violaciones_hist_salud_publica`, `violaciones_2019_salud_publica`    , `violaciones_hist_criticas`, `violaciones_2019_criticas`, `ratio_violaciones_hist`, `ratio_violaciones_2019`, `prom_violaciones_hist_borough`, `prom_violaciones_2019_borough`, `ratio_violaciones_hist_sp`, `ratio_violaciones_2019_sp`                , `ratio_violaciones_hist_criticas`, `ratio_violaciones_2019_criticas`.
-* Dividir los datos en la muestra de entrenamiento que corresponde a todos los daos desde el 2017 y hasta el 2019 y la meustra de validación que corresponde a los datos del 2020.
+* Dividir los datos en la muestra de entrenamiento que corresponde a todas las inspecciones entre el añod 2017 y 2019 y en la muestra de validación que corresponde a los datos del año 2020.
 
 ## 7. Modelado
 
-La varible binaria dependiente es `public_hazard` pues queremos predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
+La variable binaria dependiente es `violationcategory_public_health_hazard` pues queremos predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
 
-Se utilizaron todas las variables de la la Tabla 5 que junta las variables de la Tabla 3 y 4.
+Se utilizaron todas las variables de la Tabla 5 descritas en la sección 6.3 Tabla 5: Centros-inspecciones-modelado.
 
-Para el entrenamiento se usaron todos los datos del 2017-2019 y para validación los datos correspondientes a lo que va del añ
-o 2020.
+Para el entrenamiento se usaron todos los datos del 2017-2019 y para validación los datos correspondientes a lo que va del año 2020.
 
-Se corrieorn dos modelos:
-
- - Random forest.
- - XGboost
+Se corrió un modelo de random forest con los siguientes parámetros:
  
 ### 7.1 Resultados random forest
-
-### 7.2 Resultados XGboost
-
 
 ## 8. Metadata y linaje de datos
 

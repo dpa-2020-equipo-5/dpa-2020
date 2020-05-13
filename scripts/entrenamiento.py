@@ -8,7 +8,7 @@ Created on Tue May 12 07:30:23 2020
 print("\t-> Conservar únicamente las variables estáticas que se utilizarán en el modelo (tabla_3): dc_id, maximumcapacity, totaleducationalworkers, averagetotaleducationalworkers y las 13 variables creadas que corresponden a la categorización de las variables borough, program_type, facility_type")
 
 tabla_3 = tabla_3.drop(['centername', 'legalname', 'building', 'street', 'zipcode', 'phone', 'permitnumber', 'permitexp', 'status',  
-                        'agerange', 'childcaretype', 'bin', 'url', 'datepermitted', 'actual','violationratepercent','violationavgratepercent'
+                        'agerange', 'childcaretype', 'bin', 'url', 'datepermitted', 'actual','violationratepercent','violationavgratepercent',
                         'publichealthhazardviolationrate','averagepublichealthhazardiolationrate','criticalviolationrate','avgcriticalviolationrate'], axis=1)
 
 tabla_3.rename(columns={'dc_id':'center_id'}, inplace=True)

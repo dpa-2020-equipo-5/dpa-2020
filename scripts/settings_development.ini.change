@@ -1,0 +1,5 @@
+[DATABASE]
+host=host
+database=db
+user=user
+password=pwd

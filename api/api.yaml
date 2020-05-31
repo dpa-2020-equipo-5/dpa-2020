@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  description:
+    Proyecto para la materia 'Producto de datos' de
+    la maestría en ciencia de datos del ITAM.
+  version: "1.0.0"
+  title: DOHMH NYC
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+# Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/elozadaj/dohamh_nyc/1.0.0
+tags:
+  - name: Predictions
+    description:
+      Predice aquellos centros de cuidado infantil regulados por el gobierno de la ciudad de Nueva York que necesitarán
+      una revisión por parte de un agente ya que existe una alta probabilidad de que tengan algún tipo de violación en
+      las normas establecidas.
+paths:
+  '/prediction/{date}':
+    get:
+      tags:
+        - Predictions
+      summary: Obtener una lista de centros para un año y mes en específico.
+      operationId: getPredictionsByDate
+      parameters:
+        - name: date
+          in: path
+          description: Date in format yyyy-MM
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prediction'
+        '400':
+          description: 'Invalid date supplied. Please follow the pattern\: yyyy-MM'
+        '404':
+          description: No data available for {date}
+externalDocs:
+  description: DOHMH NYC
+  url: 'https://www1.nyc.gov/site/doh/services/child-care.page'
+components:
+  schemas:
+    Prediction:
+      type: object
+      required:
+        - date
+        - centers
+      properties:
+        date:
+          type: string
+          example: '2020/04'
+        centers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Inspection'
+    Inspection:
+      type: object
+      properties:
+        centerId:
+          type: string
+        ranking:
+          type: integer
+          format: int32

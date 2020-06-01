@@ -1,5 +1,5 @@
 [db]
-user = dummy_user
-pass = dummy_pass
-url = dummy_url
-db_name = dummy_db_name
+user = gemathus
+pass = mathus94
+url = localhost
+db_name = dpa_nyc_childcare_centers

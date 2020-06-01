@@ -9,8 +9,8 @@ app = Flask(__name__)
 api = Api(app)
 
 config = configparser.ConfigParser()
-config.read_file(open('/var/www/html/dpa-2020/api/config.ini'))
-#config.read_file(open('./config.txt'))
+#config.read_file(open('/var/www/html/dpa-2020/api/config.ini'))
+config.read_file(open('./config.txt'))
 db_user = config['db']['user']
 db_pass = config['db']['pass']
 db_url = config['db']['url']
@@ -31,14 +31,26 @@ def get_last_prediction_date():
     result = db.engine.execute('SELECT DATE(MAX(date)) FROM predictions.predictions').first()
     return str(result[0])
 
+def get_borough(arr):
+    boroughs = ("Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island")
+    indx = [i for i, x in enumerate(arr) if x == '1'][0]
+    return boroughs[indx]
 
 def get_predictions(date):
-    db_result = db.engine.execute('SELECT * FROM predictions.predictions as PRED'
-                                  ' WHERE DATE(PRED.date) = \'{}\''
-                                  ' ORDER BY PRED.priority'.format(date)).fetchall()
+    db_result = db.engine.execute('SELECT a.*, b.centername, b.childcaretype,b.borough_bronx, b.borough_brooklyn, b.borough_manhattan, b.borough_queens, b.borough_staten_island FROM predictions.predictions a join transformed.centers b on a.center_id = b.dc_id '
+                                  ' WHERE DATE(a.date) = \'{}\''
+                                  ' ORDER BY a.priority'.format(date)).fetchall()
     result = []
     for prediction in db_result:
-        result.append({'centerId': prediction[0],'probability':float(prediction[1]),'probability_str': str(round(float(prediction[1]) * 100, 3) )  + "%" , 'priority': prediction[3]})
+        result.append({
+            'centerId': prediction[0],
+            'centerName':prediction[5],
+            'childcareType': prediction[6],
+            'borough': get_borough(prediction[7:]),
+            'probability':float(prediction[1]),
+            'probability_str': str(round(float(prediction[1]) * 100, 3) )  + "%" ,
+            'priority': prediction[3]
+        })
 
     return result
 
@@ -85,4 +97,4 @@ class PredictionsModel(db.Model):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=3000)

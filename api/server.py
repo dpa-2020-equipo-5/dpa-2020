@@ -10,6 +10,7 @@ api = Api(app)
 
 config = configparser.ConfigParser()
 config.read_file(open('/var/www/html/dpa-2020/api/config.ini'))
+#config.read_file(open('./config.txt'))
 db_user = config['db']['user']
 db_pass = config['db']['pass']
 db_url = config['db']['url']
@@ -37,7 +38,7 @@ def get_predictions(date):
                                   ' ORDER BY PRED.priority'.format(date)).fetchall()
     result = []
     for prediction in db_result:
-        result.append({'centerId': prediction[0], 'ranking': prediction[3]})
+        result.append({'centerId': prediction[0],'probability':float(prediction[1]),'probability_str': str(round(float(prediction[1]) * 100, 3) )  + "%" , 'priority': prediction[3]})
 
     return result
 

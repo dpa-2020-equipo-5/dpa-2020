@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath nycccci_dashboard wsgi:app
+web: gunicorn --pythonpath nyccci_dashboard wsgi:server

@@ -19,3 +19,4 @@ psycopg2-binary==2.8.3
 python-dotenv==0.13.0
 dash
 pandas
+requests

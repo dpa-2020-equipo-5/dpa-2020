@@ -3,3 +3,5 @@ __pychache__
 __pychache__/*
 *.cpython*
 settings_development.ini
+config.ini
+api/dpavenv/

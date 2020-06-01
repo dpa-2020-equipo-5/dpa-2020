@@ -19,6 +19,22 @@ tags:
       una revisión por parte de un agente ya que existe una alta probabilidad de que tengan algún tipo de violación en
       las normas establecidas.
 paths:
+  /prediction:
+    get:
+      tags:
+        - Predictions
+      summary: Obtener la lista de centros a verificar más reciente.
+      operationId: getPredictions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prediction'
+        '404':
+          description: No data available for {date}
+
   '/prediction/{date}':
     get:
       tags:
@@ -28,7 +44,7 @@ paths:
       parameters:
         - name: date
           in: path
-          description: Date in format yyyy-MM
+          description: Date in format yyyy-MM-dd
           required: true
           schema:
             type: string
@@ -40,7 +56,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Prediction'
         '400':
-          description: 'Invalid date supplied. Please follow the pattern\: yyyy-MM'
+          description: 'Invalid date supplied. Please follow the pattern\: yyyy-MM-dd'
         '404':
           description: No data available for {date}
 externalDocs:
@@ -56,7 +72,7 @@ components:
       properties:
         date:
           type: string
-          example: '2020/04'
+          example: '2020/04/20'
         centers:
           type: array
           items:

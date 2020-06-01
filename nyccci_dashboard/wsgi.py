@@ -15,7 +15,7 @@ server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
 app = dash.Dash(__name__, server=server,  external_stylesheets=external_stylesheets)
 
 #r = requests.get("http://localhost:3000/prediction/")
-r = requests.get("http://http://18.208.188.16/prediction")
+r = requests.get("http://18.208.188.16/prediction")
 df = pd.json_normalize(r.json(), 'centers')
 date_split = r.json()['date'].split('-')
 d = datetime(int(date_split[0]), int(date_split[1]), int(date_split[2]))

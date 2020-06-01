@@ -9,7 +9,7 @@ app = Flask(__name__)
 api = Api(app)
 
 config = configparser.ConfigParser()
-config.read('config.txt')
+config.read_file(open('/var/www/html/dpa-2020/api/config.ini'))
 db_user = config['db']['user']
 db_pass = config['db']['pass']
 db_url = config['db']['url']

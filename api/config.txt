@@ -1,0 +1,5 @@
+[db]
+user = dummy_user
+pass = dummy_pass
+url = dummy_url
+db_name = dummy_db_name

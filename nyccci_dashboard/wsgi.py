@@ -10,6 +10,8 @@ import requests
 from datetime import datetime
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
+
+
 server = flask.Flask(__name__)
 server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
 app = dash.Dash(__name__, server=server,  external_stylesheets=external_stylesheets)
@@ -35,12 +37,21 @@ colors = [
     '#bcbd22',  # curry yellow-green
     '#17becf'   # blue-teal
 ]
+
+
 app.layout = html.Div(children=[
     html.H1(children='New York City Childcare Centers Inspections'),
     html.H5(children=date_label),
     html.Div(children='''
         Centros con mayor probabilidad de presentar una violación de salud pública
     '''),
+    dcc.DatePickerSingle(
+        id='my-date-picker-range',
+        min_date_allowed=datetime(1995, 8, 5),
+        max_date_allowed=datetime(2020, 6, 1),
+        initial_visible_month=datetime(2020, 1, 1),
+    ),
+    html.Div(id='output-container-date-picker-range'),
     dcc.Graph(
         id='example-graph',
         figure={

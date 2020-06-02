@@ -122,11 +122,48 @@ TODO: Orquestar con CRON
 
 ## 4. Datos
 
-El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy (12 de mayo del 2020). La base de datos se actualiza de manera diaria y contiene 34 variables con 51,116 observaciones incluyendo observaciones duplicadas. Si se elimina las observaciones duplicadas, hay 38,788 inspecciones.
+El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy. La base de datos se actualiza de manera diaria y contiene 34 variables con alrededor de 51,000 observaciones incluyendo observaciones duplicadas. Si se elimina las observaciones duplicadas, quedan alrededor de  39,000 inspecciones.
 
-Las variables pueden clasificarse en los siguientes rubros:
+Las variables, su tipo y descripción son las siguientes:
 
-No obstante, de la base original, nosotros solamente utilizamos las siguientes variables. Las demás variables utilizadas en nuestro modelo fueron creadas y su descripción puede encontrar en:
+| Variable                              | Tipo   | Descripcion                                                                                                                                                                                                                                                                                                                                          |
+|---------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| centername                            | text   | This is the Legal name of the Entity that permits the Child Care Center                                                                                                                                                                                                                                                                              |
+| legalname                             | text   | This is the name of the Child Care Center as known to the public (DBA)                                                                                                                                                                                                                                                                               |
+| building                              | text   | Building portion of the address.                                                                                                                                                                                                                                                                                                                     |
+| street                                | text   | Street portion of the address.                                                                                                                                                                                                                                                                                                                       |
+| borough                               | text   | Borough as per the address of the entity                                                                                                                                                                                                                                                                                                             |
+| zipcode                               | text   | Zip code as per the address of the entity                                                                                                                                                                                                                                                                                                            |
+| phone                                 | text   | Phone Number                                                                                                                                                                                                                                                                                                                                         |
+| permitnumber                          | text   | This is the Permit Number of a Child Care or a Camp. This number is not required for a School Based Child Care or After School Program.                                                                                                                                                                                                              |
+| permitexp                             | date   | This field represents the date a permit expired. All Group Child Care Centers (GDC) are permitted for 2 years and Camps for one. (All camps expire automatically on Sept. 15 of the year they opened).                                                                                                                                               |
+| status                                | text   | SBCC: 'Active''; GDC & Camp: 'Permitted', 'Expired-In Renewal', 'Permit Suspended'; SMPG: 'Registered'. There are other statuses, such as Pending (prior to operational status) and OOB (Out of Business), but data are available only for currently operating child care facilities.                                                                |
+| agerange                              | text   | This field represents the possible age range of children in the program.                                                                                                                                                                                                                                                                             |
+| maximumcapacity                       | number | The maximum number of children the facility is allowed, based on the square footage of class and play rooms, the number of toilets and sinks, and overall estimates from the NYC Department of Buildings. Enrollment can be higher than the maximum capacity if there are part-time programs.                                                        |
+| dc_id                                 | text   | Unique DOHMH ID                                                                                                                                                                                                                                                                                                                                      |
+| programtype                           | text   | Program Type - Infant Toddler, Preschool, After School, Preschool Camp, School Age Camp, All Age Camp                                                                                                                                                                                                                                                |
+| facilitytype                          | text   | Facility Type: FDC  - Family Day Care (State licensed),  GFDC - Group Family Day Care (State Licensed), SBCC - School Base Child Care (Licensed by NYS, DOE, Charter School or Regents), Camp, SMPG - Summer Program (NYS or NYC licensed), GDC - Group Day Care (NYC DOHMH Permitted), SACC - School Age Child Care (After School - State Licensed) |
+| childcaretype                         | text   | Group Child Care (GCC) facilities are one of 2 program types: Preschool or Infant/Toddler. All GCC citywide statistics are calculated by type.                                                                                                                                                                                                       |
+| bin                                   | text   | Building Identification Number assigned by the NYC  Department of Buildings to the building where the facility is located. If the last 6 digits are '0' then the address was not geocoded and the first digit designates the borough.                                                                                                                |
+| url                                   | text   | Website for the child care center.                                                                                                                                                                                                                                                                                                                   |
+| datepermitted                         | date   | Estimated date that the site was originally permitted, used to calculate the age of the program. See Actual field for additional information.                                                                                                                                                                                                        |
+| actual                                | text   | Flag for correct (actual) date of original permit. Some programs pre-date the current DOHMH systems and do not have record of their original permit date. 'Y' indicates that the actual date is available, while 'N' indicates that the program was originally permitted sometime before the DatePermitted.                                          |
+| violationratepercent                  | number | Percent of Initial Inspections that resulted in at least one Critical or Public Health Hazard (PHH) violation                                                                                                                                                                                                                                        |
+| violationavgratepercent               | number | Citywide average violation rate calculated as percent of Initial Inspections that ended with a Critical or PHH (Public Health Hazard) violation for a specific Child Care Type. Compare with Violation Rate to see if above or below it peers for a Child Care Type                                                                                  |
+| totaleducationalworkers               | number | Current number of Educational Staff in the program, including teachers, assistant teachers, teacher directors and education directors. Note that staff data are updated only upon inspection and may be outdated.                                                                                                                                    |
+| averagetotaleducationalworkers        | number | Citywide average total number of Educational Staff in the program - includes teachers, assistant teachers and non administrative directors for a Child Care Type                                                                                                                                                                                     |
+| publichealthhazardviolationrate       | number | Percent of Public Health Hazard violations among all violations issued at initial inspections during the past 3 years. If the same violation is cited multiple times during one inspection, it is counted only once.                                                                                                                                 |
+| averagepublichealthhazardiolationrate | number | Citywide average number of PHH (Public Health Hazard) violation categories over 3 years for a Child Care Type.                                                                                                                                                                                                                                       |
+| criticalviolationrate                 | number | Percent of Critical violations among all violations issued at initial inspections during the past 3 years. If the same violation is cited multiple times during one inspection, it is counted only once.                                                                                                                                             |
+| avgcriticalviolationrate              | number | Citywide average number of Critical violation categories over 3 years for a Child Care Type.                                                                                                                                                                                                                                                         |
+| inspectiondate                        | date   | Inspection Date                                                                                                                                                                                                                                                                                                                                      |
+| regulationsummary                     | text   | Violation Description Language                                                                                                                                                                                                                                                                                                                       |
+| violationcategory                     | text   | Violation Category - Public Health Hazard (violation needs to be fixed within 1 day),  Critical (Violation needs to be fixed within 2 weeks), General (Violation needs to be fixed in 30 days)                                                                                                                                                       |
+| healthcodesubsection                  | text   | Health Code Sub Section                                                                                                                                                                                                                                                                                                                              |
+| violationstatus                       | text   | Violation Status - OPEN; CORRECTED; MORE INFO; or N/A                                                                                                                                                                                                                                                                                                |
+| inspectionsummaryresult               | text   | The summary result of the inspection, based on the type of inspection and the number and types of violations.                                                                                                                                                                                                                                        |
+
+No obstante, de la base original, se utilizaron muy pocas variables ya que la mayoría son tipo texto. Las demás variables utilizadas en nuestro modelo fueron creadas y su descripción puede encontrar en la sección 6.Feature engineering.
 
 ## 5. Análisis exploratorio
 
@@ -141,7 +178,8 @@ El proceso de limpieza de datos y creación de varibles es el siguiente:
 * Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se ocupa en la sección de modelado. El script correspondiente se llama `entrenamiento.py`.
 
 **NOTA**: El número de observaciones y variables que se muestra en el siguiente diagrama corresponde a la información obtenida una vez que se corre el script correspondiente a cada tabla. 
-![linaje_1](img/linaje_1.png)
+
+![linaje](img/linaje.png)
 
 
 ### 6.1 Tabla 3: Centros-estática  
@@ -195,7 +233,7 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
 
 ## 7. Modelado
 
-La variable binaria dependiente es `violationcategory_public_health_hazard` pues queremos predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
+La variable binaria dependiente es `violationcategory_public_health_hazard` pues se dese predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
 
 Se utilizaron todas las variables de la Tabla 5 descritas en la sección 6.3 Tabla 5: Centros-inspecciones-modelado.
 
@@ -209,7 +247,7 @@ Se corrió un modelo de random forest con los siguientes parámetros:
 
 Los metadatos generados en cada paso del pipiline son:
 
-![metadata](img/metadata.png)
+![metadata_1](img/metadata_1.png)
 
 ## 9. Pruebas unitarias
 
@@ -289,15 +327,15 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 
 Las implicaciones éticas para cada parte del proceso del ciclo de ciencia de datos son las siguientes:
 
-
-| Identificación del problema |                                                                                                                                                                  |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Scoping                     |                                                                                                                                                                                           |
-| Adquisición de datos        |  |
-| Exploración                 |                                                                                                                                                                                             |
-| Formulación analítica       |                                                                                                                                                                                                      |
-| Análisis del modelo         |                                                                                                                                                                                                      |
-| Validación                  |                                                                                                                                                                                                                                                                                                   |
-| Acción                      |                                                                                                                                                            |
+| Proceso del ciclo de ciencia de datos | Implicaciones éticas |
+|---------------------------------------|----------------------|
+| Identificación del problema           |                      |
+| Scoping                               |                      |
+| Adquisición de datos                  |                      |
+| Exploración                           |                      |
+| Formulación analítica                 |                      |
+| Análisis del modelo                   |                      |
+| Validación                            |                      |
+| Acción                                |                      |
 
 ## 13. API

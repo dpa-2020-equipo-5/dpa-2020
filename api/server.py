@@ -148,7 +148,7 @@ class InspectionsByDate(Resource):
         return {"date": date, 'centers': centers}
 
 
-api.add_resource(InspectionsByDate, '/inspections/<date>')
+api.add_resource(InspectionsByDate, '/inspection/<date>')
 
 
 if __name__ == '__main__':

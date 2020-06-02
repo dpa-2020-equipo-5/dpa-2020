@@ -55,6 +55,55 @@ def get_predictions(date):
     return result
 
 
+def get_inspections(date):
+    db_result = db.engine.execute('SELECT * FROM transformed.inspections as INSP'
+                                  ' WHERE DATE(INSP.inspectiondate) >= \'{}\''
+                                  ' ORDER BY INSP.inspectiondate'.format(date)).fetchall()
+    result = []
+    for prediction in db_result:
+        result.append({
+            'center_id.append({': prediction[0],
+            'inspectiondate': prediction[1],
+            'regulationsummary': prediction[2],
+            'healthcodesubsection': prediction[3],
+            'violationstatus': prediction[4],
+            'borough': prediction[5],
+            'reason': prediction[6],
+            'result_1_passed_inspection': prediction[7],
+            'result_1_passed_inspection_with_no_violations': prediction[8],
+            'result_1_previously_cited_violations_corrected': prediction[9],
+            'result_1_previously_closed_program_re_opened': prediction[10],
+            'result_1_reinspection_not_required': prediction[1],
+            'result_1_reinspection_required': prediction[12],
+            'result_2_nr': prediction[13],
+            'result_2_fines_pending': prediction[14],
+            'result_2_program_closed': prediction[15],
+            'result_2_violations_corrected_at_time_of_inspection': prediction[16],
+            'inspection_year': prediction[17],
+            'inspection_month': prediction[18],
+            'inspection_day_name': prediction[19],
+            'violationcategory_critical': prediction[20],
+            'violationcategory_general': prediction[21],
+            'violationcategory_nan': prediction[22],
+            'violationcategory_public_health_hazard': prediction[23],
+            'dias_ultima_inspeccion': prediction[24],
+            'violaciones_hist_salud_publica': prediction[25],
+            'violaciones_2019_salud_publica': prediction[26],
+            'violaciones_hist_criticas': prediction[27],
+            'violaciones_2019_criticas': prediction[28],
+            'ratio_violaciones_hist': prediction[29],
+            'ratio_violaciones_2019': prediction[30],
+            'prom_violaciones_hist_borough': prediction[31],
+            'prom_violaciones_2019_borough': prediction[32],
+            'ratio_violaciones_hist_sp': prediction[33],
+            'ratio_violaciones_2019_sp': prediction[34],
+            'ratio_violaciones_hist_criticas': prediction[35],
+            'ratio_violaciones_2019_criticas': prediction[36],
+        })
+
+    return result
+
+
 class Prediction(Resource):
 
     def get(self):
@@ -86,14 +135,20 @@ class PredictionWithParameters(Resource):
 api.add_resource(PredictionWithParameters, '/prediction/<date>')
 
 
-class PredictionsModel(db.Model):
-    __tablename__ = 'predictions.predictions'
+class InspectionsByDate(Resource):
 
-    center_id = db.Column(db.String(200), primary_key=True)
-    probability = db.Column(db.Float)
-    date = db.Column(db.DateTime)
-    priority = db.Column(db.Integer)
-    matrix_uuid = db.Column(db.String(200))
+    def get(self, date):
+        if not valid_date(date):
+            return 'Invalid date supplied. Please follow the pattern: yyyy-MM-dd', 400
+
+        centers = get_inspections(date)
+        if len(centers) == 0:
+            return 'No data available for {}'.format(date), 404
+
+        return {"date": date, 'centers': centers}
+
+
+api.add_resource(InspectionsByDate, '/inspections/<date>')
 
 
 if __name__ == '__main__':

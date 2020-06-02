@@ -27,8 +27,8 @@ app.head = [
 
 
 def serve_layout():
-    #r = requests.get("http://localhost:3000/prediction/")
-    r = requests.get("http://18.208.188.16/prediction")
+    r = requests.get("http://localhost:3000/prediction/")
+    #r = requests.get("http://18.208.188.16/prediction")
     df = pd.json_normalize(r.json(), 'centers')
     date_split = r.json()['date'].split('-')
     d = datetime(int(date_split[0]), int(date_split[1]), int(date_split[2]))
@@ -64,9 +64,9 @@ def serve_layout():
         html.Div(id='output-container-date-picker-range'),
         dash_table.DataTable(
             id='centersTable',
-            columns=[{"name": i, "id": i} for i in df[['priority','fullName', 'probability_str', 'borough']].columns],
+            columns=[{"name": i, "id": i} for i in df[['priority','centerId','fullName', 'probability_str', 'borough']].columns],
             
-            data=df[['priority','fullName', 'probability_str', 'borough']].to_dict('records'),
+            data=df[['priority','centerId','fullName', 'probability_str', 'borough']].to_dict('records'),
             style_table={
                 'width': '100%',
             },

@@ -4,7 +4,6 @@ Created on Mon Jun  1 21:25:06 2020
 
 @author: Elizabeth
 """
-
 ################### BIAS AND FAIRNESS ####################
 
 import pandas as pd
@@ -34,26 +33,27 @@ res = pd.DataFrame({
 res.loc[res['proba_0'] > res['proba_1'], 'score'] = res['proba_0']
 res.loc[res['proba_0'] < res['proba_1'], 'score'] = res['proba_1']
 
-tabla_2 = df.loc[:, ['centername', 'legalname', 'building', 'street', 'borough', 'zipcode', 'phone', 'permitnumber', 
-                     'permitexp', 'status', 'agerange', 'maximumcapacity', 'dc_id', 'programtype', 'facilitytype', 
-                     'childcaretype', 'bin', 'url', 'datepermitted', 'actual', 'violationratepercent', 'violationavgratepercent', 
-                     'totaleducationalworkers', 'averagetotaleducationalworkers', 'publichealthhazardviolationrate', 
-                     'averagepublichealthhazardiolationrate', 'criticalviolationrate', 'avgcriticalviolationrate']]
+categorias_1 = ["programtype_all_age_camp","programtype_infant_toddler","programtype_preschool", "programtype_preschool_camp", "programtype_school_age_camp"]
 
-tabla_2.info()
+programtype = pd.get_dummies(centros[categorias_1]).idxmax(1)
 
-tabla_2 = tabla_2.drop_duplicates()
+categorias_2 = ["borough_bronx","borough_brooklyn","borough_manhattan", "borough_queens", "borough_staten_island"]
 
-tabla_2.shape
+borough = pd.get_dummies(centros[categorias_2]).idxmax(1)
 
-tabla = pd.merge(res, tabla_2, left_on='center', right_on='dc_id')
+ambas = pd.concat([borough, programtype], axis=1,)
+
+ambas = ambas.rename(columns={0:'borough', 1:'programtype'})
+
+centros = pd.concat([centros, ambas], axis=1)
+
+tabla = pd.merge(res, centros, left_on='center', right_on='center_id')
 
 tabla = tabla.loc[:, ['center', 'etiqueta', 'score', 'borough', 'programtype']]
 
 tabla =  tabla.rename(columns = {'etiqueta':'label_value'})
 
 tabla = tabla.set_index(['center'])
-
 
 ######¿Qué sesgo existe en el modelo?########
               
@@ -73,30 +73,19 @@ a = aqp.plot_group_metric_all(xtab, ncols=3)
 
 b = Bias()
 
-bdf = b.get_disparity_predefined_groups(xtab, original_df=tabla, ref_groups_dict={'borough':'brooklyn', 'programtype':'preschool'}, alpha=0.05, mask_significance=True)
+bdf = b.get_disparity_predefined_groups(xtab, original_df=tabla, ref_groups_dict={'borough':'borough_brooklyn', 'programtype':'programtype_preschool'}, alpha=0.05, mask_significance=True)
 
 hbdf = b.get_disparity_predefined_groups(xtab, original_df=tabla,
-                                         ref_groups_dict={'borough':'brooklyn', 'programtype':'preschool'},
+                                         ref_groups_dict={'borough':'borough_brooklyn', 'programtype':'programtype_preschool'},
                                          alpha=0.05,
                                          mask_significance=False)
 
-hbdf[['attribute_name', 'attribute_value'] +  calculated_disparities + disparity_significance]
 
 majority_bdf = b.get_disparity_major_group(xtab, original_df=tabla, mask_significance=True)
-
-majority_bdf[['attribute_name', 'attribute_value'] +  calculated_disparities + disparity_significance]
 
 f = Fairness()
 
 fdf = f.get_group_value_fairness(bdf)
-
-parity_detrminations = f.list_parities(fdf)
-
-fdf[['attribute_name', 'attribute_value'] + absolute_metrics + calculated_disparities + parity_detrminations]
-
-gaf = f.get_group_attribute_fairness(fdf)
-
-gaf
 
 fg = aqp.plot_fairness_group_all(fdf, ncols=5, metrics = "all")
 

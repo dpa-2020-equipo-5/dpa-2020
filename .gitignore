@@ -5,3 +5,4 @@ __pychache__/*
 settings_development.ini
 config.ini
 api/dpavenv/
+.ipynb_checkpoints

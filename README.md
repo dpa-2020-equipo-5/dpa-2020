@@ -36,7 +36,7 @@ La estructura del repositorio es la siguiente:
 
 - Carpeta [config](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/config): Contiene los scripts necesarios para crear la arquitectura en la n
 
-- Carpeta [eda_gda](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/eda_gda): Contiene los scripts e imágenes correspondientes al análisis exploratorio de los datos.
+- Carpeta [eda](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/eda): Contiene el notebook e imágenes correspondientes al análisis exploratorio de los datos.
 
 - Carpeta [img](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/r/img): Contiene las imágenes y diagramas utilizados en este `README.md`.
 
@@ -169,9 +169,79 @@ No obstante, de la base original, se utilizaron muy pocas variables ya que la ma
 
 ## 5. Análisis exploratorio
 
+El análisis exploratorio de nuestros datos básicamente consistió en analizar la frecuencia y el promedio de inspecciones por año y por distrito para conocer dónde y cuándo habían más violaciones, así como conocer con cuántos inspectores se cuenta en peromedio diario para pover realizar las inspecciones futuras.
+
+El análisis se hizo para un total de 38,519 observaciones que surgieron después de tirar los duplicados de la base de datos. Dado que este análisi es estático y la actualización de los datos es diaria, los números pueden variar en el tiempo.
+
+### 5.1 Inspecciones totales anuales
+
+La siguiente tabla muestra el número de inspecciones anuales totales por distrito:
+
+|       |       |          |  Distrito |        |               |       |
+|:-----:|:-----:|:--------:|:---------:|:------:|:-------------:|:-----:|
+|  Año  | bronx | brooklyn | manhattan | queens | staten_island | Total |
+|  2017 |  1042 |   2576   |    1349   |  1673  |      274      |  6914 |
+|  2018 |  3088 |   4251   |    3386   |  3225  |      630      | 14580 |
+|  2019 |  2910 |   4130   |    2627   |  3071  |      519      | 13257 |
+|  2020 |  998  |   1063   |    759    |   780  |      111      |  3711 |
+| Total |  8038 |   12020  |    8121   |  8749  |      1534     | 38462 |
+
+**Nota:** El total suma 38,462 porque hay 57 observaciones que no tienen año de inspección.
+
+Se puede observar que el número de inspeccinoes para el año 2018 y 2019 fue de entre 13,000 y 15,000 inpsccinoes. El año 2020 tiene menos inspecciones porque apenas está transcurriendo y porque muchos centros se han cerrado por la situación del COVID. El año 2017 también tiene menos inspeccione y la razón puede deberse más bien al inicio de la recolección de datos y no tanto a que el número de inspecciones se haya duplicado de un año para otro.
+
+Además, se muestra que 3 de los 5 distritos han tenido alrededo de 8,000-9,000 inspecciones. Sin embargo, Brooklyn ha tenido casi 1/3 más y Staten Island 6/8 menos. Esto puede deberse a que esos distritos tengan más o menos violaciones y por eso si inspeccionen más/menos o al número de centros por distrito. Por ello, la siguiente gráfica muestra el número de centros por distrito.
+
+![no_centros_distrito](img/no_centros_distrito.png)
+
+De la gráfica se observa que, efectivamente, Brooklyn tiene más inspecciones y Staten Island menos por el número de centros que tiene cada distrito. Sin embargo, llama la atención el caso de Bronx pues aunque solamente tiene 370 centros, éstos son inspeccionados tantas veces como Manhattan y Queens que tienen el doble de centros. Esto puede ser un indicador de que en el distrito de Bronx se cometen más violaciones. 
+
+Finalmente, se construyó una tabla con el número de violaciones por año para ver cuántas inspeccinoes resultaban en violaciones y de qué tipo.
+
+|       |         | Tipo de violación  |                      |       |
+|-------|---------|--------------------|----------------------|-------|
+|  Año  | general |      critical      | public_health_hazard | Total |
+|  2017 |   1846  |        1973        |          828         |  4647 |
+|  2018 |   5019  |        2841        |         1174         |  9034 |
+|  2019 |   3994  |        2399        |         1004         |  7397 |
+|  2020 |   1051  |         847        |          275         |  2173 |
+| Total |  11910  |        8060        |         3281         | 23251 |
+
+
+Se observa que del número de inspecciones realizadas, aproximadamente el 60% tiene algún tipo de violación. Esto puede significar o que muchísimos centros comenten violaciones o que se está inspeccionando de una manera adecuada y se está descubriendo a los centros que van a cometer violaciones efecetivamente. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública.
+
+
+### 5.2 Inspecciones promedio diarias
+
+Como no se cuenta con información acerca de cuántos inspectores hay disponibles por día, se crearon tablas del promedio de inspecciones diarias por año y por distrito para conocer el número mínimo de inspectores disponibles. 
+
+|      |       |          |  Distrito |        |               |       |
+|:----:|:-----:|:--------:|:---------:|:------:|:-------------:|:-----:|
+|  Año | bronx | brooklyn | manhattan | queens | staten_island | Total |
+| 2017 |   7   |    17    |     9     |   11   |       2       |   46  |
+| 2018 |   13  |    17    |     14    |   13   |       3       |   60  |
+| 2019 |   11  |    16    |     10    |   12   |       2       |   51  |
+| 2020 |   18  |    20    |     14    |   14   |       2       |   68  |
+
+Se observa que se cuenta con entre 46 y 68 inspectores de manera diaria para visitar centros. En el 2020, habían 68 inspecciones diarias y eso implica que el departamento de inspeccines cuetna con al menos 68 inspectores para las visitas futuras en el año, claro, suponiendo que se sigue contando con el mismo personal disponible. El promedio de inspecciones diarias por distrito son: Bronx 12, Brooklyn 18, Manhattan 12, Queens 12 y Staten Island.
+
+### 5.3 Inspecciones promedio diarias para el tipo inspección inicial
+
+Finalmente, se calculó el promedio de inspecciones diarias de tipo inspección inicial dado que en este modelo las predicciones se crearán para inspecciones iniciales. La razón es que las inspecciones subsecuentes no son de tanto interés pues ya son solo follow-ups, lo importante es identificar a los centros con vioalcinoes en sus inspeccinoes iniciales.
+
+|      |       |          |  Distrito |        |               |       |
+|:----:|:-----:|:--------:|:---------:|:------:|:-------------:|:-----:|
+|  Año | bronx | brooklyn | manhattan | queens | staten_island | Total |
+| 2017 |   3   |     8    |     4     |    5   |       1       |   21  |
+| 2018 |   6   |     8    |     7     |    6   |       1       |   28  |
+| 2019 |   6   |     8    |     5     |    6   |       1       |   26  |
+| 2020 |   9   |    10    |     7     |    7   |       1       |   34  |
+
+El promedio diario del número de inspecciones iniciales es de entre 21 y 34 representando aproximadamente la mitad del total de inspecciones diarias, incluyendo subsecuentes y especiales. Es decir, de todas las inspecciones que se hacen de forma diaria, la mitad son inspecciones de primera vez. En el 2020, se contaba en promedio con 34 inspectores para hacer visitas iniciales por lo que las predicciones deben generarse para por lo menos 34 centros. 
+
 ## 6. Feature engineering
 
-El proceso de limpieza de datos y creación de varibles es el siguiente:
+El proceso de limpieza de datos y creación de variables es el siguiente:
 
 * Tabla 1 (Raw): Es la base de datos como se extrajo de la API.
 * Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas. El script correspondiente se llama `clean.py`.
@@ -247,9 +317,9 @@ Se corrió un modelo de random forest con los siguientes parámetros:
 
 ## 8. Metadata y linaje de datos
 
-Los metadatos generados en cada paso del pipiline son:
+Los metadatos generados en cada paso del pipeline son:
 
-![metadata_1](img/metadata_1.png)
+![metadata](img/metadata.png)
 
 ## 9. Pruebas unitarias
 
@@ -327,15 +397,15 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 
 ## 12. Implicaciones éticas
 
-Algunas de las implicaciones éticas relacionadas con el modelo proepuesto on las siguientes:
+Algunas de las implicaciones éticas relacionadas con el modelo proepuesto son las siguientes:
 
 - Identificación del problema:
 
     - En este proyecto se definió como problema más grave el tener una violación de salud pública con base en la información de la variable `violationcategory` y los días que le dan al centro para arreglar el problema con base en su urgencia. Sin embargo, es probable que nuestra identificación del problema sea errónea y haya otro tipo de violaciones más urgentes o, si no, más urgentes que sucedan con más frecuencia. La decisión jerárquica de violaciones puede ser distinta en distintos contextos. 
     - Otro problema con nuestra identificación es que no se tomó en cuenta el número de niños que se ven afectados por estas violaciones. Es decir, quizá un centro comete violacinoes muy graves pero tiene poco alumnos, mientras que, otro centro pudiera estar cometiendo vioalciones menos graves pero que afecten a muchos más alumnos. Para resolver este problema habría que tomar en cuenta el número de niños afectados a la hora de definir el criterio de gravedad de las violacones.
-    - 3)Además, enfocarse a “los lugares con más violaciones” no necesariamente implica que éstos lugares vayan a ser los que tienen mayor disposición o recursos para arreglar las violaciones. Es decir, quizá los centros con más violaciones ya saben que las están cometiendo pero no tienen la forma o la disposición de arreglarlas. En cambio, quizá pueda ser más relevante visitar a los centros con mayor probabilidad de tener un cambio de conducta para así bajar el promedio de violaciones en general que es el objetivo último de estos modelos. Se he probado en otro tipo de programas socilaes que éstos tienen mayor impacto en percentiles de “en medio” que los programas que se enfocan a los percentiles más bajos. Entonces, la decisión de en qué áreas utilizar los recursos y dónde podrían representar un mayor beneficio a largo plazo debe tomarse en cuenta.
+    - Además, enfocarse a “los lugares con más violaciones” no necesariamente implica que éstos lugares vayan a ser los que tienen mayor disposición o recursos para arreglar las violaciones. Es decir, quizá los centros con más violaciones ya saben que las están cometiendo pero no tienen la forma o la disposición de arreglarlas. En cambio, quizá pueda ser más relevante visitar a los centros con mayor probabilidad de tener un cambio de conducta para así bajar el promedio de violaciones en general que es el objetivo último de estos modelos. Se he probado en otro tipo de programas socilaes que éstos tienen mayor impacto en percentiles de “en medio” que los programas que se enfocan a los percentiles más bajos. Entonces, la decisión de en qué áreas utilizar los recursos y dónde podrían representar un mayor beneficio a largo plazo debe tomarse en cuenta.
     
-- Otra causas de problema:
+- Otras causas de problema:
 
     -  El problema que estamos resolviendo podría ser, en realidad, un síntoma de un problema mayor, es decir, la violaciones en los centros podrían ser un derivado de la falta de capital humano, inseguridad, falta de estado de derecho y pobreza en la zona. Por lo tanto, incrementar el monitoreo en la zona podría no ser la solución principal si no otro tipo de actividades que mejoren la seguridad, poder adquisitivo de las personas, infraestructura de los centros, contratación de personal más adecuado, entre otros. 
     

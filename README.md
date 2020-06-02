@@ -19,7 +19,7 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 11. [Sesgo y equidad](#11.-Sesgo-y-equidad)
 12. [Implicaciones éticas](#12.-Implicaciones-éticas)
 13. [API](#13.-API)
-14. [Dashboards](#14.-Dashboard)
+14. [Dashboard](#14.-Dashboard)
 15. [Conclusiones](#15.-Conclusiones)
 
 ## 1. Introducción
@@ -199,14 +199,13 @@ De la gráfica se observa que, efectivamente, Brooklyn tiene más inspecciones y
 Finalmente, se construyó una tabla con el número de violaciones por año para ver cuántas inspeccinoes resultaban en violaciones y de qué tipo.
 
 |       |         | Tipo de violación  |                      |       |
-|-------|---------|--------------------|----------------------|-------|
+|:-----:|:-------:|:------------------:|:--------------------:|:-----:|
 |  Año  | general |      critical      | public_health_hazard | Total |
 |  2017 |   1846  |        1973        |          828         |  4647 |
 |  2018 |   5019  |        2841        |         1174         |  9034 |
 |  2019 |   3994  |        2399        |         1004         |  7397 |
 |  2020 |   1051  |         847        |          275         |  2173 |
 | Total |  11910  |        8060        |         3281         | 23251 |
-
 
 Se observa que del número de inspecciones realizadas, aproximadamente el 60% tiene algún tipo de violación. Esto puede significar o que muchísimos centros comenten violaciones o que se está inspeccionando de una manera adecuada y se está descubriendo a los centros que van a cometer violaciones efecetivamente. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública.
 
@@ -246,7 +245,7 @@ El proceso de limpieza de datos y creación de variables es el siguiente:
 * Tabla 1 (Raw): Es la base de datos como se extrajo de la API.
 * Tabla 2 (Clean): Es la base original pero limpia: 1. sin observaciones duplicadas, 2. sin espacios extras, 3. con el texto en minúsculas. El script correspondiente se llama `clean.py`.
 * Tabla 3 (Centros-estática): Contiene toda la información estática sobre los 2,989 centros registrados. El script que genera esta tabla es `centros_estática_proc.py`.
-* Tabla 4 (Inspecciones-dinámicas): Contiene todas las inspecciones realizadas desde el 26 de mayo del 2016 al día de hoy. El script que genera esta tabla es `inspecciones_dinámicas_proc.py`.
+* Tabla 4 (Inspecciones-dinámicas): Contiene todas las inspecciones realizadas desde el abril del 2017 al día de hoy. El script que genera esta tabla es `inspecciones_dinámicas_proc.py`.
 * Tabla 5 (Centros-inspecciones-modelado): Contiene la información conjunta de los centros y de las inspecciones que se ocupa en la sección de modelado. El script correspondiente se llama `entrenamiento.py`.
 
 **NOTA**: El número de observaciones y variables que se muestra en el siguiente diagrama corresponde a la información obtenida una vez que se corre el script correspondiente a cada tabla. 

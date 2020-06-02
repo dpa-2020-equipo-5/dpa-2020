@@ -19,7 +19,7 @@ app = dash.Dash(__name__, server=server,  external_stylesheets=external_styleshe
 app.title = 'NYC Childcare Centers inspection predictions'
 app.head = [
     html.Link(
-        href='https://github.com/dpa-2020-equipo-5/dpa-2020/tree/master/nyccci_dashboard/favicon.ico',
+        href='https://raw.githubusercontent.com/dpa-2020-equipo-5/dpa-2020/master/nyccci_dashboard/favicon.ico',
         rel='icon'
     ),
 ]

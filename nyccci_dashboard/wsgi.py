@@ -9,17 +9,6 @@ import pandas as pd
 import requests
 from datetime import datetime
 
-from sqlalchemy import create_engine
-
-
-engine_string = "postgresql+psycopg2://{}:{}@{}:{}/{}".format(
-    "gemathus",
-    "mathus94",
-    "localhost",
-    5432,
-    "dpa_nyc_childcare_centers"
-)
-engine = create_engine(engine_string)
 
 
 
@@ -43,14 +32,16 @@ app.head = [
 
 
 def serve_layout():
-    r = requests.get("http://localhost:3000/prediction/")
-    #r = requests.get("http://18.208.188.16/prediction")
-    print("all")
+    #r = requests.get("http://localhost:3000/prediction/")
+    r = requests.get("http://18.208.188.16/prediction")
+    
     df = pd.json_normalize(r.json(), 'centers')
 
     predicciones = df.copy()
 
-    inspecciones = pd.read_sql("select * from transformed.inspections where date(inspectiondate) >= '2020-01-02' order by date(inspectiondate)", engine)
+    r2 = requests.get("http://18.208.188.16/inspection/2019-12-30")
+
+    inspecciones = pd.json_normalize(r2.json(), 'centers')
 
     inspecciones_con_violacion = inspecciones[inspecciones['violationcategory_public_health_hazard'] == '1'].copy()
     verdaderos_positivos = predicciones[predicciones['centerId'].isin(inspecciones_con_violacion.center_id)]

@@ -104,6 +104,25 @@ def get_inspections(date):
     return result
 
 
+def get_model_parameters():
+    db_result = db.engine.execute('SELECT * FROM modeling.model_parameters').fetchall()
+
+    result = []
+    for prediction in db_result:
+        result.append({
+            'task_id': prediction[0],
+            'created_at': str(prediction[1]),
+            'score': prediction[2],
+            'n_estimators': prediction[3],
+            'bootstrap': prediction[4],
+            'class_weight': prediction[5],
+            'max_depth': prediction[6],
+            'criterion': prediction[7],
+        })
+
+    return result
+
+
 class Prediction(Resource):
 
     def get(self):
@@ -149,6 +168,20 @@ class InspectionsByDate(Resource):
 
 
 api.add_resource(InspectionsByDate, '/inspection/<date>')
+
+
+class ModelParameters(Resource):
+
+    def get(self):
+        parameters = get_model_parameters()
+
+        if len(parameters) == 0:
+            return 'No model parameters available', 404
+
+        return parameters
+
+
+api.add_resource(ModelParameters, '/model_parameter')
 
 
 if __name__ == '__main__':

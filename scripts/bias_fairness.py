@@ -33,12 +33,13 @@ res = pd.DataFrame({
 res.loc[res['proba_0'] > res['proba_1'], 'score'] = res['proba_0']
 res.loc[res['proba_0'] < res['proba_1'], 'score'] = res['proba_1']
 
+categorias_1 = ["programtype_all_age_camp","programtype_infant_toddler","programtype_preschool", "programtype_preschool_camp", "programtype_school_age_camp"]
 
-programtype = pd.get_dummies(centros).idxmax(1)
+programtype = pd.get_dummies(centros[categorias_1]).idxmax(1)
 
-categorias = ["borough_bronx","borough_brooklyn","borough_manhattan", "borough_queens", "borough_staten_island"]
+categorias_2 = ["borough_bronx","borough_brooklyn","borough_manhattan", "borough_queens", "borough_staten_island"]
 
-borough = pd.get_dummies(centros[categorias]).idxmax(1)
+borough = pd.get_dummies(centros[categorias_2]).idxmax(1)
 
 ambas = pd.concat([borough, programtype], axis=1,)
 
@@ -53,7 +54,6 @@ tabla = tabla.loc[:, ['center', 'etiqueta', 'score', 'borough', 'programtype']]
 tabla =  tabla.rename(columns = {'etiqueta':'label_value'})
 
 tabla = tabla.set_index(['center'])
-
 
 ######¿Qué sesgo existe en el modelo?########
               

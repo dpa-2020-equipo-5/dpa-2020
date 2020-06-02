@@ -19,6 +19,8 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 11. [Sesgo y equidad](#11.-Sesgo-y-equidad)
 12. [Implicaciones éticas](#12.-Implicaciones-éticas)
 13. [API](#13.-API)
+14. [Dashboards](#14.-Dashboard)
+15. [Conclusiones](#15.-Conclusiones)
 
 ## 1. Introducción
 
@@ -325,17 +327,35 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 
 ## 12. Implicaciones éticas
 
-Las implicaciones éticas para cada parte del proceso del ciclo de ciencia de datos son las siguientes:
+Algunas de las implicaciones éticas relacionadas con el modelo proepuesto on las siguientes:
 
-| Proceso del ciclo de ciencia de datos | Implicaciones éticas |
-|---------------------------------------|----------------------|
-| Identificación del problema           |                      |
-| Scoping                               |                      |
-| Adquisición de datos                  |                      |
-| Exploración                           |                      |
-| Formulación analítica                 |                      |
-| Análisis del modelo                   |                      |
-| Validación                            |                      |
-| Acción                                |                      |
+- Identificación del problema:
+
+    - En este proyecto se definió como problema más grave el tener una violación de salud pública con base en la información de la variable `violationcategory` y los días que le dan al centro para arreglar el problema con base en su urgencia. Sin embargo, es probable que nuestra identificación del problema sea errónea y haya otro tipo de violaciones más urgentes o, si no, más urgentes que sucedan con más frecuencia. La decisión jerárquica de violaciones puede ser distinta en distintos contextos. 
+    - Otro problema con nuestra identificación es que no se tomó en cuenta el número de niños que se ven afectados por estas violaciones. Es decir, quizá un centro comete violacinoes muy graves pero tiene poco alumnos, mientras que, otro centro pudiera estar cometiendo vioalciones menos graves pero que afecten a muchos más alumnos. Para resolver este problema habría que tomar en cuenta el número de niños afectados a la hora de definir el criterio de gravedad de las violacones.
+    - 3)Además, enfocarse a “los lugares con más violaciones” no necesariamente implica que éstos lugares vayan a ser los que tienen mayor disposición o recursos para arreglar las violaciones. Es decir, quizá los centros con más violaciones ya saben que las están cometiendo pero no tienen la forma o la disposición de arreglarlas. En cambio, quizá pueda ser más relevante visitar a los centros con mayor probabilidad de tener un cambio de conducta para así bajar el promedio de violaciones en general que es el objetivo último de estos modelos. Se he probado en otro tipo de programas socilaes que éstos tienen mayor impacto en percentiles de “en medio” que los programas que se enfocan a los percentiles más bajos. Entonces, la decisión de en qué áreas utilizar los recursos y dónde podrían representar un mayor beneficio a largo plazo debe tomarse en cuenta.
+    
+- Otra causas de problema:
+
+    -  El problema que estamos resolviendo podría ser, en realidad, un síntoma de un problema mayor, es decir, la violaciones en los centros podrían ser un derivado de la falta de capital humano, inseguridad, falta de estado de derecho y pobreza en la zona. Por lo tanto, incrementar el monitoreo en la zona podría no ser la solución principal si no otro tipo de actividades que mejoren la seguridad, poder adquisitivo de las personas, infraestructura de los centros, contratación de personal más adecuado, entre otros. 
+    
+- Datos y privacidad:
+    
+    - Podría existir un problema de privacidad con respecto a la publicación de los datos de las inspecciones de los centros. No se sabe si los dueños de los centros han dado su consentimiento para la publicación de los resultados de las inspecciones. Quizá debería de hacerse privado anonimizar los datos y se limpiar toda información de cualquier identificación personal. 
+    - El hecho de tener estos datos públicos, puede ser usado de manera incorrecta tomando represalias ante el personal y dueños de los centros si hay algún escándalo por algún problema en el centro.
+     
+- Acciones:
+
+    - Un gran problema relacionado con las acciones que pueden tomarse dado los resultados del modelo es que se podría afectar negativamente a las localidades más pobres y violentas. Si se visita más a las zonas más pobres y éstas no tienen el recurso para arreglar las violaciones, se corre el riesgo del potencial cierre de centros que quizá la población necesita. Esto afectaría negativamente aún más a los padres de los niños que tienen que dejarlos en centros de cuidado infantil, afectando sus horas laborales por ejemplo. 
+    - El modelo podría generar cambios en la conducta de los encargados del centro advirtiendo a los otros centros en la zona por ejemplo. Si suponemos que la vioalción de centros es por zona y un centro ya ha sido monitoreado, los demás centros pueden entrar en un estado de alerta y podrían esconder evidencia de violaciones, dado que sabrán que su “zona” es un target geográfico y será constantemente monitoreado. Esto podría representar una acción tanto positiva como negativa, positiva si se corigen los problemas de manera más pronta y se corrigen bien, pero negativa si simplemente se esconden los porblemas o se solucionan temporalmente.
+    - El modelo también podría tener un efecto sobre los inspectores. Es decir, es posible que los inspectores prefieran ir a monitorear lugares "fáciles" donde no vaya a haber violaciones y donde su trabajo pueda ser más seguro y placentero. Esto puede causar incentivos perversos en los inspectores para reportar que no hubieron fallas en luagres a donde no quieren volver a ir. 
+ 
+
+Por todas estas razones, es fundamental que se haga un buen scoping del problema e implementación del modelo. Es importante que el equipo reconozca las limitaciones del mismo, sus antecedentes y se involucre a expertos externos cuando sea posible para evaluar el desmpeño del modelo y mejorar de los monitoreos.
+
 
 ## 13. API
+
+## 14. Dashboard
+
+## 15. Conclusiones

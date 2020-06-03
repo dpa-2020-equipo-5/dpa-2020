@@ -527,7 +527,7 @@ Se muestra el monitoreo del modelo con una gráfica de los verdaderos positivos 
 Trabajo futuro:
 * Agregar un `DateTimePicker` para elegir la fecha de las predicciones que se deseen visualizar.
 
-El dashboard se encuentra en la siguiente [liga](https://ccci.dpa2020.com/) (https://ccci.dpa2020.com) y a continuación se muestra una impresión de pantalla del mismo.
+El dashboard se encuentra en la siguiente liga (https://ccci.dpa2020.com) y a continuación se muestra una impresión de pantalla del mismo.
 
 ![dashboard_1](img/dashboard_1.png)
 

@@ -47,7 +47,7 @@ def serve_layout():
         return html.Div(children=[html.H1("No hay datos :(")])
 
     model_params = requests.get("http://18.208.188.16/model_parameter")
-    if r2.model_params == 404:
+    if model_params.status_code == 404:
         return html.Div(children=[html.H1("No hay datos :(")])
     df_model_params = pd.json_normalize(model_params.json())
 

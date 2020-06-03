@@ -635,3 +635,16 @@ sudo service apache2 restart
 ~~~~
 
 4. El api estará disponible en la dirección IP pública de la EC2
+
+### 15.6. Dashboard
+El dashboard es una aplicación de Dash que se ejecuta en un servidor de Flask. Dado que este dashboard consume el API, se optó por hospedar este dashboard en otra infraestrucutra. Para esto se eligó Heroku ya que facilita muchísimo el despliegue de apicaciones. 
+
+1. Crear una app de heroku
+2. Ligar la app al repositorio del proyecto
+3. Desplegar la rama master
+
+Heroku checará el archivo (Procfile)[Procfile] que contiene las instrucciones de cómo ejecutar el servidor de aplicaciones. No es necesario modificar este archivo.
+
+Lo que sí será necesario modificar es la dirección IP del API que aparece en distintos requests en el archivo [nyccci_dashboard/wsgi.py](nyccci_dashboard/wsgi.py).
+
+

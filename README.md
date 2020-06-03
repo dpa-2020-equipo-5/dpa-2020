@@ -608,8 +608,8 @@ Ahora la EC2 será accesible a través de HTTP en el puerto 80. Se desea redicci
 ~~~~bash
 sudo ln -sT ~/dpa-2020 /var/www/html/dpa-2020
 ~~~~
-2. Editar el arhicvo de configuración de Apache ``
-~~~~bash
+2. Editar el arhicvo de configuración de Apache
+~~~~xml
 <VirtualHost *:80>
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www/html

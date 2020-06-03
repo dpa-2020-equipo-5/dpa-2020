@@ -598,7 +598,7 @@ Para visualizar el endpoint de predicción, será necesario primero haber corrid
 
 El archivo `flaskapp.wsgi` es exlusivamente para producción y su uso se describe a continuación:
 
-Para ejectuar el API en un entorno de producción es necesario instalar en la EC2 los siguientes paquetes:
+Para ejectuar el API en un entorno de producción es necesario instalar en la EC2 los siguientes paquetes para ubuntu:
 1. apache2
 2. libapache2-mod-wsgi-py3
 

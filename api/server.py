@@ -33,8 +33,11 @@ def get_last_prediction_date():
 
 def get_borough(arr):
     boroughs = ("Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island")
-    indx = [i for i, x in enumerate(arr) if x == '1'][0]
-    return boroughs[indx]
+    indx = [i for i, x in enumerate(arr) if x == '1']
+    if len(indx) > 0:
+        return boroughs[indx[0]]
+    else:
+        return ""
 
 def get_predictions(date):
     db_result = db.engine.execute('SELECT a.*, b.centername, b.childcaretype,b.borough_bronx, b.borough_brooklyn, b.borough_manhattan, b.borough_queens, b.borough_staten_island FROM predictions.predictions a join transformed.centers b on a.center_id = b.dc_id '

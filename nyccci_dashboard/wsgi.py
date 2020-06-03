@@ -43,18 +43,30 @@ def serve_layout():
     predicciones = df.copy()
 
     r2 = requests.get("http://18.208.188.16/inspection/2019-12-30")
+    if r2.status_code == 404:
+        return html.Div(children=[html.H1("No hay datos :(")])
 
     model_params = requests.get("http://18.208.188.16/model_parameter")
-    
+    if r2.model_params == 404:
+        return html.Div(children=[html.H1("No hay datos :(")])
     df_model_params = pd.json_normalize(model_params.json())
 
     r_aequitas_groups = requests.get("http://18.208.188.16/aequitas/groups/" + str(date))
+    if r_aequitas_groups.status_code == 404:
+        return html.Div(children=[html.H1("No hay datos :(")])
     aequitas_groups_df = pd.json_normalize(r_aequitas_groups.json(), 'aequitas_groups')
+    
 
     r_aequitas_fairness = requests.get("http://18.208.188.16/aequitas/fairness/" + str(date))
+    if r_aequitas_fairness.status_code == 404:
+        return html.Div(children=[html.H1("No hay datos :(")])
     aequitas_fairness_df = pd.json_normalize(r_aequitas_fairness.json(), 'aequitas_fairness')
+    
 
     r_aequitas_bias = requests.get("http://18.208.188.16/aequitas/groups/" + str(date))
+    if r_aequitas_bias.status_code == 404:
+        return html.Div(children=[html.H1("No hay datos :(")])
+
     aequitas_bias_df = pd.json_normalize(r_aequitas_bias.json(), 'aequitas_groups')
 
     inspecciones = pd.json_normalize(r2.json(), 'centers')
@@ -63,10 +75,11 @@ def serve_layout():
     verdaderos_positivos = predicciones[predicciones['centerId'].isin(inspecciones_con_violacion.center_id)]
 
     falsos_positivos = predicciones[predicciones['centerId'].isin(inspecciones.center_id)]
-
     alerta = False
-    if len(falsos_positivos) / len(verdaderos_positivos) > 3:
-        alerta = True
+    
+    if len(verdaderos_positivos) > 0:
+        if len(falsos_positivos) / len(verdaderos_positivos) > 3:
+            alerta = True
 
     date_split = r.json()['date'].split('-')
     d = datetime(int(date_split[0]), int(date_split[1]), int(date_split[2]))

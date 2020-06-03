@@ -32,8 +32,7 @@ app.head = [
 
 
 def serve_layout():
-    #r = requests.get("http://localhost:3000/prediction/")
-    r = requests.get("http://18.208.188.16/prediction/2012-12-12")
+    r = requests.get("http://18.208.188.16/prediction/")
     if r.status_code == 404:
         return html.Div(children=[html.H1("No hay datos :(")])
 
@@ -45,17 +44,17 @@ def serve_layout():
 
     r2 = requests.get("http://18.208.188.16/inspection/2019-12-30")
 
-    model_params = requests.get("http://localhost:3000/model_parameter")
+    model_params = requests.get("http://18.208.188.16/model_parameter")
     
     df_model_params = pd.json_normalize(model_params.json())
 
-    r_aequitas_groups = requests.get("http://localhost:3000/aequitas/groups/" + str(date))
+    r_aequitas_groups = requests.get("http://18.208.188.16/aequitas/groups/" + str(date))
     aequitas_groups_df = pd.json_normalize(r_aequitas_groups.json(), 'aequitas_groups')
 
-    r_aequitas_fairness = requests.get("http://localhost:3000/aequitas/fairness/" + str(date))
+    r_aequitas_fairness = requests.get("http://18.208.188.16/aequitas/fairness/" + str(date))
     aequitas_fairness_df = pd.json_normalize(r_aequitas_fairness.json(), 'aequitas_fairness')
 
-    r_aequitas_bias = requests.get("http://localhost:3000/aequitas/groups/" + str(date))
+    r_aequitas_bias = requests.get("http://18.208.188.16/aequitas/groups/" + str(date))
     aequitas_bias_df = pd.json_normalize(r_aequitas_bias.json(), 'aequitas_groups')
 
     inspecciones = pd.json_normalize(r2.json(), 'centers')
@@ -65,7 +64,11 @@ def serve_layout():
 
     falsos_positivos = predicciones[predicciones['centerId'].isin(inspecciones.center_id)]
 
-
+    alerta = False
+    if (verdaderos_positivos / falsos_positivos) > 3:
+        alerta = True
+    print("="*100)
+    print(alerta)
     date_split = r.json()['date'].split('-')
     d = datetime(int(date_split[0]), int(date_split[1]), int(date_split[2]))
     date_label = "Fecha de las predicciones: "+d.strftime(format="%Y-%m-%d")
@@ -194,7 +197,10 @@ def serve_layout():
                     'backgroundColor': 'rgb(230, 230, 230)',
                     'fontWeight': 'bold'
                     }
-                )
+                ),
+                html.Div([
+                    html.H4("Algo anda mal..." if alerta else "Todo bien", style={"backgroundColor": "red" if alerta else "green"})
+                ])
             ], className="eight columns")
         ], className="row"),
         html.H2(children='Bias & Fairness'),

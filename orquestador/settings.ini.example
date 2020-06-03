@@ -1,0 +1,8 @@
+[API]
+app_token=APPTOKEN
+
+[DATABASE]
+host=localhost
+database= database
+user=dbuser
+password=pwd

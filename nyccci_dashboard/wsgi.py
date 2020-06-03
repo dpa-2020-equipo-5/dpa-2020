@@ -33,9 +33,13 @@ app.head = [
 
 def serve_layout():
     #r = requests.get("http://localhost:3000/prediction/")
-    r = requests.get("http://18.208.188.16/prediction")
-    
+    r = requests.get("http://18.208.188.16/prediction/2012-12-12")
+    if r.status_code == 404:
+        return html.Div(children=[html.H1("No hay datos :(")])
+
+    date = r.json()['date']
     df = pd.json_normalize(r.json(), 'centers')
+
 
     predicciones = df.copy()
 
@@ -45,7 +49,14 @@ def serve_layout():
     
     df_model_params = pd.json_normalize(model_params.json())
 
-    print(df_model_params)
+    r_aequitas_groups = requests.get("http://localhost:3000/aequitas/groups/" + str(date))
+    aequitas_groups_df = pd.json_normalize(r_aequitas_groups.json(), 'aequitas_groups')
+
+    r_aequitas_fairness = requests.get("http://localhost:3000/aequitas/fairness/" + str(date))
+    aequitas_fairness_df = pd.json_normalize(r_aequitas_fairness.json(), 'aequitas_fairness')
+
+    r_aequitas_bias = requests.get("http://localhost:3000/aequitas/groups/" + str(date))
+    aequitas_bias_df = pd.json_normalize(r_aequitas_bias.json(), 'aequitas_groups')
 
     inspecciones = pd.json_normalize(r2.json(), 'centers')
 
@@ -77,15 +88,6 @@ def serve_layout():
         html.H1(children='New York City Childcare Centers Inspections'),
         html.H4(children='Centros con mayor probabilidad de presentar una violación de salud pública'),
         html.P(children=date_label),
-        dcc.DatePickerSingle(
-            id='my-date-picker-range',
-            min_date_allowed=datetime(1995, 8, 5),
-            max_date_allowed=datetime(2020, 6, 1),
-            initial_visible_month=datetime(2020, 1, 1),
-            style={
-                "marginBottom":"15px"
-            }
-        ),
         html.Div(id='output-container-date-picker-range'),
         dash_table.DataTable(
             id='centersTable',
@@ -166,7 +168,7 @@ def serve_layout():
                         }
                     ],
                     'layout': {
-                        'title': 'Comparación de '
+                        'title': 'Verdaderos postivos y Falsos negativos de las predicciones'
                     }
                 },
                 className="four columns"
@@ -194,7 +196,80 @@ def serve_layout():
                     }
                 )
             ], className="eight columns")
-        ], className="row")
+        ], className="row"),
+        html.H2(children='Bias & Fairness'),
+        html.Div([
+            html.H5(children='Grupos'),
+            dash_table.DataTable(
+                id='biasGrooups',
+                columns=[{"name": i, "id": i} for i in aequitas_groups_df.columns],
+                data=aequitas_groups_df.to_dict('records'),
+                style_table={
+                    'width': '100%',
+                },
+                style_cell={
+                        'textAlign': 'left'
+                },
+                style_data_conditional=[
+                    {
+                        'if': {'row_index': 'odd'},
+                        'backgroundColor': 'rgb(248, 248, 248)'
+                    }
+                ],
+                style_header={
+                'backgroundColor': 'rgb(230, 230, 230)',
+                'fontWeight': 'bold'
+                }
+            )
+        ]),
+        html.Div([
+            html.H5(children='Fairness'),
+            dash_table.DataTable(
+                id='aeqiutasfairness',
+                columns=[{"name": i, "id": i} for i in aequitas_fairness_df.columns],
+                data=aequitas_fairness_df.to_dict('records'),
+                style_table={
+                    'width': '100%',
+                },
+                style_cell={
+                        'textAlign': 'left'
+                },
+                style_data_conditional=[
+                    {
+                        'if': {'row_index': 'odd'},
+                        'backgroundColor': 'rgb(248, 248, 248)'
+                    }
+                ],
+                style_header={
+                'backgroundColor': 'rgb(230, 230, 230)',
+                'fontWeight': 'bold'
+                }
+            )
+        ]),
+        html.Div([
+            html.H5(children='Bias'),
+            dash_table.DataTable(
+                id='aeqiutasboias',
+                columns=[{"name": i, "id": i} for i in aequitas_bias_df.columns],
+                data=aequitas_bias_df.to_dict('records'),
+                style_table={
+                    'width': '100%',
+                },
+                style_cell={
+                        'textAlign': 'left'
+                },
+                style_data_conditional=[
+                    {
+                        'if': {'row_index': 'odd'},
+                        'backgroundColor': 'rgb(248, 248, 248)'
+                    }
+                ],
+                style_header={
+                'backgroundColor': 'rgb(230, 230, 230)',
+                'fontWeight': 'bold'
+                }
+            )
+        ])
     ])
 
 app.layout = serve_layout

@@ -1,0 +1,14 @@
+.vscode
+settings.ini
+__pycache__
+.DS_Store
+*.json
+*.ipynb
+.ipynb_checkpoints
+cli.py
+loopy.sh
+settiings.ini.local
+settiings.ini
+settings.ini.other
+*.pckl
+

@@ -623,7 +623,7 @@ Name | Type | Description
 **center_id** | **string** | Id del centro a inspeccionar
 **priority** | **integer** | Indica el orden de revisión sugerido. Entre más alto el riesgo, mayor es la prioridad. 
 
-## 14. Dashboard
+## 15. Dashboard
 
 El dashboard muestra por día las predicciones hechas para todos aquellos centros con más del 50% de probabilidad de tener una violación de salud pública en orden descendente. Dado lo encontrado en el EDA, en teoría solo se necesitan las primeras 34 predicciones pues esos serán los centros a visitar.
 

@@ -318,8 +318,8 @@ La matriz de confusión es la siguiente:
 
 ![matriz_confusion.png](img/matriz_confusion.png)
 
-La precisión del modelo fue de: 0.5678
-El recall del modelo fue de: 0.6405
+- La precisión del modelo fue de: 0.5678
+- El recall del modelo fue de: 0.6405
 
 ## 8. Metadata y linaje de datos
 

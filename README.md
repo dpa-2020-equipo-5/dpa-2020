@@ -304,15 +304,19 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
 
 ## 7. Modelado
 
-La variable binaria dependiente es `violationcategory_public_health_hazard` pues se dese predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
+La variable binaria dependiente es `violationcategory_public_health_hazard` pues se desea predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
 
 Se utilizaron todas las variables de la Tabla 5 descritas en la sección 6.3 Tabla 5: Centros-inspecciones-modelado.
 
-Para el entrenamiento se usaron todos los datos del 2017-2019 y para validación los datos correspondientes a lo que va del año 2020.
+Para el entrenamiento se usaron todos los datos desde el 2017 hasta noviembre del 2019. Para la validación se usaron los datos de diciembre del 2019 y para las predicciones los datos de enero del 2020.
 
-Se corrió un modelo de random forest con los siguientes parámetros:
+Se corrió un modelo de random forest con un gridsearch para definir cuáles son los mejores parámetros.
  
 ### 7.1 Resultados random forest
+
+La matriz de confusión es la siguiente:
+
+![matriz_confusion.png](img/matriz_confusion.png)
 
 ## 8. Metadata y linaje de datos
 
@@ -511,5 +515,13 @@ Name | Type | Description
 **priority** | **integer** | Indica el orden de revisión sugerido. Entre más alto el riesgo, mayor es la prioridad. 
 
 ## 14. Dashboard
+
+El dashboard muestra por día las predicciones hechas para todos aquellos centros con más del 50% de probabilidad de tener una violación de salud pública en orden descendente. Dado lo encontrado en el EDA, en teoría solo se necesitan las primeras 34 prediccioes pues esos serán los centro a visitar. 
+
+También se observan gráficas de barras con la ubicación por distrito de los centros predichos y el tipo de estancia infantil.
+
+Se muestra el monitoreo del modelo con una gráfica de los verdaderos positivos y falsos negativos y finalmente, se muestran los resultados de bias y fairness.
+
+El dashboard se enceuntra en la siguiente [liga](https://ccci.dpa2020.com/) y a continuación se muestra una impresión de pantalla del mismo.
 
 ## 15. Conclusiones

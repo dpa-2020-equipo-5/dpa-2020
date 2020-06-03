@@ -442,6 +442,74 @@ Por todas estas razones, es fundamental que se haga un buen scoping del problema
 
 ## 13. API
 
+NYC DOHMH API está diseñada para obtener datos de diferentes entidades:
+* Predicciones
+* Inspecciones
+* Parámetros del modelo
+* Aequitas
+
+Los endpoints regresan 3 diferentes tipos de códigos, de acuerdo al resultado de la petición:
+
+* 200: petición exitosa
+* 400: parámetro fecha inválido
+* 404: no existen datos
+
+## Definición de endpoints
+
+Method | HTTP request
+------------- | -------------
+get_predictions | **GET** /prediction
+get_predictions_by_date | **GET** /prediction/{date}
+get_inspection_by_date | **GET** /inspection/{date}
+get_model_parameter | **GET** /model_parameter/{date}
+get_aequitas_bias_by_date | **GET** /aequitas/bias/\<date>
+get_aequitas_fairness_by_date | **GET** /aequitas/fairness/\<date>
+get_aequitas_groups_by_date | **GET** /aequitas/groups/\<date>
+
+## Ejemplo de definición de métodos
+
+### **get_predictions**
+> Prediction get_predictions()
+
+Obtiene la lista de centros a verificar más reciente.
+#### Request
+No se necesita ningún parámetro.
+#### Response
+
+[**Prediction**](README.md#Prediction)
+
+### **get_predictions_by_date**
+> Prediction get_predictions_by_date(date)
+
+Obtiene una lista de centros para una fecha en específico.
+
+#### Request
+
+Name | Type | Description  
+------------- | ------------- | -------------
+ **date** | **string**| Fecha en formato yyyy-MM-dd
+
+### Response
+
+[**Prediction**](README.md#Prediction)
+
+### Prediction
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**date** | **string** |  Fecha de la predicción| Formato: 'yyyy-MM-dd' 
+**centers** | [**list[Inspection]**](README.md#Inspection) |  Lista de centros a inspeccionar| 
+
+
+### Inspection
+
+#### Properties
+Name | Type | Description
+------------ | ------------- | -------------
+**center_id** | **string** | Id del centro a inspeccionar
+**priority** | **integer** | Indica el orden de revisión sugerido. Entre más alto el riesgo, mayor es la prioridad. 
+
 ## 14. Dashboard
 
 ## 15. Conclusiones

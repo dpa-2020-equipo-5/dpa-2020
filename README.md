@@ -26,7 +26,7 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 
 En la ciudad de Nueva York se realizan inspecciones diarias en días hábiles a los 2,807 centros de cuidado infantil que hay en la ciudad. Del total de inspecciones realizadas, a partir del abril del año 2017 y hasta el día de hoy, aproximadamente el 60% tiene algún tipo de violación. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública. Por lo tanto, es de vital importancia identificar cuáles centros son más propensos a cometer una violación de salud pública para llegar a inspeccionarlos en el menor tiempo posible. 
 
-Si se tuviera suficientes inspectores para visitar todos los centros diariamente, este problea no existiría pero, dado que solamente hay un número limitado de inspectores, se diseñará e implementará un modelo predictivo que permita identificar a los centro de cuidados infantiles con mayor probabilidad de cometer una violación del tipo "peligro par ala salud pública".
+Si se tuvieran suficientes inspectores para visitar todos los centros diariamente, este problema no existiría, pero dado que solamente hay un número limitado de inspectores, se diseñará e implementará un modelo predictivo que permita identificar a los centro de cuidados infantiles con mayor probabilidad de cometer una violación del tipo "peligro para la salud pública".
 
 El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza). 
 
@@ -44,7 +44,7 @@ La estructura del repositorio es la siguiente:
 
      1. [clean.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/clean.py): Script que ayuda a realizar la limpieza de los datos.
      2. [centros_estatica_proc.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/centros_estatica_proc.py): Script que hace el feature engineering de la información correspondiente a los centros de cuidado infantil.
-     3. [inspecciones_dinamica_proc.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/inspecciones_dinamica_proc.py): Script que hace el feature engineering de la información correspondiente a las inspecciones realiadas a los centros de cuidado infantil.  
+     3. [inspecciones_dinamica_proc.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/inspecciones_dinamica_proc.py): Script que hace el feature engineering de la información correspondiente a las inspecciones realizadas a los centros de cuidado infantil.  
      4. [entrenamiento.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/entrenamiento.py): Script que une la información de `centros_estatica_proc.py` y `inspecciones_dinamica_proc.py` y con eso,  realiza la división de los datos en la muestra para entrenamiento y para validación.
      5. [randomforest.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/randomforest.py) : Script que realiza un modelo de randomforest.
      
@@ -97,7 +97,7 @@ Nuestro `crontab` lucirá de la siguiente manera:
 
 **Nota: Los nombres de archivos y directorios no son finales.**
 
-**Contenido de nuestroo `crontab`**
+**Contenido de nuestro `crontab`**
 ~~~
 MAILTO=miembros-equipo-5@dpa-itam-2020.com
 0 10 * * * python3 /home/ubuntu/scripts/etl/execute.sh
@@ -124,7 +124,7 @@ TODO: Orquestar con CRON
 
 ## 4. Datos
 
-El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy. La base de datos se actualiza de manera diaria y contiene 34 variables con alrededor de 51,000 observaciones incluyendo observaciones duplicadas. Si se elimina las observaciones duplicadas, quedan alrededor de  39,000 inspecciones.
+El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy. La base de datos se actualiza de manera diaria y contiene 34 variables con alrededor de 51,000 observaciones incluyendo observaciones duplicadas. Si se elimina las observaciones duplicadas, quedan alrededor de 39,000 inspecciones.
 
 Las variables, su tipo y descripción son las siguientes:
 
@@ -169,9 +169,9 @@ No obstante, de la base original, se utilizaron muy pocas variables ya que la ma
 
 ## 5. Análisis exploratorio
 
-El análisis exploratorio de nuestros datos básicamente consistió en analizar la frecuencia y el promedio de inspecciones por año y por distrito para conocer dónde y cuándo habían más violaciones, así como conocer con cuántos inspectores se cuenta en peromedio diario para pover realizar las inspecciones futuras.
+El análisis exploratorio de nuestros datos básicamente consistió en analizar la frecuencia y el promedio de inspecciones por año y por distrito para conocer dónde y cuándo había más violaciones, así como conocer con cuántos inspectores se cuenta en promedio diario para poder realizar las inspecciones futuras.
 
-El análisis se hizo para un total de 38,519 observaciones que surgieron después de tirar los duplicados de la base de datos. Dado que este análisi es estático y la actualización de los datos es diaria, los números pueden variar en el tiempo.
+El análisis se hizo para un total de 38,519 observaciones que surgieron después de tirar los duplicados de la base de datos. Dado que este análisis es estático y la actualización de los datos es diaria, los números pueden variar en el tiempo.
 
 ### 5.1 Inspecciones totales anuales
 
@@ -188,15 +188,15 @@ La siguiente tabla muestra el número de inspecciones anuales totales por distri
 
 **Nota:** El total suma 38,462 porque hay 57 observaciones que no tienen año de inspección.
 
-Se puede observar que el número de inspeccinoes para el año 2018 y 2019 fue de entre 13,000 y 15,000 inpsccinoes. El año 2020 tiene menos inspecciones porque apenas está transcurriendo y porque muchos centros se han cerrado por la situación del COVID. El año 2017 también tiene menos inspeccione y la razón puede deberse más bien al inicio de la recolección de datos y no tanto a que el número de inspecciones se haya duplicado de un año para otro.
+Se puede observar que el número de inspecciones para el año 2018 y 2019 fue de entre 13,000 y 15,000 inspecciones. El año 2020 tiene menos inspecciones porque apenas está transcurriendo y porque muchos centros se han cerrado por la situación del COVID. El año 2017 también tiene menos inspeccione y la razón puede deberse más bien al inicio de la recolección de datos y no tanto a que el número de inspecciones se haya duplicado de un año para otro.
 
-Además, se muestra que 3 de los 5 distritos han tenido alrededo de 8,000-9,000 inspecciones. Sin embargo, Brooklyn ha tenido casi 1/3 más y Staten Island 6/8 menos. Esto puede deberse a que esos distritos tengan más o menos violaciones y por eso si inspeccionen más/menos o al número de centros por distrito. Por ello, la siguiente gráfica muestra el número de centros por distrito.
+Además, se muestra que 3 de los 5 distritos han tenido alrededor de 8,000-9,000 inspecciones. Sin embargo, Brooklyn ha tenido casi 1/3 más y Staten Island 6/8 menos. Esto puede deberse a que esos distritos tengan más o menos violaciones y por eso si inspeccionen más/menos o al número de centros por distrito. Por ello, la siguiente gráfica muestra el número de centros por distrito.
 
 ![no_centros_distrito](img/no_centros_distrito.png)
 
-De la gráfica se observa que, efectivamente, Brooklyn tiene más inspecciones y Staten Island menos por el número de centros que tiene cada distrito. Sin embargo, llama la atención el caso de Bronx pues aunque solamente tiene 370 centros, éstos son inspeccionados tantas veces como Manhattan y Queens que tienen el doble de centros. Esto puede ser un indicador de que en el distrito de Bronx se cometen más violaciones. 
+De la gráfica se observa que, efectivamente, Brooklyn tiene más inspecciones y Staten Island menos por el número de centros que tiene cada distrito. Sin embargo, llama la atención el caso de Bronx pues, aunque solamente tiene 370 centros, éstos son inspeccionados tantas veces como Manhattan y Queens que tienen el doble de centros. Esto puede ser un indicador de que en el distrito de Bronx se cometen más violaciones. 
 
-Finalmente, se construyó una tabla con el número de violaciones por año para ver cuántas inspeccinoes resultaban en violaciones y de qué tipo.
+Finalmente, se construyó una tabla con el número de violaciones por año para ver cuántas inspecciones resultaban en violaciones y de qué tipo.
 
 |       |         | Tipo de violación  |                      |       |
 |:-----:|:-------:|:------------------:|:--------------------:|:-----:|
@@ -207,7 +207,7 @@ Finalmente, se construyó una tabla con el número de violaciones por año para 
 |  2020 |   1051  |         847        |          275         |  2173 |
 | Total |  11910  |        8060        |         3281         | 23251 |
 
-Se observa que del número de inspecciones realizadas, aproximadamente el 60% tiene algún tipo de violación. Esto puede significar o que muchísimos centros comenten violaciones o que se está inspeccionando de una manera adecuada y se está descubriendo a los centros que van a cometer violaciones efecetivamente. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública.
+Se observa que, del número de inspecciones realizadas, aproximadamente el 60% tiene algún tipo de violación. Esto puede significar o que muchísimos centros comenten violaciones o que se está inspeccionando de una manera adecuada y se está descubriendo a los centros que van a cometer violaciones efectivamente. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública.
 
 
 ### 5.2 Inspecciones promedio diarias
@@ -222,11 +222,11 @@ Como no se cuenta con información acerca de cuántos inspectores hay disponible
 | 2019 |   11  |    16    |     10    |   12   |       2       |   51  |
 | 2020 |   18  |    20    |     14    |   14   |       2       |   68  |
 
-Se observa que se cuenta con entre 46 y 68 inspectores de manera diaria para visitar centros. En el 2020, habían 68 inspecciones diarias y eso implica que el departamento de inspeccines cuetna con al menos 68 inspectores para las visitas futuras en el año, claro, suponiendo que se sigue contando con el mismo personal disponible. El promedio de inspecciones diarias por distrito son: Bronx 12, Brooklyn 18, Manhattan 12, Queens 12 y Staten Island.
+Se observa que se cuenta con entre 46 y 68 inspectores de manera diaria para visitar centros. En el 2020, había 68 inspecciones diarias y eso implica que el departamento de inspecciones cuenta con al menos 68 inspectores para las visitas futuras en el año, claro, suponiendo que se sigue contando con el mismo personal disponible. Los promedios de inspecciones diarias por distrito son: Bronx 12, Brooklyn 18, Manhattan 12, Queens 12 y Staten Island.
 
 ### 5.3 Inspecciones promedio diarias para el tipo inspección inicial
 
-Finalmente, se calculó el promedio de inspecciones diarias de tipo inspección inicial dado que en este modelo las predicciones se crearán para inspecciones iniciales. La razón es que las inspecciones subsecuentes no son de tanto interés pues ya son solo follow-ups, lo importante es identificar a los centros con vioalcinoes en sus inspeccinoes iniciales.
+Finalmente, se calculó el promedio de inspecciones diarias de tipo inspección inicial dado que en este modelo las predicciones se crearán para inspecciones iniciales. La razón es que las inspecciones subsecuentes no son de tanto interés pues ya son solo follow-ups, lo importante es identificar a los centros con violaciones en sus inspecciones iniciales.
 
 |      |       |          |  Distrito |        |               |       |
 |:----:|:-----:|:--------:|:---------:|:------:|:-------------:|:-----:|
@@ -258,18 +258,18 @@ El proceso de limpieza de datos y creación de variables es el siguiente:
 El feature engineering que se le aplicó a la Tabla 3 (Centros-estática) consistió en los siguientes pasos:
 
 * Usar las 28 variables originales de la Tabla2 que fueron seleccionadas para la Tabla3. Es decir, desde `centername` hasta `avgcriticalviolationrate`. 
-* Categorizar las variables: `borough`,`programtype` y `facilitytype`.
+* Categorizar las variables: `borough`, `programtype` y `facilitytype`.
 
 
 ### 6.2 Tabla 4: Inspecciones-dinámicas  
 
-El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) consistió en los siguientes pasos:
+El feature engineering que se le aplicó a la Tabla 4 (Inspecciones-dinámicas) consistió en los siguientes pasos:
 
-* Conservar únicamente 8 variables: 6 variables que aportan información sobre las inspecciones `dc_id`, `inspectiondate`, `regulationsummary`, `violationcategory`, `healthcodesubsection`, `violationstatus`,`inspectionsummaryresult`;`borough`, que se usa para generar nuevas variables, y 'dcare_id, que se usa par hacer el join): 
+* Conservar únicamente 8 variables: 6 variables que aportan información sobre las inspecciones `dc_id`, `inspectiondate`, `regulationsummary`, `violationcategory`, `healthcodesubsection`, `violationstatus`, `inspectionsummaryresult`;`borough`, que se usa para generar nuevas variables, y 'dcare_id, que se usa para hacer el join): 
 * Separar la variable de `inspecionsummaryresult` en 3 variables: `reason`, `result1` y `result2`. 
 * Rellenar con NP las celdas vacías de `violationcategory`.
 * Categorizar las variables `violationcategory`, `reason`, `result1` y `result2`.
-* Tirar todas las observaciones que representaran inspecciones que no fueran de primera vez (revisiones subsecuentes y especiales). Es decir, que en la variable de  `reason` dijera "initial annual inspection".  
+* Tirar todas las observaciones que representaran inspecciones que no fueran de primera vez (revisiones subsecuentes y especiales). Es decir, que en la variable de `reason` dijera "initial annual inspection".  
 * Tirar las observaciones de los días no hábiles: sábado y domingo. Esto porque hay muy pocas y no son inspecciones rutinarias.
 * Ordenar la base por `dc_id` y por `year`, `month` y `day` en orden descendiente.
 * Creación de variables:
@@ -298,9 +298,9 @@ El feature engineering que se le aplicó a la Tabla 4 (Inpecciones-dinámicas) c
 
 ### 6.3 Tabla 5: Centros-inspecciones-modelado
 
-* De la Tabla 3 (Centros-estática) conservar únicamenta 17 variables que se utilizarán en el modelo: `dc_id`, `maximumcapacity`, `totaleducationalworkers`, `averagetotaleducationalworkers`, `programtype_all_age_camp`, `programtype_infant_toddler`,`programtype_preschool`,`programtype_preschool_camp`, `programtype_school_age_camp`,`facilitytype_camp`,`facilitytype_gdc`,`facilitytype_sbcc`,`borough_bronx`,`borough_brooklyn`,`borough_manhattan`,`borough_queens` y `borough_staten_island`.
-* De la Tabla 4 (Inpecciones-dinámicas) conservar únicamente las 29 variables que se utilizarán en el modelo: `result_1_passed_inspection`, `result_1_passed_inspection_with_no_violations`, `result_1_previously_cited_violations_corrected`, `result_1_previously_closed_program_re-opened`, `result_1_reinspection_not_required`, `result_1_reinspection_required`,`result_2_NR`, `result_2_fines_pending`, `result_2_program_closed`, `result_2_violations_corrected_at_time_of_inspection`, `inspection_year`, `inspection_month`, `inspection_day_name`, `violationcategory_critical`, `violationcategory_general`, `violationcategory_public_health_hazard`, `dias_ultima_inspeccion`, `violaciones_hist_salud_publica`, `violaciones_2019_salud_publica`    , `violaciones_hist_criticas`, `violaciones_2019_criticas`, `ratio_violaciones_hist`, `ratio_violaciones_2019`, `prom_violaciones_hist_borough`, `prom_violaciones_2019_borough`, `ratio_violaciones_hist_sp`, `ratio_violaciones_2019_sp`                , `ratio_violaciones_hist_criticas`, `ratio_violaciones_2019_criticas`.
-* Dividir los datos en la muestra de entrenamiento que corresponde a todas las inspecciones entre el añod 2017 y 2019 y en la muestra de validación que corresponde a los datos del año 2020.
+* De la Tabla 3 (Centros-estática) conservar únicamente 17 variables que se utilizarán en el modelo: `dc_id`, `maximumcapacity`, `totaleducationalworkers`, `averagetotaleducationalworkers`, `programtype_all_age_camp`, `programtype_infant_toddler`,`programtype_preschool`,`programtype_preschool_camp`, `programtype_school_age_camp`,`facilitytype_camp`,`facilitytype_gdc`,`facilitytype_sbcc`,`borough_bronx`,`borough_brooklyn`,`borough_manhattan`,`borough_queens` y `borough_staten_island`.
+* De la Tabla 4 (Inspecciones-dinámicas) conservar únicamente las 29 variables que se utilizarán en el modelo: `result_1_passed_inspection`, `result_1_passed_inspection_with_no_violations`, `result_1_previously_cited_violations_corrected`, `result_1_previously_closed_program_re-opened`, `result_1_reinspection_not_required`, `result_1_reinspection_required`,`result_2_NR`, `result_2_fines_pending`, `result_2_program_closed`, `result_2_violations_corrected_at_time_of_inspection`, `inspection_year`, `inspection_month`, `inspection_day_name`, `violationcategory_critical`, `violationcategory_general`, `violationcategory_public_health_hazard`, `dias_ultima_inspeccion`, `violaciones_hist_salud_publica`, `violaciones_2019_salud_publica`    , `violaciones_hist_criticas`, `violaciones_2019_criticas`, `ratio_violaciones_hist`, `ratio_violaciones_2019`, `prom_violaciones_hist_borough`, `prom_violaciones_2019_borough`, `ratio_violaciones_hist_sp`, `ratio_violaciones_2019_sp`                , `ratio_violaciones_hist_criticas`, `ratio_violaciones_2019_criticas`.
+* Dividir los datos en la muestra de entrenamiento que corresponde a todas las inspecciones entre el año 2017 y noviembre del 2019 y en la muestra de validación que corresponde a los datos de diciembre del 2019.
 
 ## 7. Modelado
 
@@ -343,11 +343,11 @@ Checa que la extracción tenga como resultado por lo menos una inspección.
 
 #### 9.1.3. [Is JSON Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/is_json_validation.py)
 
-Verifica que la exctracción tenga como resultado un objeto JSON válido. Python parsea JSONs como listas de diccionarios.
+Verifica que la extracción tenga como resultado un objeto JSON válido. Python parsea JSONs como listas de diccionarios.
 
 #### 9.1.4. [Inspection Dates Match Request Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/inspection_dates_match_request_date_validation.py)
 
-Analiza cada fecha de inspeción del resultado de la extración y verifica que todas estas sean iguales a la fecha de la solicitud (fecha con la que ejecuta el orquestador).
+Analiza cada fecha de inspección del resultado de la extracción y verifica que todas estas sean iguales a la fecha de la solicitud (fecha con la que ejecuta el orquestador).
 
 ### 9.2. Pruebas de Feature Engineering
 
@@ -357,7 +357,7 @@ Verifica que la transformación haya correctamente creado columnas necesarias co
 
 #### 9.2.2. [Transformed Inspections Match Request Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/feature_engineering_validations/transformed_inspections_match_request_date_validation.py)
 
-Dado que nuestro orquestador trabaja con datos de un día a la vez, es necesario que las transformaciones de datos se hagan únicamente sobre los datos del día. Esto a su vez también logrará que la ejecución del pipelean sea significativamente más rápida. Esta prueba unitaria se encarga de verificar que todas las fechas de inspección de las inspecciones transformadas sean iguales a la fecha de la solicitud (fecha con la que ejecuta el orquestador).
+Dado que nuestro orquestador trabaja con datos de un día a la vez, es necesario que las transformaciones de datos se hagan únicamente sobre los datos del día. Esto a su vez también logrará que la ejecución del pipeline sea significativamente más rápida. Esta prueba unitaria se encarga de verificar que todas las fechas de inspección de las inspecciones transformadas sean iguales a la fecha de la solicitud (fecha con la que ejecuta el orquestador).
 
 ## 10. DAG
 
@@ -384,10 +384,10 @@ Por consiguiente, las dos métricas a optimizar son:
 
 ### 11.2 Selección de atributos
 
-Para seleccionar los atributos protegidos se realizaron disstintas gráficas de proporción de frecuencias usando la predicción y algunas variables categóricas que se consdieró que pudieran tener sesgo en la clasificación.
+Para seleccionar los atributos protegidos se realizaron distintas gráficas de proporción de frecuencias usando la predicción y algunas variables categóricas que se consideró que pudieran tener sesgo en la clasificación.
 
-- `borough`: El distrito es importante pues hay distintos niveles socioeconómicos entre éstos y ello puede afectar la calidad y limpieza de los centros infantiles. Además la población por condado también es importante.
-- `programtype`: Esta variable se refiere al tipo de programa del centro y está ampliamente relacionado con la edad de los niños. Esto uede ser problemático pues quizá hay mayores riesgos al atender a bebés que a niños un poco más grandes por ejemplo.
+- `borough`: El distrito es importante pues hay distintos niveles socioeconómicos entre éstos y ello puede afectar la calidad y limpieza de los centros infantiles. Además, la población por condado también es importante.
+- `programtype`: Esta variable se refiere al tipo de programa del centro y está ampliamente relacionado con la edad de los niños. Esto puede ser problemático pues quizá hay mayores riesgos al atender a bebés que a niños un poco más grandes, por ejemplo.
 
 ### 11.3 Categorías de referencia
 
@@ -395,7 +395,7 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 
 - `borough`: Escogimos la categoría de `Brooklyn` pues es el distrito con más centros y más inspecciones. Además, tiene un nivel socioeconómico bajo solamente superando al distrito de Bronx.
 
-- `programtype`:Se escogió la categoría de `preschool` pues es el tipo de programa con más  inspecciones.
+- `programtype`: Se escogió la categoría de `preschool` pues es el tipo de programa con más  inspecciones.
 
 ### 11.4 Resultados
 
@@ -417,31 +417,31 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 
 ## 12. Implicaciones éticas
 
-Algunas de las implicaciones éticas relacionadas con el modelo proepuesto son las siguientes:
+Algunas de las implicaciones éticas relacionadas con el modelo propuesto son las siguientes:
 
 - Identificación del problema:
 
     - En este proyecto se definió como problema más grave el tener una violación de salud pública con base en la información de la variable `violationcategory` y los días que le dan al centro para arreglar el problema con base en su urgencia. Sin embargo, es probable que nuestra identificación del problema sea errónea y haya otro tipo de violaciones más urgentes o, si no, más urgentes que sucedan con más frecuencia. La decisión jerárquica de violaciones puede ser distinta en distintos contextos. 
-    - Otro problema con nuestra identificación es que no se tomó en cuenta el número de niños que se ven afectados por estas violaciones. Es decir, quizá un centro comete violacinoes muy graves pero tiene poco alumnos, mientras que, otro centro pudiera estar cometiendo vioalciones menos graves pero que afecten a muchos más alumnos. Para resolver este problema habría que tomar en cuenta el número de niños afectados a la hora de definir el criterio de gravedad de las violacones.
-    - Además, enfocarse a “los lugares con más violaciones” no necesariamente implica que éstos lugares vayan a ser los que tienen mayor disposición o recursos para arreglar las violaciones. Es decir, quizá los centros con más violaciones ya saben que las están cometiendo pero no tienen la forma o la disposición de arreglarlas. En cambio, quizá pueda ser más relevante visitar a los centros con mayor probabilidad de tener un cambio de conducta para así bajar el promedio de violaciones en general que es el objetivo último de estos modelos. Se he probado en otro tipo de programas socilaes que éstos tienen mayor impacto en percentiles de “en medio” que los programas que se enfocan a los percentiles más bajos. Entonces, la decisión de en qué áreas utilizar los recursos y dónde podrían representar un mayor beneficio a largo plazo debe tomarse en cuenta.
+    - Otro problema con nuestra identificación es que no se tomó en cuenta el número de niños que se ven afectados por estas violaciones. Es decir, quizá un centro comete violaciones muy graves, pero tiene poco alumnos, mientras que, otro centro pudiera estar cometiendo violaciones menos graves pero que afecten a muchos más alumnos. Para resolver este problema habría que tomar en cuenta el número de niños afectados a la hora de definir el criterio de gravedad de las violaciones.
+    - Además, enfocarse a “los lugares con más violaciones” no necesariamente implica que estos lugares vayan a ser los que tienen mayor disposición o recursos para arreglar las violaciones. Es decir, quizá los centros con más violaciones ya saben que las están cometiendo, pero no tienen la forma o la disposición de arreglarlas. En cambio, quizá pueda ser más relevante visitar a los centros con mayor probabilidad de tener un cambio de conducta para así bajar el promedio de violaciones en general que es el objetivo último de estos modelos. Se he probado en otro tipo de programas sociales que éstos tienen mayor impacto en percentiles de “en medio” que los programas que se enfocan a los percentiles más bajos. Entonces, la decisión de en qué áreas utilizar los recursos y dónde podrían representar un mayor beneficio a largo plazo debe tomarse en cuenta.
     
 - Otras causas de problema:
 
-    -  El problema que estamos resolviendo podría ser, en realidad, un síntoma de un problema mayor, es decir, la violaciones en los centros podrían ser un derivado de la falta de capital humano, inseguridad, falta de estado de derecho y pobreza en la zona. Por lo tanto, incrementar el monitoreo en la zona podría no ser la solución principal si no otro tipo de actividades que mejoren la seguridad, poder adquisitivo de las personas, infraestructura de los centros, contratación de personal más adecuado, entre otros. 
+    -  El problema que estamos resolviendo podría ser, en realidad, un síntoma de un problema mayor, es decir, las violaciones en los centros podrían ser un derivado de la falta de capital humano, inseguridad, falta de estado de derecho y pobreza en la zona. Por lo tanto, incrementar el monitoreo en la zona podría no ser la solución principal si no otro tipo de actividades que mejoren la seguridad, poder adquisitivo de las personas, infraestructura de los centros, contratación de personal más adecuado, entre otros. 
     
 - Datos y privacidad:
     
-    - Podría existir un problema de privacidad con respecto a la publicación de los datos de las inspecciones de los centros. No se sabe si los dueños de los centros han dado su consentimiento para la publicación de los resultados de las inspecciones. Quizá debería de hacerse privado anonimizar los datos y se limpiar toda información de cualquier identificación personal. 
+    - Podría existir un problema de privacidad con respecto a la publicación de los datos de las inspecciones de los centros. No se sabe si los dueños de los centros han dado su consentimiento para la publicación de los resultados de las inspecciones. Quizá debería de hacerse privado el nombre de los centros y su ubicación. 
     - El hecho de tener estos datos públicos, puede ser usado de manera incorrecta tomando represalias ante el personal y dueños de los centros si hay algún escándalo por algún problema en el centro.
      
 - Acciones:
 
-    - Un gran problema relacionado con las acciones que pueden tomarse dado los resultados del modelo es que se podría afectar negativamente a las localidades más pobres y violentas. Si se visita más a las zonas más pobres y éstas no tienen el recurso para arreglar las violaciones, se corre el riesgo del potencial cierre de centros que quizá la población necesita. Esto afectaría negativamente aún más a los padres de los niños que tienen que dejarlos en centros de cuidado infantil, afectando sus horas laborales por ejemplo. 
-    - El modelo podría generar cambios en la conducta de los encargados del centro advirtiendo a los otros centros en la zona por ejemplo. Si suponemos que la vioalción de centros es por zona y un centro ya ha sido monitoreado, los demás centros pueden entrar en un estado de alerta y podrían esconder evidencia de violaciones, dado que sabrán que su “zona” es un target geográfico y será constantemente monitoreado. Esto podría representar una acción tanto positiva como negativa, positiva si se corigen los problemas de manera más pronta y se corrigen bien, pero negativa si simplemente se esconden los porblemas o se solucionan temporalmente.
-    - El modelo también podría tener un efecto sobre los inspectores. Es decir, es posible que los inspectores prefieran ir a monitorear lugares "fáciles" donde no vaya a haber violaciones y donde su trabajo pueda ser más seguro y placentero. Esto puede causar incentivos perversos en los inspectores para reportar que no hubieron fallas en luagres a donde no quieren volver a ir. 
+    - Un gran problema relacionado con las acciones que pueden tomarse dado los resultados del modelo es que se podría afectar negativamente a las localidades más pobres y violentas. Si se visita más a las zonas más pobres y éstas no tienen el recurso para arreglar las violaciones, se corre el riesgo del potencial cierre de centros que quizá la población necesita. Esto afectaría negativamente aún más a los padres de los niños que tienen que dejarlos en centros de cuidado infantil, afectando sus horas laborales, por ejemplo. 
+    - El modelo podría generar cambios en la conducta de los encargados del centro advirtiendo a los otros centros en la zona, por ejemplo. Si suponemos que la violación de centros es por zona y un centro ya ha sido monitoreado, los demás centros pueden entrar en un estado de alerta y podrían esconder evidencia de violaciones, dado que sabrán que su “zona” es un target geográfico y será constantemente monitoreado. Esto podría representar una acción tanto positiva como negativa, positiva si se corrigen los problemas de manera más pronta y se corrigen bien, pero negativa si simplemente se esconden los problemas o se solucionan temporalmente.
+    - El modelo también podría tener un efecto sobre los inspectores. Es decir, es posible que los inspectores prefieran ir a monitorear lugares "fáciles" donde no vaya a haber violaciones y donde su trabajo pueda ser más seguro y placentero. Esto puede causar incentivos perversos en los inspectores para reportar que no hubieron fallas en lugares a donde no quieren volver a ir. 
  
 
-Por todas estas razones, es fundamental que se haga un buen scoping del problema e implementación del modelo. Es importante que el equipo reconozca las limitaciones del mismo, sus antecedentes y se involucre a expertos externos cuando sea posible para evaluar el desmpeño del modelo y mejorar de los monitoreos.
+Por todas estas razones, es fundamental que se haga un buen scoping del problema e implementación del modelo. Es importante que el equipo reconozca las limitaciones del mismo, sus antecedentes y se involucre a expertos externos cuando sea posible para evaluar el desempeño del modelo y mejorar el monitoreo.
 
 
 ## 13. API
@@ -516,12 +516,16 @@ Name | Type | Description
 
 ## 14. Dashboard
 
-El dashboard muestra por día las predicciones hechas para todos aquellos centros con más del 50% de probabilidad de tener una violación de salud pública en orden descendente. Dado lo encontrado en el EDA, en teoría solo se necesitan las primeras 34 prediccioes pues esos serán los centro a visitar. 
+El dashboard muestra por día las predicciones hechas para todos aquellos centros con más del 50% de probabilidad de tener una violación de salud pública en orden descendente. Dado lo encontrado en el EDA, en teoría solo se necesitan las primeras 34 predicciones pues esos serán los centros a visitar. 
 
 También se observan gráficas de barras con la ubicación por distrito de los centros predichos y el tipo de estancia infantil.
 
 Se muestra el monitoreo del modelo con una gráfica de los verdaderos positivos y falsos negativos y finalmente, se muestran los resultados de bias y fairness.
 
-El dashboard se enceuntra en la siguiente [liga](https://ccci.dpa2020.com/) y a continuación se muestra una impresión de pantalla del mismo.
+El dashboard se encuentra en la siguiente [liga](https://ccci.dpa2020.com/) y a continuación se muestra una impresión de pantalla del mismo.
+
+![dashboard_1](img/dashboard_1.png)
+
+![dashboard_2](img/dashboard_2.png)
 
 ## 15. Conclusiones

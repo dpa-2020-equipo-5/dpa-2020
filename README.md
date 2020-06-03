@@ -459,8 +459,8 @@ Los endpoints regresan 3 diferentes tipos de códigos, de acuerdo al resultado d
 Method | HTTP request
 ------------- | -------------
 get_predictions | **GET** /prediction
-get_predictions_by_date | **GET** /prediction/{date}
-get_inspection_by_date | **GET** /inspection/{date}
+get_predictions_by_date | **GET** /prediction/\<date>
+get_inspection_by_date | **GET** /inspection/\<date>
 get_model_parameter | **GET** /model_parameter
 get_aequitas_bias_by_date | **GET** /aequitas/bias/\<date>
 get_aequitas_fairness_by_date | **GET** /aequitas/fairness/\<date>

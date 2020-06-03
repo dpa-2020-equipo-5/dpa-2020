@@ -20,7 +20,6 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 12. [Implicaciones éticas](#12.-Implicaciones-éticas)
 13. [API](#13.-API)
 14. [Dashboard](#14.-Dashboard)
-15. [Conclusiones](#15.-Conclusiones)
 
 ## 1. Introducción
 
@@ -34,19 +33,20 @@ El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](ht
 
 La estructura del repositorio es la siguiente:
 
-- Carpeta [config](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/config): Contiene los scripts necesarios para crear la arquitectura en la n
+- Carpeta [api](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/api): Contiene toda la información referente a la creación y ejecución del API.
 
-- Carpeta [eda](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/eda): Contiene el notebook e imágenes correspondientes al análisis exploratorio de los datos.
+- Carpeta [config](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/config): Contiene los scripts necesarios para crear la arquitectura en la nube.
 
-- Carpeta [img](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/r/img): Contiene las imágenes y diagramas utilizados en este `README.md`.
+- Carpeta [eda](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/eda): Contiene el notebook del análisis exploratorio de los datos.
 
-- Carpeta [scripts](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts): Contiene los scripts necesarios para poder correr los modelos.
+- Carpeta [img](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/img): Contiene las imágenes y diagramas utilizados en este `README.md`.
 
-     1. [clean.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/clean.py): Script que ayuda a realizar la limpieza de los datos.
-     2. [centros_estatica_proc.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/centros_estatica_proc.py): Script que hace el feature engineering de la información correspondiente a los centros de cuidado infantil.
-     3. [inspecciones_dinamica_proc.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/inspecciones_dinamica_proc.py): Script que hace el feature engineering de la información correspondiente a las inspecciones realizadas a los centros de cuidado infantil.  
-     4. [entrenamiento.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/entrenamiento.py): Script que une la información de `centros_estatica_proc.py` y `inspecciones_dinamica_proc.py` y con eso,  realiza la división de los datos en la muestra para entrenamiento y para validación.
-     5. [randomforest.py](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts/randomforest.py) : Script que realiza un modelo de randomforest.
+- Carpeta [nyccci_dashboard](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/nyccci_dashboard): Contiene el trabajo realizado para la elaboración del dashboard. El dashboard cuenta con un solo ejecutable `wsgi.py` que contiene los scripts necesarios para crear nuestro dashboard de `Dash`. Cabe mencionar que este script se ejecuta con `gunicorn` en el entorno de producción de Heroku. Esto se puede observer en el archivo `Profile` ubicado en el root del repo.
+
+- Carpeta [orquestador](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/orquestador): Contiene todo lo relacionado con el orquestador. El orquestador es un paquete de python por sí solo. El módulo principal es `nyc_ccci_etl`. 
+Los comandos de ejecución del orquestador se encuentran en el directorio `bin`. Estos ejecutables iniciarán el pipeline completo con los parámetros que especifique el usuario. Es necesario configurar el profile de AWS antes de ejecutar estos scripts.
+
+- Carpeta [scripts](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts): Contiene los scripts históricos generados para la realización de los modelos. Éstos son la base de los scripts de luigi y se dejaron solamente para tener el "linaje" de ellos pero ya no son necesarios.
      
 
 ## 3. Requerimientos de infraestructura
@@ -527,5 +527,3 @@ El dashboard se encuentra en la siguiente [liga](https://ccci.dpa2020.com/) y a 
 ![dashboard_1](img/dashboard_1.png)
 
 ![dashboard_2](img/dashboard_2.png)
-
-## 15. Conclusiones

@@ -20,6 +20,7 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 12. [Implicaciones éticas](#12.-Implicaciones-éticas)
 13. [API](#13.-API)
 14. [Dashboard](#14.-Dashboard)
+15. [Reproducibilidad](#15.-Reproducibilidad)
 
 ## 1. Introducción
 
@@ -79,48 +80,6 @@ El script crea toda la arquitectura necesaria en AWS para realizar las operacion
 El set de datos que utilizamos se encuentra en un API REST en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza), que permite descargar los datos en formato `csv`, `xml` y `json`.
 
 > Se decidió utilizar el formato `json` para evitar conflictos con comas, comillas dobles, o cualquier otro error de <em>parseo</em> que pudiera surgir si utilizáramos `csv`. (`xml` no estaba en la jugada).
-
-La **extracción** y **carga** (<em>extract</em> y <em>loading</em>) de los datos se detalla a continuación.
-
-#### 3.2.1 Cron con Luigi
-
-Los datos de DOHMH Childcare Center Inspections se actualizan diaramente. Esto nos permite automatizar fácilemente el proceso de extracción, transformación y carga de datos. 
-
-Dado que usaremos un servidor Ubuntu, podemos hacer uso de [Cron](https://en.wikipedia.org/wiki/Cron), el <em>job scheduler</em> por excelencia de sistemas UNIX. 
-
-La rutina que programemos en Cron ejecutará un script de Python que realice lo siguiente:
-1. Extraer los nuevos datos del endpoint del API.
-2. Ejecutar los `INSERTS` en nuestro esquema de Postgres
-3. Enviar notificación por correo a nuestro equipo cuando el script haya finalizado.
-
-Nuestro `crontab` lucirá de la siguiente manera:
-
-**Nota: Los nombres de archivos y directorios no son finales.**
-
-**Contenido de nuestro `crontab`**
-~~~
-MAILTO=miembros-equipo-5@dpa-itam-2020.com
-0 10 * * * python3 /home/ubuntu/scripts/etl/execute.sh
-~~~
-
-#### 3.2.2 ETL con Luigi
-El ETL está en [este otro repositorio](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl) para tratarlo como una unidad <em>deployable</em> independiente.
-
-Para ejeuctar el orquestador:
-
-~~~~bash
-ssh usuario@18.208.188.16
-/home/ubuntu/nyc-ccci-etl/bin/run 2020 01 01
-~~~~
-
-El comando anterior ejecuta el script `run` con los argumentos 2020, 01 y 01. El run.sh se ve así:
-
-~~~~bash
-cd /home/ubuntu/nyc-ccci-etl
-PYTHONPATH='.' luigi --module nyc_ccci_etl.luigi_tasks.load_task LoadTask --year=$1 --month=$2 --day=$3  --local-scheduler
-~~~~
-
-TODO: Orquestar con CRON
 
 ## 4. Datos
 
@@ -540,3 +499,139 @@ El dashboard se encuentra en la siguiente liga (https://ccci.dpa2020.com) y a co
 
 ![dashboard_3](img/dashboard_3.png)
 
+## 15. Reproducibilidad
+
+Esta sección explicará cómo reproducir el proyecto desde extracción de datos hasta creación de predicciones.
+
+### 15.1. Prerrequisitos
+Será necesario contar con los siguientes componentes de infraestructura:
+1. Servidor de base de datos con manejador Postgresql 11.5 (RDS)
+2. Máquina virutal con SO Ubuntu 18.04 (EC2)
+3. Sistema de almacenamiento de archivos (S3)
+4. Usuario IAM con acceso programático y FullAccess a S3
+**Leventar la instancia EC2 y la RDS en la misma región**
+
+Como se detalla en la sección 3, la arquitectura de la infraestructura de esete proyecto es bastante robusta en términos de seguridad y privacidad. No obstante, el setup descrito no es absolutamente necesario para replicar el funcionamiento del proyecto. Basta con garantizar las siguientes conexiones:
+* EC2 a RDS
+* EC2 a S3
+* EC2 accesible en el puerto 22 para SSH y en el puerto 80 para el API
+
+Una vez que se hayan creado las instancias correspondientes de cada componente, se deberán actualizar los paquetes de Ubuntu a su última versión. 
+
+Configurar el AWS CLI con las credenciales del usuario IAM que se acaba de crear. 
+
+### 15.2. Base de datos
+1. Conectarse a la base de datos con cualquier interfaz (PGAdmin o Terminal)
+2. Crear un rol de usuario distinto al root (postgres)
+3. Otorgar permisos de creación de base de datos y login al nuevo usuario.
+4. Logout
+5. Login con el nuevo usuario
+6. Crear una nueva base de datos con nombre `dpa_nyc_childcare_centers`
+7. Ejecutar el siguiente script que crea los esquemas necesarios
+
+~~~~sql
+create schema aequitas;
+create schema clean;
+create schema modeling;
+create schema predictions;
+create schema raw;
+create schema testing;
+create schema transformed;
+~~~~
+
+No será necesario crear el esquema `public` porque éste existe desde que se crea la instancia. Tampoco es necesario crear tablas porque el orquestador `luigi` las creará en *runtime*.
+
+### 15.3. Virutal Env
+1. Instalar python3 (mínimo 3.6)
+2. Crear un virtual env
+3. Instalar los paquetes que aparecen en [requirements.txt](requirements.txt)
+
+### 15.4. Pipeline
+El pipeline lo orquesta `luigi` y el paquete está en [orquestador](orquestador/). El módulo principal es [nyc_ccci_etl](orquestador/nyc_ccci_etl), pero para simplificar la ejecución, se crearon scripts de shell que ejecutan el pipeline de inicio a fin. Estos scripts están en [nyc_ccci_etl/bin](orquestador/nyc_ccci_etl/bin). 
+
+Se cuenta con un script para limpiar la cubeta de S3 y otro para ejecutar el pipeline.
+
+**NOTA: Se debe cambiar el nombre de la cubeta de S3 en el script `clear_bucket` y en todos los archivos que referencien el nombre de cubeta `nyc-cccci`.**
+
+Antes de ejecutar el pipeline, se deberá crear un archivo `settings.ini` en el root del orquestador. Se recomienda renombrar el archivo `settings.ini.example`. Este archivo deberá tener todos los datos de la cubeta, la base de datos, y el [api token de Socrata](https://dev.socrata.com/docs/app-tokens.htmlhttps://dev.socrata.com/docs/app-tokens.html).
+
+
+1. Verificar que el archivo `.aws/credentials` esté bien configurado para el CLI de AWS porque lo utilizará Boto3 y el orquestador de datos.
+1. Editar el archivo `bin/run_orchestrator.sh` con el perfil de AWS del usuario IAM creado. 
+2. `chmod +x bin/run_orchestrator.sh`
+
+Todo está listo para ejecutar. 
+
+#### 15.5. Rutas del pipeline
+El pipeline puede tomar 3 rutas (3 tipos de pipeline):
+1. load: cargará los datos de la fecha solictidaa
+2. train: crea el modelo
+3. predict: crea predicciones
+
+Este tipo de pipeline se debe especificar como argumento al ejecutar `run_orchestrator`.
+
+#### 15.6. Run
+
+El script `bin/run_orchestrator.sh` debe ejecutarse con 4 argumentos:
+1. tipo (load|train|predict)
+2. Año
+3. Mes
+4. Día
+
+Ejemplos: 
+
+~~~~bash
+bin/run_orchestrator.sh load 2017 1 1 
+bin/run_orchestrator.sh load 2018 5 25
+bin/run_orchestrator.sh train 2019 12 31
+bin/run_orchestrator.sh predict 2020 1 2
+~~~~
+
+### 15.5. API
+El api se un proyecto de Flask. El código está en [api](api).
+
+Para ejecutarlo en entorno de desarrollo, basta correr `python3 server.py`. El output de la consola indicará el puerto en el cual se puede acceder al API (está programado para hacerlo en el puerto 3000, pero esto se puede cambiar fácilmente).
+
+Para visualizar el endpoint de predicción, será necesario primero haber corrido por lo menos una vez el pipeline de predicciones.
+
+El archivo `flaskapp.wsgi` es exlusivamente para producción y su uso se describe a continuación:
+
+Para ejectuar el API en un entorno de producción es necesario instalar en la EC2 los siguientes paquetes:
+1. apache2
+2. libapache2-mod-wsgi-py3
+
+Ahora la EC2 será accesible a través de HTTP en el puerto 80. Se desea rediccionar el tráfico de este puerto 80 HTTP a la aplicación de Flask. Para eso:
+
+1. Crear una liga de sistema de nuuestro api a la carpeta pública de apache
+~~~~bash
+sudo ln -sT ~/dpa-2020 /var/www/html/dpa-2020
+~~~~
+2. Editar el arhicvo de configuración de Apache ``
+~~~~bash
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+
+        WSGIDaemonProcess dpa2020api python-path=/var/www/html/dpa-2020/api:/var/www/html/dpa-2020/api/dpavenv/lib/python3.6/site-packages:/var/www/html/dpa-2020/api/dpavenv/lib64/python3.6/site-packages  threads=5
+        WSGIScriptAlias / /var/www/html/dpa-2020/api/flaskapp.wsgi
+        <Directory "/var/www/html/dpa-2020/api">
+                WSGIProcessGroup dpa2020api
+                WSGIApplicationGroup %{GLOBAL}
+                Order deny,allow
+                Allow from all
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+~~~~
+
+**Es muy importante apuntar al virtual env del proyecto como lo muestra `python-path`**
+
+3. Reiniciar apache.
+ 
+~~~~bash
+sudo service apache2 restart
+~~~~
+
+4. El api estará disponible en la dirección IP pública de la EC2

@@ -6,3 +6,6 @@ host=localhost
 database= database
 user=dbuser
 password=pwd
+
+[S3]
+bucket=nyc-ccci

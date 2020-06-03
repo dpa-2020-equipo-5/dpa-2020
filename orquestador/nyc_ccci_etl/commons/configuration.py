@@ -25,3 +25,6 @@ def get_database_user():
 
 def get_database_table():
     return config.get('DATABASE','table')
+
+def get_aws_bucket():
+    return config.get('S3','bucket')

@@ -2,6 +2,7 @@ import pandas as pd
 import boto3
 from sqlalchemy import create_engine
 from nyc_ccci_etl.commons.configuration import get_database_connection_parameters
+from nyc_ccci_etl.commons.configuration import get_aws_bucket
 from aequitas.group import Group
 from aequitas.bias import Bias
 from io import BytesIO
@@ -9,6 +10,7 @@ import pickle
 class BiasMetrics:
     def __init__(self, year, month, day):
         host, database, user, password = get_database_connection_parameters()
+        self.bucket = get_aws_bucket()
         self.date_param = "{}-{}-{}".format(year, str(month).zfill(2), str(day).zfill(2))
         engine_string = "postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}".format(
             user = user,
@@ -20,17 +22,17 @@ class BiasMetrics:
         self.engine = create_engine(engine_string)
     def get_lastest_model(self, session):
         s3_client = session.client('s3')
-        response = s3_client.list_objects_v2(Bucket='nyc-ccci')
+        response = s3_client.list_objects_v2(Bucket=self.bucket)
         all_models = response['Contents']
         latest = max(all_models, key=lambda x: x['LastModified'])
         return latest['Key']
     def download_model(self):
         ses = boto3.session.Session(profile_name='default', region_name='us-east-1')
         latest_model = self.get_lastest_model(ses)
-        self.model_id = "s3://nyc-ccci/" + latest_model
+        self.model_id = "s3://" + self.bucket + "/" + latest_model
         s3_resource = ses.resource('s3')
         with BytesIO() as data:
-            s3_resource.Bucket("nyc-ccci").download_fileobj(latest_model, data)
+            s3_resource.Bucket(self.bucket).download_fileobj(latest_model, data)
             data.seek(0)
             model = pickle.load(data)
         return model

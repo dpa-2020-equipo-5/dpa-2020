@@ -8,6 +8,7 @@ import boto3
 import pickle
 from io import BytesIO
 from nyc_ccci_etl.commons.configuration import get_database_connection_parameters
+from nyc_ccci_etl.commons.configuration import get_aws_bucket
 class CreatePredictions(CopyToTable):
     year = luigi.IntParameter()
     month = luigi.IntParameter()
@@ -23,7 +24,7 @@ class CreatePredictions(CopyToTable):
     host, database, user, password = get_database_connection_parameters()
     table = "predictions.predictions"
     schema = "predictions"
-
+    bucket = get_aws_bucket()
     def run(self):
         ses = boto3.session.Session(profile_name='default', region_name='us-east-1')
         
@@ -32,7 +33,7 @@ class CreatePredictions(CopyToTable):
         s3_resource = ses.resource('s3')
         
         with BytesIO() as data:
-            s3_resource.Bucket("nyc-ccci").download_fileobj(latest_model, data)
+            s3_resource.Bucket(self.bucket).download_fileobj(latest_model, data)
             data.seek(0)
             model = pickle.load(data)
         
@@ -47,7 +48,7 @@ class CreatePredictions(CopyToTable):
 
     def get_lastest_model(self, session):
         s3_client = session.client('s3')
-        response = s3_client.list_objects_v2(Bucket='nyc-ccci')
+        response = s3_client.list_objects_v2(Bucket=self.bucket)
         all_models = response['Contents']
         latest = max(all_models, key=lambda x: x['LastModified'])
         return latest['Key']

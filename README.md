@@ -314,7 +314,7 @@ Finalmente, se construyó una tabla con el número de violaciones por año para 
 Se observa que, del número de inspecciones realizadas, aproximadamente el 60% tiene algún tipo de violación. Esto puede significar o que muchísimos centros comenten violaciones o que se está inspeccionando de una manera adecuada y se está descubriendo a los centros que van a cometer violaciones efectivamente. De los centros con violaciones, 51% son del tipo general, 35% críticas y 14% son un peligro para salud pública.
 
 
-### 5.2 Inspecciones promedio diarias
+### 6.2 Inspecciones promedio diarias
 
 Como no se cuenta con información acerca de cuántos inspectores hay disponibles por día, se crearon tablas del promedio de inspecciones diarias por año y por distrito para conocer el número mínimo de inspectores disponibles. 
 
@@ -328,7 +328,7 @@ Como no se cuenta con información acerca de cuántos inspectores hay disponible
 
 Se observa que se cuenta con entre 46 y 68 inspectores de manera diaria para visitar centros. En el 2020, había 68 inspecciones diarias y eso implica que el departamento de inspecciones cuenta con al menos 68 inspectores para las visitas futuras en el año, claro, suponiendo que se sigue contando con el mismo personal disponible. Los promedios de inspecciones diarias por distrito son: Bronx 12, Brooklyn 18, Manhattan 12, Queens 12 y Staten Island.
 
-### 5.3 Inspecciones promedio diarias para el tipo inspección inicial
+### 6.3 Inspecciones promedio diarias para el tipo inspección inicial
 
 Finalmente, se calculó el promedio de inspecciones diarias de tipo inspección inicial dado que en este modelo las predicciones se crearán para inspecciones iniciales. La razón es que las inspecciones subsecuentes no son de tanto interés pues ya son solo follow-ups, lo importante es identificar a los centros con violaciones en sus inspecciones iniciales.
 

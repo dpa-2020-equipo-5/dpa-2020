@@ -401,7 +401,7 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 
 ![metricas_borough](img/metricas_borough.png)
 
-#### 11.4.1 Tipo de programa
+#### 11.4.2 Tipo de programa
 
 ![bias_programtype](img/bias_programtype.png)
 

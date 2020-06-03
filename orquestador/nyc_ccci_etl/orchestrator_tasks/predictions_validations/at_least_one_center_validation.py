@@ -17,7 +17,7 @@ class AtLeastOneCenterValidation(CopyToTable):
     host, database, user, password = get_database_connection_parameters()
     table = "testing.predictions"
     schema = "testing"
-    self.bucket = get_aws_bucket()
+    bucket = get_aws_bucket()
     columns = [
         ('test', 'varchar'),
         ('ran_at', 'timestamp'),

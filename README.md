@@ -587,6 +587,8 @@ bin/run_orchestrator.sh train 2019 12 31
 bin/run_orchestrator.sh predict 2020 1 2
 ~~~~
 
+**NOTA: Al ejecutar el pipeline es de suma importancia que el usuario se encuentre adentro del directorio [orquestador](orquestador). Estooo es porque la variable de entorno PYTHONPATH buscará los módulos a ejecutar en el directorio actual.**
+
 ### 15.5. API
 El api se un proyecto de Flask. El código está en [api](api).
 

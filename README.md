@@ -357,7 +357,7 @@ El proceso de limpieza de datos y creación de variables es el siguiente:
 ![linaje](img/linaje.png)
 
 
-### 6.1 Tabla 3: Centros-estática  
+### 7.1 Tabla 3: Centros-estática  
 
 El feature engineering que se le aplicó a la Tabla 3 (Centros-estática) consistió en los siguientes pasos:
 
@@ -365,7 +365,7 @@ El feature engineering que se le aplicó a la Tabla 3 (Centros-estática) consis
 * Categorizar las variables: `borough`, `programtype` y `facilitytype`.
 
 
-### 6.2 Tabla 4: Inspecciones-dinámicas  
+### 7.2 Tabla 4: Inspecciones-dinámicas  
 
 El feature engineering que se le aplicó a la Tabla 4 (Inspecciones-dinámicas) consistió en los siguientes pasos:
 
@@ -416,7 +416,7 @@ Para el entrenamiento se usaron todos los datos desde el 2017 hasta noviembre de
 
 Se corrió un modelo de random forest con un gridsearch para definir cuáles son los mejores parámetros.
  
-### 7.1 Resultados random forest
+### 8.1 Resultados random forest
 
 La matriz de confusión es la siguiente:
 

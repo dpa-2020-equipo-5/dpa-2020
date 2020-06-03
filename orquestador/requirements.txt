@@ -1,4 +1,0 @@
-luigi
-sodapy
-psycopg2
-requests

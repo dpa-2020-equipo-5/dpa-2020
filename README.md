@@ -645,7 +645,7 @@ El dashboard es una aplicación de Dash que se ejecuta en un servidor de Flask. 
 2. Ligar la app al repositorio del proyecto
 3. Desplegar la rama master
 
-Heroku checará el archivo (Procfile)[Procfile] que contiene las instrucciones de cómo ejecutar el servidor de aplicaciones. No es necesario modificar este archivo.
+Heroku checará el archivo [Procfile](Procfile) que contiene las instrucciones de cómo ejecutar el servidor de aplicaciones. No es necesario modificar este archivo.
 
 Lo que sí será necesario modificar es la dirección IP del API que aparece en distintos requests en el archivo [nyccci_dashboard/wsgi.py](nyccci_dashboard/wsgi.py).
 

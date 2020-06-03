@@ -41,6 +41,12 @@ def serve_layout():
 
     r2 = requests.get("http://18.208.188.16/inspection/2019-12-30")
 
+    model_params = requests.get("http://localhost:3000/model_parameter")
+    
+    df_model_params = pd.json_normalize(model_params.json())
+
+    print(df_model_params)
+
     inspecciones = pd.json_normalize(r2.json(), 'centers')
 
     inspecciones_con_violacion = inspecciones[inspecciones['violationcategory_public_health_hazard'] == '1'].copy()
@@ -160,7 +166,7 @@ def serve_layout():
                         }
                     ],
                     'layout': {
-                        'title': 'Tipo de guardería'
+                        'title': 'Comparación de '
                     }
                 },
                 className="four columns"
@@ -168,9 +174,8 @@ def serve_layout():
             html.Div([
                 dash_table.DataTable(
                     id='monitorTable',
-                    columns=[{"name": i, "id": i} for i in df[['priority','centerId','fullName', 'probability_str', 'borough']].columns],
-                    
-                    data=df[['priority','centerId','fullName', 'probability_str', 'borough']].to_dict('records'),
+                    columns=[{"name": i, "id": i} for i in df_model_params.columns],
+                    data=df_model_params.to_dict('records'),
                     style_table={
                         'width': '100%',
                     },
@@ -186,8 +191,7 @@ def serve_layout():
                     style_header={
                     'backgroundColor': 'rgb(230, 230, 230)',
                     'fontWeight': 'bold'
-                    },
-                    page_size=10,
+                    }
                 )
             ], className="eight columns")
         ], className="row")

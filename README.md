@@ -9,18 +9,18 @@ El objetivo del proyecto es realizar un modelo predictivo que permita identifica
 1. [Introducción](#1.-Introducción)
 2. [Estructura del repositorio](#2.Estructura-del-repositorio)
 3. [Requerimientos de infraestructura](#3.-Requerimientos-de-infraestructura)
-4. [Datos](#4.-Datos)
-5. [Análisis exploratorio](#5.-Análisis-exploratorio)
-6. [Feature engineering](#6.-Feature-engineering)
-7. [Modelado](#7.-Modelado)
-8. [Metadata y linaje de los datos](#8.-Metadata-y-linaje-de-los-datos)
-9. [Pruebas unitarias](#9.-Pruebas-unitarias)
-10. [DAG](#10.-DAG)
-11. [Sesgo y equidad](#11.-Sesgo-y-equidad)
-12. [Implicaciones éticas](#12.-Implicaciones-éticas)
-13. [API](#13.-API)
-14. [Dashboard](#14.-Dashboard)
-15. [Reproducibilidad](#15.-Reproducibilidad)
+4. [Reproducibilidad](#4.-Reproducibilidad)
+5. [Datos](#5.-Datos)
+6. [Análisis exploratorio](#6.-Análisis-exploratorio)
+7. [Feature engineering](#7.-Feature-engineering)
+8. [Modelado](#8.-Modelado)
+9. [Metadata y linaje de los datos](#9.-Metadata-y-linaje-de-los-datos)
+10. [Pruebas unitarias](#10.-Pruebas-unitarias)
+11. [DAG](#11.-DAG)
+12. [Sesgo y equidad](#12.-Sesgo-y-equidad)
+13. [Implicaciones éticas](#13.-Implicaciones-éticas)
+14. [API](#14.-API)
+15. [Dashboard](#15.-Dashboard)
 
 ## 1. Introducción
 
@@ -75,13 +75,158 @@ El script crea toda la arquitectura necesaria en AWS para realizar las operacion
 
 ![Infraestructura AWS](img/aws_infrastructure.png)
 
-### 3.2 Extracción y carga de los datos
+## 4. Reproducibilidad
 
-El set de datos que utilizamos se encuentra en un API REST en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza), que permite descargar los datos en formato `csv`, `xml` y `json`.
+Esta sección explicará cómo reproducir el proyecto desde extracción de datos hasta creación de predicciones.
 
-> Se decidió utilizar el formato `json` para evitar conflictos con comas, comillas dobles, o cualquier otro error de <em>parseo</em> que pudiera surgir si utilizáramos `csv`. (`xml` no estaba en la jugada).
+### 4.1. Prerrequisitos
+Será necesario contar con los siguientes componentes de infraestructura:
+1. Servidor de base de datos con manejador Postgresql 11.5 (RDS)
+2. Máquina virutal con SO Ubuntu 18.04 (EC2)
+3. Sistema de almacenamiento de archivos (S3)
+4. Usuario IAM con acceso programático y FullAccess a S3
+**Leventar la instancia EC2 y la RDS en la misma región**
 
-## 4. Datos
+Como se detalla en la sección 3, la arquitectura de la infraestructura de esete proyecto es bastante robusta en términos de seguridad y privacidad. No obstante, el setup descrito no es absolutamente necesario para replicar el funcionamiento del proyecto. Basta con garantizar las siguientes conexiones:
+* EC2 a RDS
+* EC2 a S3
+* EC2 accesible en el puerto 22 para SSH y en el puerto 80 para el API
+
+Una vez que se hayan creado las instancias correspondientes de cada componente, se deberán actualizar los paquetes de Ubuntu a su última versión. 
+
+Configurar el AWS CLI con las credenciales del usuario IAM que se acaba de crear. 
+
+### 4.2. Base de datos
+1. Conectarse a la base de datos con cualquier interfaz (PGAdmin o Terminal)
+2. Crear un rol de usuario distinto al root (postgres)
+3. Otorgar permisos de creación de base de datos y login al nuevo usuario.
+4. Logout
+5. Login con el nuevo usuario
+6. Crear una nueva base de datos con nombre `dpa_nyc_childcare_centers`
+7. Ejecutar el siguiente script que crea los esquemas necesarios
+
+~~~~sql
+create schema aequitas;
+create schema clean;
+create schema modeling;
+create schema predictions;
+create schema raw;
+create schema testing;
+create schema transformed;
+~~~~
+
+No será necesario crear el esquema `public` porque éste existe desde que se crea la instancia. Tampoco es necesario crear tablas porque el orquestador `luigi` las creará en *runtime*.
+
+### 4.3. Virutal Env
+1. Instalar python3 (mínimo 3.6)
+2. Crear un virtual env
+3. Instalar los paquetes que aparecen en [requirements.txt](requirements.txt)
+
+### 4.4. Pipeline
+El pipeline lo orquesta `luigi` y el paquete está en [orquestador](orquestador/). El módulo principal es [nyc_ccci_etl](orquestador/nyc_ccci_etl), pero para simplificar la ejecución, se crearon scripts de shell que ejecutan el pipeline de inicio a fin. Estos scripts están en [nyc_ccci_etl/bin](orquestador/nyc_ccci_etl/bin). 
+
+Se cuenta con un script para limpiar la cubeta de S3 y otro para ejecutar el pipeline.
+
+**NOTA: Se debe cambiar el nombre de la cubeta de S3 en el script `clear_bucket` y en todos los archivos que referencien el nombre de cubeta `nyc-cccci`.**
+
+Antes de ejecutar el pipeline, se deberá crear un archivo `settings.ini` en el root del orquestador. Se recomienda renombrar el archivo `settings.ini.example`. Este archivo deberá tener todos los datos de la cubeta, la base de datos, y el [api token de Socrata](https://dev.socrata.com/docs/app-tokens.htmlhttps://dev.socrata.com/docs/app-tokens.html).
+
+
+1. Verificar que el archivo `.aws/credentials` esté bien configurado para el CLI de AWS porque lo utilizará Boto3 y el orquestador de datos.
+1. Editar el archivo `bin/run_orchestrator.sh` con el perfil de AWS del usuario IAM creado. 
+2. `chmod +x bin/run_orchestrator.sh`
+
+Todo está listo para ejecutar. 
+
+#### 4.5. Rutas del pipeline
+El pipeline puede tomar 3 rutas (3 tipos de pipeline):
+1. load: cargará los datos de la fecha solictidaa
+2. train: crea el modelo
+3. predict: crea predicciones
+
+Este tipo de pipeline se debe especificar como argumento al ejecutar `run_orchestrator`.
+
+#### 4.6. Run
+
+El script `bin/run_orchestrator.sh` debe ejecutarse con 4 argumentos:
+1. tipo (load|train|predict)
+2. Año
+3. Mes
+4. Día
+
+Ejemplos: 
+
+~~~~bash
+bin/run_orchestrator.sh load 2017 1 1 
+bin/run_orchestrator.sh load 2018 5 25
+bin/run_orchestrator.sh train 2019 12 31
+bin/run_orchestrator.sh predict 2020 1 2
+~~~~
+
+**NOTA: Al ejecutar el pipeline es de suma importancia que el usuario se encuentre adentro del directorio [orquestador](orquestador). Estooo es porque la variable de entorno PYTHONPATH buscará los módulos a ejecutar en el directorio actual.**
+
+### 4.5. API
+El api se un proyecto de Flask. El código está en [api](api).
+
+Para ejecutarlo en entorno de desarrollo, basta correr `python3 server.py`. El output de la consola indicará el puerto en el cual se puede acceder al API (está programado para hacerlo en el puerto 3000, pero esto se puede cambiar fácilmente).
+
+Para visualizar el endpoint de predicción, será necesario primero haber corrido por lo menos una vez el pipeline de predicciones.
+
+El archivo `flaskapp.wsgi` es exlusivamente para producción y su uso se describe a continuación:
+
+Para ejectuar el API en un entorno de producción es necesario instalar en la EC2 los siguientes paquetes para ubuntu:
+1. apache2
+2. libapache2-mod-wsgi-py3
+
+Ahora la EC2 será accesible a través de HTTP en el puerto 80. Se desea rediccionar el tráfico de este puerto 80 HTTP a la aplicación de Flask. Para eso:
+
+1. Crear una liga de sistema de nuuestro api a la carpeta pública de apache
+~~~~bash
+sudo ln -sT ~/dpa-2020 /var/www/html/dpa-2020
+~~~~
+2. Editar el arhicvo de configuración de Apache
+~~~~xml
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+
+        WSGIDaemonProcess dpa2020api python-path=/var/www/html/dpa-2020/api:/var/www/html/dpa-2020/api/dpavenv/lib/python3.6/site-packages:/var/www/html/dpa-2020/api/dpavenv/lib64/python3.6/site-packages  threads=5
+        WSGIScriptAlias / /var/www/html/dpa-2020/api/flaskapp.wsgi
+        <Directory "/var/www/html/dpa-2020/api">
+                WSGIProcessGroup dpa2020api
+                WSGIApplicationGroup %{GLOBAL}
+                Order deny,allow
+                Allow from all
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+~~~~
+
+**Es muy importante apuntar al virtual env del proyecto como lo muestra `python-path`**
+
+3. Reiniciar apache.
+ 
+~~~~bash
+sudo service apache2 restart
+~~~~
+
+4. El api estará disponible en la dirección IP pública de la EC2
+
+### 4.6. Dashboard
+El dashboard es una aplicación de Dash que se ejecuta en un servidor de Flask. Dado que este dashboard consume el API, se optó por hospedar este dashboard en otra infraestrucutra. Para esto se eligó Heroku ya que facilita muchísimo el despliegue de apicaciones. 
+
+1. Crear una app de heroku
+2. Ligar la app al repositorio del proyecto
+3. Desplegar la rama master
+
+Heroku checará el archivo [Procfile](Procfile) que contiene las instrucciones de cómo ejecutar el servidor de aplicaciones. No es necesario modificar este archivo.
+
+Lo que sí será necesario modificar es la dirección IP del API que aparece en distintos requests en el archivo [nyccci_dashboard/wsgi.py](nyccci_dashboard/wsgi.py).
+
+
+## 5. Datos
 
 El set de datos que se utilizó se encuentra en la plataforma [NYC Open Data](https://dev.socrata.com/foundry/data.cityofnewyork.us/dsg6-ifza) y contiene una lista de todas las inspecciones que se realizaron a partir de abril del 2017 y hasta el día de hoy. La base de datos se actualiza de manera diaria y contiene 34 variables con alrededor de 51,000 observaciones incluyendo observaciones duplicadas. Si se elimina las observaciones duplicadas, quedan alrededor de 39,000 inspecciones.
 
@@ -126,13 +271,13 @@ Las variables, su tipo y descripción son las siguientes:
 
 No obstante, de la base original, se utilizaron muy pocas variables ya que la mayoría son tipo texto. Las demás variables utilizadas en nuestro modelo fueron creadas y su descripción puede encontrar en la sección 6.Feature engineering.
 
-## 5. Análisis exploratorio
+## 6. Análisis exploratorio
 
 El análisis exploratorio de nuestros datos básicamente consistió en analizar la frecuencia y el promedio de inspecciones por año y por distrito para conocer dónde y cuándo había más violaciones, así como conocer con cuántos inspectores se cuenta en promedio diario para poder realizar las inspecciones futuras.
 
 El análisis se hizo para un total de 38,519 observaciones que surgieron después de tirar los duplicados de la base de datos. Dado que este análisis es estático y la actualización de los datos es diaria, los números pueden variar en el tiempo.
 
-### 5.1 Inspecciones totales anuales
+### 6.1 Inspecciones totales anuales
 
 La siguiente tabla muestra el número de inspecciones anuales totales por distrito:
 
@@ -197,7 +342,7 @@ Finalmente, se calculó el promedio de inspecciones diarias de tipo inspección 
 
 El promedio diario del número de inspecciones iniciales es de entre 21 y 34 representando aproximadamente la mitad del total de inspecciones diarias, incluyendo subsecuentes y especiales. Es decir, de todas las inspecciones que se hacen de forma diaria, la mitad son inspecciones de primera vez. En el 2020, se contaba en promedio con 34 inspectores para hacer visitas iniciales por lo que las predicciones deben generarse para por lo menos 34 centros. 
 
-## 6. Feature engineering
+## 7. Feature engineering
 
 El proceso de limpieza de datos y creación de variables es el siguiente:
 
@@ -261,7 +406,7 @@ El feature engineering que se le aplicó a la Tabla 4 (Inspecciones-dinámicas) 
 * De la Tabla 4 (Inspecciones-dinámicas) conservar únicamente las 29 variables que se utilizarán en el modelo: `result_1_passed_inspection`, `result_1_passed_inspection_with_no_violations`, `result_1_previously_cited_violations_corrected`, `result_1_previously_closed_program_re-opened`, `result_1_reinspection_not_required`, `result_1_reinspection_required`,`result_2_NR`, `result_2_fines_pending`, `result_2_program_closed`, `result_2_violations_corrected_at_time_of_inspection`, `inspection_year`, `inspection_month`, `inspection_day_name`, `violationcategory_critical`, `violationcategory_general`, `violationcategory_public_health_hazard`, `dias_ultima_inspeccion`, `violaciones_hist_salud_publica`, `violaciones_2019_salud_publica`    , `violaciones_hist_criticas`, `violaciones_2019_criticas`, `ratio_violaciones_hist`, `ratio_violaciones_2019`, `prom_violaciones_hist_borough`, `prom_violaciones_2019_borough`, `ratio_violaciones_hist_sp`, `ratio_violaciones_2019_sp`                , `ratio_violaciones_hist_criticas`, `ratio_violaciones_2019_criticas`.
 * Dividir los datos en la muestra de entrenamiento que corresponde a todas las inspecciones entre el año 2017 y noviembre del 2019 y en la muestra de validación que corresponde a los datos de diciembre del 2019.
 
-## 7. Modelado
+## 8. Modelado
 
 La variable binaria dependiente es `violationcategory_public_health_hazard` pues se desea predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
 
@@ -280,60 +425,60 @@ La matriz de confusión es la siguiente:
 - La precisión del modelo fue de: 0.5678
 - El recall del modelo fue de: 0.6405
 
-## 8. Metadata y linaje de datos
+## 9. Metadata y linaje de datos
 
 Los metadatos generados en cada paso del pipeline son:
 
 ![metadata_final](img/metadata_final.png)
 
-## 9. Pruebas unitarias
+## 10. Pruebas unitarias
 
 Actualmente nuestro pipeline cuenta con 6 pruebas unitarias (4 en Extraction y 2 en Feature Engineering):
 
-### 9.1. Pruebas de extracción
+### 10.1. Pruebas de extracción
 
-#### 9.1.1. [Extraction Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/extraction_date_validation.py)
+#### 10.1.1. [Extraction Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/extraction_date_validation.py)
 
 Verifica que la fecha de extracción solicitada sea válida y que no sea futura. El formato de la fecha utilizado es YYYY-mm-dd. Ejemplos de fechas inválidas:
 * 2020-3-35
 * 2019-31-2
 * 2020-10-15 (la fecha 15 de oct 2020 sí existe, pero es futura y por lo tanto se considera inválida)
 
-#### 9.1.2. [Non Empty Extraction Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/non_empty_extraction_validation.py)
+#### 10.1.2. [Non Empty Extraction Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/non_empty_extraction_validation.py)
 
 Checa que la extracción tenga como resultado por lo menos una inspección.
 
-#### 9.1.3. [Is JSON Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/is_json_validation.py)
+#### 10.1.3. [Is JSON Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/is_json_validation.py)
 
 Verifica que la extracción tenga como resultado un objeto JSON válido. Python parsea JSONs como listas de diccionarios.
 
-#### 9.1.4. [Inspection Dates Match Request Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/inspection_dates_match_request_date_validation.py)
+#### 10.1.4. [Inspection Dates Match Request Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/extraction_validations/inspection_dates_match_request_date_validation.py)
 
 Analiza cada fecha de inspección del resultado de la extracción y verifica que todas estas sean iguales a la fecha de la solicitud (fecha con la que ejecuta el orquestador).
 
-### 9.2. Pruebas de Feature Engineering
+### 10.2. Pruebas de Feature Engineering
 
-#### 9.2.1. [Columns One Hot Encoding Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/feature_engineering_validations/columns_one_hot_encoding_validation.py)
+#### 10.2.1. [Columns One Hot Encoding Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/feature_engineering_validations/columns_one_hot_encoding_validation.py)
 
 Verifica que la transformación haya correctamente creado columnas necesarias con <em>One Hot Encoding</em>
 
-#### 9.2.2. [Transformed Inspections Match Request Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/feature_engineering_validations/transformed_inspections_match_request_date_validation.py)
+#### 10.2.2. [Transformed Inspections Match Request Date Validation](https://github.com/dpa-2020-equipo-5/nyc-ccci-etl/blob/master/nyc_ccci_etl/luigi_tasks/feature_engineering_validations/transformed_inspections_match_request_date_validation.py)
 
 Dado que nuestro orquestador trabaja con datos de un día a la vez, es necesario que las transformaciones de datos se hagan únicamente sobre los datos del día. Esto a su vez también logrará que la ejecución del pipeline sea significativamente más rápida. Esta prueba unitaria se encarga de verificar que todas las fechas de inspección de las inspecciones transformadas sean iguales a la fecha de la solicitud (fecha con la que ejecuta el orquestador).
 
-## 10. DAG
+## 11. DAG
 
-### 10.1 DAG del modelo
+### 11.1 DAG del modelo
 ![DAG_modelo](img/DAG_modelo.png)
 
-### 10.2 DAG de las predicciones
+### 11.2 DAG de las predicciones
 ![DAG_predicciones](img/DAG_predicciones.png)
 
-## 11. Sesgo y equidad
+## 12. Sesgo y equidad
 
 Es posible que los modelos de machine learning incorporen sesgos e inequidades de manera intencional o por un sobre/sub muestreo en las predicciones de los modelos. Por ello, es importante estudiar métricas de sesgo y equidad para tratar de aminorar las injusticias o, en su defecto, al menos estar consciente de los sesgos que se están creando en los resultados del modelo.
 
-### 11.1 Métricas 
+### 12.1 Métricas 
 
 Dado que el objetivo de este trabajo es apoyar a los inspectores a identificar más prontamente a los centros de cuidados infantiles con mayor probabilidad de cometer una violación del tipo "salud pública", la intervención del modelo es asistiva. La implementación de los resultados del modelo ayudará a los inspectores a identificar violaciones y por ende a los niños pues estarán menos tiempo en riesgo. 
 
@@ -344,14 +489,14 @@ Por consiguiente, las dos métricas a optimizar son:
 - False Negative Rate Parity.
 - False Omission Rate Parity.
 
-### 11.2 Selección de atributos
+### 12.2 Selección de atributos
 
 Para seleccionar los atributos protegidos se realizaron distintas gráficas de proporción de frecuencias usando la predicción y algunas variables categóricas que se consideró que pudieran tener sesgo en la clasificación.
 
 - `borough`: El distrito es importante pues hay distintos niveles socioeconómicos entre éstos y ello puede afectar la calidad y limpieza de los centros infantiles. Además, la población por condado también es importante.
 - `programtype`: Esta variable se refiere al tipo de programa del centro y está ampliamente relacionado con la edad de los niños. Esto puede ser problemático pues quizá hay mayores riesgos al atender a bebés que a niños un poco más grandes, por ejemplo.
 
-### 11.3 Categorías de referencia
+### 12.3 Categorías de referencia
 
 Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia.
 
@@ -359,27 +504,27 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 
 - `programtype`: Se escogió la categoría de `preschool` pues es el tipo de programa con más  inspecciones.
 
-### 11.4 Resultados
+### 12.4 Resultados
 
-#### 11.4.1 Métricas de Aequitas por default
+#### 12.4.1 Métricas de Aequitas por default
 
 ![bias_programtype](img/bias_programtype.png)
 
-#### 11.4.2 Métricas elegidas
+#### 12.4.2 Métricas elegidas
 
 ![bias_borough](img/bias_borough.png)
 
-#### 11.4.3 Disparidad de métricas por distrito
+#### 12.4.3 Disparidad de métricas por distrito
 
 ![metricas_borough](img/metricas_borough.png)
 
-#### 11.4.4 Disparidad de métricas por tipo de programa
+#### 12.4.4 Disparidad de métricas por tipo de programa
 
 ![metricas_programtype](img/metricas_programtype.png)
 
 Lo que se observa en lo cuandros anteriores es que la paridad de la tasa de omisión falsa (FOR) por el atributo Borough, Queens cuenta con una disparidad en 1.38 veces contra el grupo de referencia (Brooklyn), mientras que el FOR por el atributo programtype, programtype_all_age_camp cuenta con una disparidad de 0.78 veces contra el grupo de referencia (preschool). 
 
-## 12. Implicaciones éticas
+## 13. Implicaciones éticas
 
 Algunas de las implicaciones éticas relacionadas con el modelo propuesto son las siguientes:
 
@@ -408,7 +553,7 @@ Algunas de las implicaciones éticas relacionadas con el modelo propuesto son la
 Por todas estas razones, es fundamental que se haga un buen scoping del problema e implementación del modelo. Es importante que el equipo reconozca las limitaciones del mismo, sus antecedentes y se involucre a expertos externos cuando sea posible para evaluar el desempeño del modelo y mejorar el monitoreo.
 
 
-## 13. API
+## 14. API
 
 NYC DOHMH API está diseñada para obtener datos de diferentes entidades:
 * Predicciones
@@ -498,155 +643,4 @@ El dashboard se encuentra en la siguiente liga (https://ccci.dpa2020.com) y a co
 ![dashboard_2](img/dashboard_2.png)
 
 ![dashboard_3](img/dashboard_3.png)
-
-## 15. Reproducibilidad
-
-Esta sección explicará cómo reproducir el proyecto desde extracción de datos hasta creación de predicciones.
-
-### 15.1. Prerrequisitos
-Será necesario contar con los siguientes componentes de infraestructura:
-1. Servidor de base de datos con manejador Postgresql 11.5 (RDS)
-2. Máquina virutal con SO Ubuntu 18.04 (EC2)
-3. Sistema de almacenamiento de archivos (S3)
-4. Usuario IAM con acceso programático y FullAccess a S3
-**Leventar la instancia EC2 y la RDS en la misma región**
-
-Como se detalla en la sección 3, la arquitectura de la infraestructura de esete proyecto es bastante robusta en términos de seguridad y privacidad. No obstante, el setup descrito no es absolutamente necesario para replicar el funcionamiento del proyecto. Basta con garantizar las siguientes conexiones:
-* EC2 a RDS
-* EC2 a S3
-* EC2 accesible en el puerto 22 para SSH y en el puerto 80 para el API
-
-Una vez que se hayan creado las instancias correspondientes de cada componente, se deberán actualizar los paquetes de Ubuntu a su última versión. 
-
-Configurar el AWS CLI con las credenciales del usuario IAM que se acaba de crear. 
-
-### 15.2. Base de datos
-1. Conectarse a la base de datos con cualquier interfaz (PGAdmin o Terminal)
-2. Crear un rol de usuario distinto al root (postgres)
-3. Otorgar permisos de creación de base de datos y login al nuevo usuario.
-4. Logout
-5. Login con el nuevo usuario
-6. Crear una nueva base de datos con nombre `dpa_nyc_childcare_centers`
-7. Ejecutar el siguiente script que crea los esquemas necesarios
-
-~~~~sql
-create schema aequitas;
-create schema clean;
-create schema modeling;
-create schema predictions;
-create schema raw;
-create schema testing;
-create schema transformed;
-~~~~
-
-No será necesario crear el esquema `public` porque éste existe desde que se crea la instancia. Tampoco es necesario crear tablas porque el orquestador `luigi` las creará en *runtime*.
-
-### 15.3. Virutal Env
-1. Instalar python3 (mínimo 3.6)
-2. Crear un virtual env
-3. Instalar los paquetes que aparecen en [requirements.txt](requirements.txt)
-
-### 15.4. Pipeline
-El pipeline lo orquesta `luigi` y el paquete está en [orquestador](orquestador/). El módulo principal es [nyc_ccci_etl](orquestador/nyc_ccci_etl), pero para simplificar la ejecución, se crearon scripts de shell que ejecutan el pipeline de inicio a fin. Estos scripts están en [nyc_ccci_etl/bin](orquestador/nyc_ccci_etl/bin). 
-
-Se cuenta con un script para limpiar la cubeta de S3 y otro para ejecutar el pipeline.
-
-**NOTA: Se debe cambiar el nombre de la cubeta de S3 en el script `clear_bucket` y en todos los archivos que referencien el nombre de cubeta `nyc-cccci`.**
-
-Antes de ejecutar el pipeline, se deberá crear un archivo `settings.ini` en el root del orquestador. Se recomienda renombrar el archivo `settings.ini.example`. Este archivo deberá tener todos los datos de la cubeta, la base de datos, y el [api token de Socrata](https://dev.socrata.com/docs/app-tokens.htmlhttps://dev.socrata.com/docs/app-tokens.html).
-
-
-1. Verificar que el archivo `.aws/credentials` esté bien configurado para el CLI de AWS porque lo utilizará Boto3 y el orquestador de datos.
-1. Editar el archivo `bin/run_orchestrator.sh` con el perfil de AWS del usuario IAM creado. 
-2. `chmod +x bin/run_orchestrator.sh`
-
-Todo está listo para ejecutar. 
-
-#### 15.5. Rutas del pipeline
-El pipeline puede tomar 3 rutas (3 tipos de pipeline):
-1. load: cargará los datos de la fecha solictidaa
-2. train: crea el modelo
-3. predict: crea predicciones
-
-Este tipo de pipeline se debe especificar como argumento al ejecutar `run_orchestrator`.
-
-#### 15.6. Run
-
-El script `bin/run_orchestrator.sh` debe ejecutarse con 4 argumentos:
-1. tipo (load|train|predict)
-2. Año
-3. Mes
-4. Día
-
-Ejemplos: 
-
-~~~~bash
-bin/run_orchestrator.sh load 2017 1 1 
-bin/run_orchestrator.sh load 2018 5 25
-bin/run_orchestrator.sh train 2019 12 31
-bin/run_orchestrator.sh predict 2020 1 2
-~~~~
-
-**NOTA: Al ejecutar el pipeline es de suma importancia que el usuario se encuentre adentro del directorio [orquestador](orquestador). Estooo es porque la variable de entorno PYTHONPATH buscará los módulos a ejecutar en el directorio actual.**
-
-### 15.5. API
-El api se un proyecto de Flask. El código está en [api](api).
-
-Para ejecutarlo en entorno de desarrollo, basta correr `python3 server.py`. El output de la consola indicará el puerto en el cual se puede acceder al API (está programado para hacerlo en el puerto 3000, pero esto se puede cambiar fácilmente).
-
-Para visualizar el endpoint de predicción, será necesario primero haber corrido por lo menos una vez el pipeline de predicciones.
-
-El archivo `flaskapp.wsgi` es exlusivamente para producción y su uso se describe a continuación:
-
-Para ejectuar el API en un entorno de producción es necesario instalar en la EC2 los siguientes paquetes para ubuntu:
-1. apache2
-2. libapache2-mod-wsgi-py3
-
-Ahora la EC2 será accesible a través de HTTP en el puerto 80. Se desea rediccionar el tráfico de este puerto 80 HTTP a la aplicación de Flask. Para eso:
-
-1. Crear una liga de sistema de nuuestro api a la carpeta pública de apache
-~~~~bash
-sudo ln -sT ~/dpa-2020 /var/www/html/dpa-2020
-~~~~
-2. Editar el arhicvo de configuración de Apache
-~~~~xml
-<VirtualHost *:80>
-        ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/html
-
-        WSGIDaemonProcess dpa2020api python-path=/var/www/html/dpa-2020/api:/var/www/html/dpa-2020/api/dpavenv/lib/python3.6/site-packages:/var/www/html/dpa-2020/api/dpavenv/lib64/python3.6/site-packages  threads=5
-        WSGIScriptAlias / /var/www/html/dpa-2020/api/flaskapp.wsgi
-        <Directory "/var/www/html/dpa-2020/api">
-                WSGIProcessGroup dpa2020api
-                WSGIApplicationGroup %{GLOBAL}
-                Order deny,allow
-                Allow from all
-        </Directory>
-
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-~~~~
-
-**Es muy importante apuntar al virtual env del proyecto como lo muestra `python-path`**
-
-3. Reiniciar apache.
- 
-~~~~bash
-sudo service apache2 restart
-~~~~
-
-4. El api estará disponible en la dirección IP pública de la EC2
-
-### 15.6. Dashboard
-El dashboard es una aplicación de Dash que se ejecuta en un servidor de Flask. Dado que este dashboard consume el API, se optó por hospedar este dashboard en otra infraestrucutra. Para esto se eligó Heroku ya que facilita muchísimo el despliegue de apicaciones. 
-
-1. Crear una app de heroku
-2. Ligar la app al repositorio del proyecto
-3. Desplegar la rama master
-
-Heroku checará el archivo [Procfile](Procfile) que contiene las instrucciones de cómo ejecutar el servidor de aplicaciones. No es necesario modificar este archivo.
-
-Lo que sí será necesario modificar es la dirección IP del API que aparece en distintos requests en el archivo [nyccci_dashboard/wsgi.py](nyccci_dashboard/wsgi.py).
-
 

@@ -123,6 +123,36 @@ def get_model_parameters():
     return result
 
 
+def get_aequitas_groups(date):
+    db_result = db.engine.execute('SELECT * FROM aequitas.groups as AEQ'
+                                  ' WHERE DATE(AEQ.date) = \'{}\''.format(date)).fetchall()
+
+    result = []
+    for prediction in db_result:
+        result.append({
+            'model_id': prediction[0],
+            'score_threshold': prediction[1],
+            'k': prediction[2],
+            'attribute_name': prediction[3],
+            'attribute_value': prediction[4],
+            'pp': prediction[5],
+            'pn': prediction[6],
+            'fp': prediction[7],
+            'fn': prediction[8],
+            'tn': prediction[9],
+            'tp': prediction[10],
+            'group_label_pos': prediction[11],
+            'group_label_neg': prediction[12],
+            'group_size': prediction[13],
+            'total_entities': prediction[14],
+            'date': str(prediction[15]),
+        })
+
+    return result
+
+
+# Endpoints definitions
+
 class Prediction(Resource):
 
     def get(self):
@@ -182,6 +212,22 @@ class ModelParameters(Resource):
 
 
 api.add_resource(ModelParameters, '/model_parameter')
+
+
+class AequitasGroups(Resource):
+
+    def get(self, date):
+        if not valid_date(date):
+            return 'Invalid date supplied. Please follow the pattern: yyyy-MM-dd', 400
+
+        groups = get_aequitas_groups(date)
+        if len(groups) == 0:
+            return 'No data available for {}'.format(date), 404
+
+        return {"date": date, 'aequitas_groups': groups}
+
+
+api.add_resource(AequitasGroups, '/aequitas/groups/<date>')
 
 
 if __name__ == '__main__':

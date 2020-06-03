@@ -357,10 +357,11 @@ Dado que nuestro orquestador trabaja con datos de un día a la vez, es necesario
 
 ## 10. DAG
 
-###### SVG
-![DAG SVG](img/dag_svg.png)
-###### D3
-![DAG D3](img/dag_d3.png)
+### 10.1 DAG del modelo
+![DAG_modelo](img/DAG_modelo.png)
+
+### 10.2 DAG de las predicciones
+![DAG_predicciones](img/DAG_predicciones.png)
 
 ## 11. Sesgo y equidad
 
@@ -393,6 +394,22 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 - `programtype`:Se escogió la categoría de `preschool` pues es el tipo de programa con más  inspecciones.
 
 ### 11.4 Resultados
+
+#### 11.4.1 Métricas de Aequitas por default
+
+![bias_programtype](img/bias_programtype.png)
+
+#### 11.4.2 Métricas elegidas
+
+![bias_borough](img/bias_borough.png)
+
+#### 11.4.3 Disparidad de métricas por distrito
+
+![metricas_borough](img/metricas_borough.png)
+
+#### 11.4.4 Disparidad de métricas por tipo de programa
+
+![metricas_programtype](img/metricas_programtype.png)
 
 ## 12. Implicaciones éticas
 

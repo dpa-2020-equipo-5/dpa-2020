@@ -395,15 +395,19 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 
 ### 11.4 Resultados
 
-#### 11.4.1 Distrito
+#### 11.4.1 Métricas de Aequitas por default
+
+![bias_programtype](img/bias_programtype.png)
+
+#### 11.4.2 Métricas elegidas
 
 ![bias_borough](img/bias_borough.png)
 
+#### 11.4.3 Disparidad de métricas por distrito
+
 ![metricas_borough](img/metricas_borough.png)
 
-#### 11.4.2 Tipo de programa
-
-![bias_programtype](img/bias_programtype.png)
+#### 11.4.4 Disparidad de métricas por tipo de programa
 
 ![metricas_programtype](img/metricas_programtype.png)
 

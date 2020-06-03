@@ -46,7 +46,7 @@ La estructura del repositorio es la siguiente:
 - Carpeta [orquestador](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/orquestador): Contiene todo lo relacionado con el orquestador. El orquestador es un paquete de python por sí solo. El módulo principal es `nyc_ccci_etl`. 
 Los comandos de ejecución del orquestador se encuentran en el directorio `bin`. Estos ejecutables iniciarán el pipeline completo con los parámetros que especifique el usuario. Es necesario configurar el profile de AWS antes de ejecutar estos scripts.
 
-- Carpeta [scripts](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts): Contiene los scripts históricos generados para la realización de los modelos. Éstos son la base de los scripts de luigi y se dejaron solamente para tener el "linaje" de ellos pero ya no son necesarios.
+- Carpeta [scripts](https://github.com/dpa-2020-equipo-5/dpa-2020/blob/master/scripts): Contiene los scripts históricos generados para la realización de los modelos. Éstos son la base de los scripts de luigi y se dejaron solamente para tener el "linaje" de ellos pero ya no son necesarios y tampoco están actualizados.
      
 
 ## 3. Requerimientos de infraestructura
@@ -317,6 +317,9 @@ Se corrió un modelo de random forest con un gridsearch para definir cuáles son
 La matriz de confusión es la siguiente:
 
 ![matriz_confusion.png](img/matriz_confusion.png)
+
+La precisión del modelo fue de: 0.5678
+El recall del modelo fue de: 0.6405
 
 ## 8. Metadata y linaje de datos
 

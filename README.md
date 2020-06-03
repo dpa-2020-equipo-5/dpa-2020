@@ -461,14 +461,14 @@ Method | HTTP request
 get_predictions | **GET** /prediction
 get_predictions_by_date | **GET** /prediction/{date}
 get_inspection_by_date | **GET** /inspection/{date}
-get_model_parameter | **GET** /model_parameter/{date}
+get_model_parameter | **GET** /model_parameter
 get_aequitas_bias_by_date | **GET** /aequitas/bias/\<date>
 get_aequitas_fairness_by_date | **GET** /aequitas/fairness/\<date>
 get_aequitas_groups_by_date | **GET** /aequitas/groups/\<date>
 
 ## Ejemplo de definición de métodos
 
-### **get_predictions**
+### - **get_predictions**
 > Prediction get_predictions()
 
 Obtiene la lista de centros a verificar más reciente.
@@ -478,7 +478,7 @@ No se necesita ningún parámetro.
 
 [**Prediction**](README.md#Prediction)
 
-### **get_predictions_by_date**
+### - **get_predictions_by_date**
 > Prediction get_predictions_by_date(date)
 
 Obtiene una lista de centros para una fecha en específico.

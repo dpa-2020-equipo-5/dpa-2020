@@ -225,6 +225,65 @@ def get_aequitas_fairness(date):
     return result
 
 
+def get_aequitas_bias(date):
+    db_result = db.engine.execute('SELECT * FROM aequitas.bias as AEQ'
+                                  ' WHERE DATE(AEQ.date) = \'{}\''.format(date)).fetchall()
+
+    result = []
+    for prediction in db_result:
+        result.append({
+            'model_id character': prediction[0],
+            'score_threshold': prediction[1],
+            'k character': prediction[2],
+            'attribute_name': prediction[3],
+            'attribute_value': prediction[4],
+            'tpr': prediction[5],
+            'tnr': prediction[6],
+            'forr': prediction[7],
+            'fdr': prediction[8],
+            'fpr': prediction[9],
+            'fnr': prediction[10],
+            'npv': prediction[11],
+            'precision': prediction[12],
+            'pp': prediction[13],
+            'pn': prediction[14],
+            'ppr': prediction[15],
+            'pprev': prediction[16],
+            'fp': prediction[17],
+            'fn': prediction[18],
+            'tn': prediction[19],
+            'tp': prediction[20],
+            'group_label_pos': prediction[21],
+            'group_label_neg': prediction[22],
+            'group_size': prediction[23],
+            'total_entities': prediction[24],
+            'prev': prediction[25],
+            'ppr_disparity': prediction[26],
+            'pprev_disparity': prediction[27],
+            'precision_disparity': prediction[28],
+            'fdr_disparity': prediction[29],
+            'forr_disparity': prediction[30],
+            'fpr_disparity': prediction[31],
+            'fnr_disparity': prediction[32],
+            'tpr_disparity': prediction[33],
+            'tnr_disparity': prediction[34],
+            'npv_disparity': prediction[35],
+            'ppr_ref_group_value': prediction[36],
+            'pprev_ref_group_value': prediction[37],
+            'precision_ref_group_value': prediction[38],
+            'fdr_ref_group_value': prediction[39],
+            'forr_ref_group_value': prediction[40],
+            'fpr_ref_group_value': prediction[41],
+            'fnr_ref_group_value': prediction[42],
+            'tpr_ref_group_value': prediction[43],
+            'tnr_ref_group_value': prediction[44],
+            'npv_ref_group_value': prediction[45],
+            'date': str(prediction[46]),
+        })
+
+    return result
+
+
 # Endpoints definitions
 
 class Prediction(Resource):
@@ -318,6 +377,22 @@ class AequitasFairness(Resource):
 
 
 api.add_resource(AequitasFairness, '/aequitas/fairness/<date>')
+
+
+class AequitasBias(Resource):
+
+    def get(self, date):
+        if not valid_date(date):
+            return 'Invalid date supplied. Please follow the pattern: yyyy-MM-dd', 400
+
+        bias = get_aequitas_bias(date)
+        if len(bias) == 0:
+            return 'No data available for {}'.format(date), 404
+
+        return {"date": date, 'aequitas_bias': bias}
+
+
+api.add_resource(AequitasBias, '/aequitas/bias/<date>')
 
 
 if __name__ == '__main__':

@@ -318,7 +318,7 @@ Se corrió un modelo de random forest con los siguientes parámetros:
 
 Los metadatos generados en cada paso del pipeline son:
 
-![metadata](img/metadata.png)
+![metadata_final](img/metadata_final.png)
 
 ## 9. Pruebas unitarias
 

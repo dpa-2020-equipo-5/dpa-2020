@@ -65,10 +65,9 @@ def serve_layout():
     falsos_positivos = predicciones[predicciones['centerId'].isin(inspecciones.center_id)]
 
     alerta = False
-    if (verdaderos_positivos / falsos_positivos) > 3:
+    if len(falsos_positivos) / len(verdaderos_positivos) > 3:
         alerta = True
-    print("="*100)
-    print(alerta)
+
     date_split = r.json()['date'].split('-')
     d = datetime(int(date_split[0]), int(date_split[1]), int(date_split[2]))
     date_label = "Fecha de las predicciones: "+d.strftime(format="%Y-%m-%d")
@@ -163,7 +162,7 @@ def serve_layout():
                 figure={
                     'data': [
                         {
-                            'x': ["Verdaderos positivos", "Falsos positivos"],
+                            'x': ["Verdaderos positivos", "Falsos negativos"],
                             'y': [len(verdaderos_positivos), len(falsos_positivos)],
                             'type': 'bar',
                             'name': 'childcareType',
@@ -199,7 +198,7 @@ def serve_layout():
                     }
                 ),
                 html.Div([
-                    html.H4("Algo anda mal..." if alerta else "Todo bien", style={"backgroundColor": "red" if alerta else "green"})
+                    html.H4("Algo anda mal..." if alerta else "Todo bien", style={"backgroundColor": "red" if alerta else "green", "color":"white"})
                 ])
             ], className="eight columns")
         ], className="row"),

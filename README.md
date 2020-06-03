@@ -415,6 +415,8 @@ Hay que escoger una categoría de referencia para evaluar el sesgo y la justicia
 
 ![metricas_programtype](img/metricas_programtype.png)
 
+Lo que se observa en lo cuandros anteriores es que la paridad de la tasa de omisión falsa (FOR) por el atributo Borough, Queens cuenta con una disparidad en 1.38 veces contra el grupo de referencia (Brooklyn), mientras que el FOR por el atributo programtype, programtype_all_age_camp cuenta con una disparidad de 0.78 veces contra el grupo de referencia (preschool). 
+
 ## 12. Implicaciones éticas
 
 Algunas de las implicaciones éticas relacionadas con el modelo propuesto son las siguientes:
@@ -532,3 +534,6 @@ El dashboard se encuentra en la siguiente liga (https://ccci.dpa2020.com) y a co
 ![dashboard_1](img/dashboard_1.png)
 
 ![dashboard_2](img/dashboard_2.png)
+
+![dashboard_3](img/dashboard_3.png)
+

@@ -269,7 +269,7 @@ Las variables, su tipo y descripción son las siguientes:
 | violationstatus                       | text   | Violation Status - OPEN; CORRECTED; MORE INFO; or N/A                                                                                                                                                                                                                                                                                                |
 | inspectionsummaryresult               | text   | The summary result of the inspection, based on the type of inspection and the number and types of violations.                                                                                                                                                                                                                                        |
 
-No obstante, de la base original, se utilizaron muy pocas variables ya que la mayoría son tipo texto. Las demás variables utilizadas en nuestro modelo fueron creadas y su descripción puede encontrar en la sección 6.Feature engineering.
+No obstante, de la base original, se utilizaron muy pocas variables ya que la mayoría son tipo texto. Las demás variables utilizadas en nuestro modelo fueron creadas y su descripción puede encontrar en la sección 7.Feature engineering.
 
 ## 6. Análisis exploratorio
 
@@ -400,7 +400,7 @@ El feature engineering que se le aplicó a la Tabla 4 (Inspecciones-dinámicas) 
   * `ratio_violaciones_2019_criticas`: Número de violaciones críticas de primera vez por centro en el 2019/ número de 
                                        violaciones de primera vez de todo tipo por centro en el 2019.
 
-### 6.3 Tabla 5: Centros-inspecciones-modelado
+### 7.3 Tabla 5: Centros-inspecciones-modelado
 
 * De la Tabla 3 (Centros-estática) conservar únicamente 17 variables que se utilizarán en el modelo: `dc_id`, `maximumcapacity`, `totaleducationalworkers`, `averagetotaleducationalworkers`, `programtype_all_age_camp`, `programtype_infant_toddler`,`programtype_preschool`,`programtype_preschool_camp`, `programtype_school_age_camp`,`facilitytype_camp`,`facilitytype_gdc`,`facilitytype_sbcc`,`borough_bronx`,`borough_brooklyn`,`borough_manhattan`,`borough_queens` y `borough_staten_island`.
 * De la Tabla 4 (Inspecciones-dinámicas) conservar únicamente las 29 variables que se utilizarán en el modelo: `result_1_passed_inspection`, `result_1_passed_inspection_with_no_violations`, `result_1_previously_cited_violations_corrected`, `result_1_previously_closed_program_re-opened`, `result_1_reinspection_not_required`, `result_1_reinspection_required`,`result_2_NR`, `result_2_fines_pending`, `result_2_program_closed`, `result_2_violations_corrected_at_time_of_inspection`, `inspection_year`, `inspection_month`, `inspection_day_name`, `violationcategory_critical`, `violationcategory_general`, `violationcategory_public_health_hazard`, `dias_ultima_inspeccion`, `violaciones_hist_salud_publica`, `violaciones_2019_salud_publica`    , `violaciones_hist_criticas`, `violaciones_2019_criticas`, `ratio_violaciones_hist`, `ratio_violaciones_2019`, `prom_violaciones_hist_borough`, `prom_violaciones_2019_borough`, `ratio_violaciones_hist_sp`, `ratio_violaciones_2019_sp`                , `ratio_violaciones_hist_criticas`, `ratio_violaciones_2019_criticas`.
@@ -410,7 +410,7 @@ El feature engineering que se le aplicó a la Tabla 4 (Inspecciones-dinámicas) 
 
 La variable binaria dependiente es `violationcategory_public_health_hazard` pues se desea predecir cuáles centros tienen mayor probabilidad de cometer una violación de salud pública.
 
-Se utilizaron todas las variables de la Tabla 5 descritas en la sección 6.3 Tabla 5: Centros-inspecciones-modelado.
+Se utilizaron todas las variables de la Tabla 5 descritas en la sección 7.3 Tabla 5: Centros-inspecciones-modelado.
 
 Para el entrenamiento se usaron todos los datos desde el 2017 hasta noviembre del 2019. Para la validación se usaron los datos de diciembre del 2019 y para las predicciones los datos de enero del 2020.
 

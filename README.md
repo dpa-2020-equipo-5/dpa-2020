@@ -516,13 +516,18 @@ Name | Type | Description
 
 ## 14. Dashboard
 
-El dashboard muestra por día las predicciones hechas para todos aquellos centros con más del 50% de probabilidad de tener una violación de salud pública en orden descendente. Dado lo encontrado en el EDA, en teoría solo se necesitan las primeras 34 predicciones pues esos serán los centros a visitar. 
+El dashboard muestra por día las predicciones hechas para todos aquellos centros con más del 50% de probabilidad de tener una violación de salud pública en orden descendente. Dado lo encontrado en el EDA, en teoría solo se necesitan las primeras 34 predicciones pues esos serán los centros a visitar.
+
+El dashboard está desarrollado en Dash y desplegado en Heroku para aprovechar las herramientas de CI/CD de Heroku (cada que hacemos un commit a master, Heroku nos crea un nuevo deploy). Este dashboard consume los datos directamente del API que corre en la EC2. 
 
 También se observan gráficas de barras con la ubicación por distrito de los centros predichos y el tipo de estancia infantil.
 
 Se muestra el monitoreo del modelo con una gráfica de los verdaderos positivos y falsos negativos y finalmente, se muestran los resultados de bias y fairness.
 
-El dashboard se encuentra en la siguiente [liga](https://ccci.dpa2020.com/) y a continuación se muestra una impresión de pantalla del mismo.
+Trabajo futuro:
+* Agregar un `DateTimePicker` para elegir la fecha de las predicciones que se deseen visualizar.
+
+El dashboard se encuentra en la siguiente [liga](https://ccci.dpa2020.com/) (https://ccci.dpa2020.com) y a continuación se muestra una impresión de pantalla del mismo.
 
 ![dashboard_1](img/dashboard_1.png)
 

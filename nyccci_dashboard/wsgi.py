@@ -8,6 +8,11 @@ from random import randint
 import pandas as pd
 import requests
 from datetime import datetime
+
+
+
+
+
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
@@ -29,7 +34,21 @@ app.head = [
 def serve_layout():
     #r = requests.get("http://localhost:3000/prediction/")
     r = requests.get("http://18.208.188.16/prediction")
+    
     df = pd.json_normalize(r.json(), 'centers')
+
+    predicciones = df.copy()
+
+    r2 = requests.get("http://18.208.188.16/inspection/2019-12-30")
+
+    inspecciones = pd.json_normalize(r2.json(), 'centers')
+
+    inspecciones_con_violacion = inspecciones[inspecciones['violationcategory_public_health_hazard'] == '1'].copy()
+    verdaderos_positivos = predicciones[predicciones['centerId'].isin(inspecciones_con_violacion.center_id)]
+
+    falsos_positivos = predicciones[predicciones['centerId'].isin(inspecciones.center_id)]
+
+
     date_split = r.json()['date'].split('-')
     d = datetime(int(date_split[0]), int(date_split[1]), int(date_split[2]))
     date_label = "Fecha de las predicciones: "+d.strftime(format="%Y-%m-%d")
@@ -64,9 +83,9 @@ def serve_layout():
         html.Div(id='output-container-date-picker-range'),
         dash_table.DataTable(
             id='centersTable',
-            columns=[{"name": i, "id": i} for i in df[['priority','fullName', 'probability_str', 'borough']].columns],
+            columns=[{"name": i, "id": i} for i in df[['priority','centerId','fullName', 'probability_str', 'borough']].columns],
             
-            data=df[['priority','fullName', 'probability_str', 'borough']].to_dict('records'),
+            data=df[['priority','centerId','fullName', 'probability_str', 'borough']].to_dict('records'),
             style_table={
                 'width': '100%',
             },
@@ -86,7 +105,7 @@ def serve_layout():
             page_size=10
         ),
         html.Div([
-    dcc.Graph(
+        dcc.Graph(
             id='example-graph',
             figure={
                 'data': [
@@ -124,8 +143,54 @@ def serve_layout():
                 }
             },
             className="seven columns"
-        )
+        ),
         ], className="row"),
+        html.H2(children='Monitoreo del modelo'),
+        html.Div([
+            dcc.Graph(
+                id='monitor-graph',
+                figure={
+                    'data': [
+                        {
+                            'x': ["Verdaderos positivos", "Falsos positivos"],
+                            'y': [len(verdaderos_positivos), len(falsos_positivos)],
+                            'type': 'bar',
+                            'name': 'childcareType',
+                            'marker': {'color': colors}
+                        }
+                    ],
+                    'layout': {
+                        'title': 'Tipo de guardería'
+                    }
+                },
+                className="four columns"
+            ),
+            html.Div([
+                dash_table.DataTable(
+                    id='monitorTable',
+                    columns=[{"name": i, "id": i} for i in df[['priority','centerId','fullName', 'probability_str', 'borough']].columns],
+                    
+                    data=df[['priority','centerId','fullName', 'probability_str', 'borough']].to_dict('records'),
+                    style_table={
+                        'width': '100%',
+                    },
+                    style_cell={
+                            'textAlign': 'left'
+                    },
+                    style_data_conditional=[
+                        {
+                            'if': {'row_index': 'odd'},
+                            'backgroundColor': 'rgb(248, 248, 248)'
+                        }
+                    ],
+                    style_header={
+                    'backgroundColor': 'rgb(230, 230, 230)',
+                    'fontWeight': 'bold'
+                    },
+                    page_size=10,
+                )
+            ], className="eight columns")
+        ], className="row")
     ])
 
 app.layout = serve_layout

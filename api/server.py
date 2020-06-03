@@ -44,7 +44,7 @@ def get_predictions(date):
     for prediction in db_result:
         result.append({
             'centerId': prediction[0],
-            'centerName':prediction[5],
+            'centerName':prediction[5].replace("summer", ""),
             'childcareType': prediction[6],
             'borough': get_borough(prediction[7:]),
             'probability':float(prediction[1]),
@@ -62,7 +62,7 @@ def get_inspections(date):
     result = []
     for prediction in db_result:
         result.append({
-            'center_id.append({': prediction[0],
+            'center_id': prediction[0],
             'inspectiondate': prediction[1],
             'regulationsummary': prediction[2],
             'healthcodesubsection': prediction[3],

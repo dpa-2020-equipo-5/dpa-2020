@@ -88,7 +88,7 @@ munch==2.3.2
 mycalc==0.0.1
 nbconvert==5.5.0
 nbformat==4.4.0
-notebook==5.7.8
+notebook==6.1.5
 numpy==1.16.4
 ohio==0.5.0
 openpyxl==3.0.3

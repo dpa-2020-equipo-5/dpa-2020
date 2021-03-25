@@ -128,7 +128,7 @@ python-daemon==2.2.4
 python-dateutil==2.8.0
 python-http-client==3.2.1
 pytz==2019.1
-PyYAML==5.3.1
+PyYAML==5.4
 pyzmq==18.0.1
 qtconsole==4.5.1
 quiubas==1.0.1

@@ -42,7 +42,7 @@ Flask==1.1.2
 Flask-Argon2==0.1.5.1
 Flask-Bootstrap==3.3.7.1
 Flask-Compress==1.5.0
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 Flask-JWT==0.3.2
 Flask-RESTful==0.3.8
 flask-restplus==0.13.0

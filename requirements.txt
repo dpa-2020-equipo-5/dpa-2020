@@ -102,7 +102,7 @@ pdfminer==20191125
 pdfminer.six==20200402
 pexpect==4.7.0
 pickleshare==0.7.5
-Pillow==7.1.2
+Pillow==8.2.0
 pip-autoremove==0.9.1
 plotly==4.8.1
 pluggy==0.12.0
